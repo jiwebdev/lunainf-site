@@ -1,0 +1,206 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Inside LUNA: Progressive Recall"
+  description="Why LUNA treats memory as a staged cognitive process instead of a prompt-sized data dump, with a technical cutaway of the implemented Reverie workspace-admission boundary."
+>
+  <header class="article-header progressive-header">
+    <div class="shell">
+      <p class="eyebrow">INSIDE LUNA · PROGRESSIVE RECALL</p>
+      <h1>Memory is not a dump. Recall is progressive.</h1>
+      <p class="article-deck">Why LUNA treats memory as a staged cognitive process instead of a prompt-sized data dump.</p>
+      <div class="article-meta">
+        <span>Technical explainer</span>
+        <span>23 August 2026</span>
+        <span>Current implementation + architectural direction</span>
+        <span>Open research · protected implementation</span>
+      </div>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="shell prose progressive-prose">
+      <div class="progressive-thesis">
+        <strong>Memory is not a dump. Recall is progressive.</strong>
+        Most history can stay dormant. Compact cues can remain near the surface. Only a small amount reaches the foreground, and richer detail is reconstructed only when cognition actually needs it.
+      </div>
+
+      <h2>1. The problem with “memory = retrieval”</h2>
+      <p>
+        A common way to add memory to an AI system is straightforward: detect what looks relevant, retrieve several records, append them to the model context, and let the model reason over the larger prompt. That can be useful. But it collapses several very different cognitive questions into one operation.
+      </p>
+      <p>
+        Was something stored? Is it currently easy to cue? Has it become cognitively available? Did it actually enter the foreground? Did the model use it? Those are not the same property.
+      </p>
+      <p>
+        LUNA separates them. The aim is not to keep the whole past in context. It is to build a system in which the past can become progressively available.
+      </p>
+
+      <figure class="article-figure wide-figure">
+        <img src="/assets/research/progressive-recall-memory-not-dump.svg" alt="Comparison between a common memory-augmented flow and LUNA progressive recall." />
+        <figcaption>Figure 1. The category difference is staged recall: storage, availability, foreground access, and causal use remain separate.</figcaption>
+      </figure>
+
+      <h2>2. What “progressive recall” means</h2>
+      <p>
+        Progressive recall is an umbrella architecture. It describes how stored history can move through increasingly expensive and increasingly explicit stages instead of being pushed wholesale into inference.
+      </p>
+
+      <div class="layer-list">
+        <div><strong>Long-term history</strong><span>Detailed longitudinal memory can remain stored while mostly dormant.</span></div>
+        <div><strong>Recent / relevant surface</strong><span>Compact recent-life cues and unresolved context can keep selected history easy to find without carrying full transcripts.</span></div>
+        <div><strong>Cognitive availability</strong><span>Multiple memories, goals, events, and cognitive products can become nearer the surface.</span></div>
+        <div><strong>Foreground workspace</strong><span>Only a deliberately small amount crosses into active reasoning context.</span></div>
+        <div><strong>Detail on demand</strong><span>Richer episodic detail is reconstructed only after something has earned the need for it.</span></div>
+      </div>
+
+      <p>
+        LUNA currently has an active Recent-Life Horizon. The broader Cognitive Activation architecture remains partial.
+      </p>
+
+      <figure class="article-figure wide-figure">
+        <img src="/assets/research/progressive-recall-architecture.svg" alt="High-level LUNA progressive recall architecture from dormant long-term history to foreground workspace and Sleeve reasoning." />
+        <figcaption>Figure 2. Public functional architecture. The private decision functions inside these boundaries are intentionally omitted.</figcaption>
+      </figure>
+
+      <h2>3. A memory can become a new cue</h2>
+      <p>
+        Ordinary retrieval starts from something external: a message, a tool result, or an explicit cognitive query. Associative recall goes one step further. Once a memory has surfaced, that memory can itself change what becomes available next.
+      </p>
+      <p>
+        A conversation about a red car might surface a memory of that car. The car memory can then make a recent breakdown or an unfinished repair question more available—even if the original message never mentioned the breakdown.
+      </p>
+      <p>
+        That is the core of LUNA’s term <strong>Reverie</strong>: internally triggered associative recall. It is bounded propagation, not an uncontrolled recursive walk through the memory graph.
+      </p>
+
+      <div class="callout"><strong>A memory can become a new cue.</strong> LUNA can be reminded by what she has already remembered.</div>
+
+      <h2>4. Availability is not foreground cognition</h2>
+      <p>
+        Something can be active enough to matter without being inserted into the foreground model context. The activation layer is a transient availability space: multiple possibilities can compete near the surface while only a tiny subset becomes explicit.
+      </p>
+      <p>
+        The human comparison is an analogy, not a biological claim. LUNA deliberately borrows the separation between storage, availability, foreground access, and deeper reconstruction.
+      </p>
+
+      <h2>5. Inside one real mechanism: Reverie</h2>
+      <p>
+        The broader progressive-recall architecture is still being built in phases. Reverie workspace admission is a useful technical cutaway because this particular boundary is already concrete enough to inspect without publishing the mechanism that makes it proprietary.
+      </p>
+
+      <div class="technical-cutaway-copy">
+        <span>TECHNICAL CUTAWAY</span>
+        <strong>A deterministic gate can admit at most one internally triggered associative memory into the foreground workspace.</strong>
+        <p>The admission decision itself makes no language-model call.</p>
+      </div>
+
+      <figure class="article-figure wide-figure">
+        <img src="/assets/research/reverie-technical-cutaway.svg" alt="Reverie technical cutaway showing associative candidates, a protected deterministic admission gate, and zero or one optional foreground memory." />
+        <figcaption>Figure 3. Reverie cutaway. The interface, invariant, and observable behavior are public; reproduction-critical decision logic remains private.</figcaption>
+      </figure>
+
+      <p>
+        What is intentionally absent from this explanation is the decision function itself. LUNA is publishing the interface, invariant, and observable behavior—not the scoring functions, thresholds, candidate-ranking details, private schemas, orchestration logic, or prompt-construction contracts that would materially lower the cost of reproducing the mechanism.
+      </p>
+
+      <h2>6. Evidence: this is running architecture, not vocabulary</h2>
+      <p>
+        Current capability truth distinguishes architectural intent from executable reality.
+      </p>
+
+      <div class="evidence-table-wrap">
+        <table class="evidence-table">
+          <thead><tr><th>Component</th><th>Current status</th><th>Meaning</th></tr></thead>
+          <tbody>
+            <tr><td>Persistent memory / ordinary retrieval</td><td><span class="status active">ACTIVE</span></td><td>Existing durable memory and bounded retrieval are current runtime capabilities.</td></tr>
+            <tr><td>Recent-Life Horizon</td><td><span class="status active">ACTIVE</span></td><td>A bounded recent-life index participates in foreground retrieval cueing without becoming a transcript cache.</td></tr>
+            <tr><td>Cognitive Activation Field</td><td><span class="status partial">PARTIAL</span></td><td>Bounded activation and associative paths exist, but the complete umbrella architecture is not claimed as finished.</td></tr>
+            <tr><td>Reverie</td><td><span class="status partial">PARTIAL</span></td><td>The limited causal workspace path is implemented: eligible internally propagated memory can contribute zero or one additional foreground memory.</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>A sanitized acceptance example</h3>
+      <p>
+        One deterministic acceptance fixture begins with a <strong>current vehicle problem</strong> already present in ordinary retrieval. The activation pulse contains two internally associated candidates: a <strong>cooling-system incident</strong> that is useful to the present problem, and an <strong>older service detail</strong> that should not also flood the workspace.
+      </p>
+      <ol class="acceptance-steps">
+        <li><strong>Foreground retrieval</strong><span>Current vehicle problem.</span></li>
+        <li><strong>Associative availability</strong><span>Cooling-system incident + older service detail.</span></li>
+        <li><strong>Reverie admission</strong><span>One additional memory admitted — cooling-system incident.</span></li>
+        <li><strong>Provider-call check</strong><span><b>0 model calls</b> for the admission decision.</span></li>
+      </ol>
+      <p>
+        Companion tests verify the opposite outcome as well: the mechanism can admit nothing, and disabling the path leaves the ordinary limited retrieval result unchanged. Reverie is not a prompt instruction that forces “one more memory.”
+      </p>
+
+      <h2>7. Why this matters for Stack / Sleeve separation</h2>
+      <p>
+        The <strong>Stack</strong> is the persistent continuity-bearing cognitive architecture. The <strong>Sleeve</strong> is the replaceable inference substrate—the active model/provider and embodiment through which the Stack currently reasons and interacts.
+      </p>
+      <p>
+        Reverie makes that distinction operational. The Stack can alter what becomes available to the foreground without asking the Sleeve to decide whether that memory should be admitted. The Sleeve then reasons over the resulting foreground state.
+      </p>
+      <div class="callout"><strong>The Sleeve can change while the Stack persists.</strong> Progressive recall helps show that the Stack is not merely storage surrounding the “real” intelligence; it participates in what becomes available to inference.</div>
+
+      <h2>8. What this does—and does not—claim</h2>
+      <p>
+        Progressive recall is human-inspired, not a claim that LUNA reproduces human memory. “Activation” is an engineering state, not a declaration of consciousness. A fluent self-description is not evidence of subjective experience.
+      </p>
+      <p>
+        The engineering claim is narrower and testable: LUNA separates stored history, recent-life cueing, transient cognitive availability, foreground admission, detailed reconstruction, and associative continuation; some of those paths are already active, while the larger architecture remains explicitly partial.
+      </p>
+
+      <h2>9. Open research, protected implementation</h2>
+      <p>
+        LUNA intends to publish enough architecture and evidence for technical readers to understand what is being built and to evaluate the research claims. It does not intend to publish a reconstruction manual. Interfaces, roles, invariants, sanitized traces, and measured results can be public; reproduction-critical decision logic stays private.
+      </p>
+      <p>
+        No latency number is published in this first cutaway. Measured public numbers will be added only when they come from a versioned trace rather than an illustrative example.
+      </p>
+
+      <div class="reading-path">
+        Continue: <a href="/research/memory-can-remind-memory">Memory Can Remind Memory →</a>
+      </div>
+    </div>
+  </article>
+
+  <style>
+    .progressive-header { background: linear-gradient(180deg, #f7f8fa 0%, #eef4fb 100%); border-bottom: 1px solid #dbe3ec; }
+    .progressive-header .article-deck { max-width: 820px; margin: -2px 0 22px; color: #6c7a8a; font-size: 1.22rem; }
+    .progressive-thesis { margin: 0 0 52px; padding: 30px 32px; border: 1px solid #cfe0f4; border-left: 4px solid #1665f2; border-radius: 0 18px 18px 0; background: #edf4ff; font-size: 1.13rem; }
+    .progressive-thesis strong { display: block; margin-bottom: 6px; color: #051122; }
+    .progressive-prose { max-width: 900px !important; }
+    .wide-figure { width: 100%; margin: 42px 0 52px; }
+    .article-figure img { display: block; width: 100%; border-radius: 18px; box-shadow: 0 20px 55px rgba(5,17,34,.11); }
+    .article-figure figcaption { margin-top: 12px; color: #6c7a8a; font-size: .86rem; line-height: 1.45; }
+    .layer-list { display: grid; gap: 12px; margin: 30px 0 32px; }
+    .layer-list > div { display: grid; grid-template-columns: 205px 1fr; gap: 20px; padding: 18px 20px; border: 1px solid #dbe3ec; border-radius: 14px; background: #fff; }
+    .layer-list strong { color: #071d3e; }
+    .layer-list span { color: #6c7a8a; }
+    .technical-cutaway-copy { margin: 34px 0 10px; padding: 28px 30px; border-radius: 18px; color: #fff; background: linear-gradient(145deg, #071d3e, #051122); }
+    .technical-cutaway-copy > span { display: block; color: #6fb1ff; letter-spacing: .16em; font-size: .75rem; font-weight: 750; }
+    .technical-cutaway-copy > strong { display: block; margin: 10px 0 6px; font-size: 1.2rem; line-height: 1.45; }
+    .technical-cutaway-copy p { margin: 0; color: #b9c8da; }
+    .evidence-table-wrap { overflow-x: auto; margin: 32px 0 42px; border: 1px solid #dbe3ec; border-radius: 16px; background: #fff; }
+    .evidence-table { width: 100%; border-collapse: collapse; min-width: 720px; font-size: .94rem; line-height: 1.45; }
+    .evidence-table th { padding: 16px 18px; text-align: left; color: #fff; background: #071d3e; }
+    .evidence-table td { padding: 17px 18px; border-top: 1px solid #e4eaf1; vertical-align: top; }
+    .status { display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+    .status.active { color: #005c69; background: #d9f7fa; }
+    .status.partial { color: #0c4eab; background: #e5efff; }
+    .acceptance-steps { list-style: none; counter-reset: step; padding: 0; margin: 28px 0 36px; }
+    .acceptance-steps li { counter-increment: step; display: grid; grid-template-columns: 42px 190px 1fr; gap: 14px; align-items: start; padding: 15px 0; border-bottom: 1px solid #dbe3ec; }
+    .acceptance-steps li::before { content: counter(step); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; background: #1665f2; font-size: .82rem; font-weight: 800; }
+    .acceptance-steps span { color: #6c7a8a; }
+    @media (max-width: 900px) {
+      .layer-list > div { grid-template-columns: 1fr; gap: 4px; }
+    }
+    @media (max-width: 650px) {
+      .acceptance-steps li { grid-template-columns: 36px 1fr; }
+      .acceptance-steps li span { grid-column: 2; }
+    }
+  </style>
+</BaseLayout>
