@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Progressive Recall Architecture</title>
+  <desc id="desc">High-level functional architecture showing long-term history, recent and relevant surface, cognitive availability, foreground workspace, and Sleeve reasoning.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#051122"/>
+      <stop offset="1" stop-color="#071d3e"/>
+    </linearGradient>
+    <linearGradient id="stroke" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1665f2"/>
+      <stop offset="1" stop-color="#0fbfd5"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#57a0ff"/>
+    </marker>
+  </defs>
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <g opacity=".13" stroke="#6fa9e8" stroke-width="1">
+    <path d="M0 150H1600M0 300H1600M0 450H1600M0 600H1600M0 750H1600"/>
+    <path d="M200 0V900M400 0V900M600 0V900M800 0V900M1000 0V900M1200 0V900M1400 0V900"/>
+  </g>
+
+  <text x="90" y="90" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="5" fill="#6fb1ff">INSIDE LUNA · FUNCTIONAL ARCHITECTURE</text>
+  <text x="90" y="150" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="52" font-weight="620" letter-spacing="-1.5" fill="#ffffff">The past becomes progressively available.</text>
+  <text x="90" y="194" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" fill="#aebfd2">Most history stays dormant. Increasingly explicit stages decide what earns foreground access.</text>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif">
+    <rect x="280" y="265" width="1040" height="105" rx="21" fill="#091b35" stroke="#335f95" stroke-width="2"/>
+    <text x="330" y="309" font-size="18" font-weight="750" letter-spacing="3" fill="#82a4ca">LONG-TERM HISTORY</text>
+    <text x="330" y="342" font-size="27" fill="#ffffff">Detailed longitudinal memory · large · mostly dormant</text>
+    <circle cx="1250" cy="318" r="20" fill="none" stroke="#335f95" stroke-width="2"/>
+    <circle cx="1250" cy="318" r="6" fill="#1665f2"/>
+
+    <line x1="800" y1="371" x2="800" y2="417" stroke="#57a0ff" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="835" y="402" font-size="18" fill="#7fb8ff">detail reconstructed on demand</text>
+
+    <rect x="330" y="430" width="940" height="105" rx="21" fill="#0b2347" stroke="#2f6eb8" stroke-width="2"/>
+    <text x="380" y="474" font-size="18" font-weight="750" letter-spacing="3" fill="#6fb1ff">RECENT / RELEVANT SURFACE</text>
+    <text x="380" y="507" font-size="26" fill="#ffffff">Compact cues · unresolved context · pointers into deeper history</text>
+    <circle cx="1200" cy="482" r="8" fill="#0fbfd5"/><circle cx="1172" cy="482" r="8" fill="#1665f2"/><line x1="1180" y1="482" x2="1192" y2="482" stroke="url(#stroke)" stroke-width="3"/>
+
+    <line x1="800" y1="536" x2="800" y2="582" stroke="#57a0ff" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="835" y="567" font-size="18" fill="#7fb8ff">cueing / availability</text>
+
+    <rect x="390" y="595" width="820" height="96" rx="21" fill="#0a1c37" stroke="url(#stroke)" stroke-width="2"/>
+    <text x="440" y="635" font-size="18" font-weight="750" letter-spacing="3" fill="#6fb1ff">COGNITIVE AVAILABILITY</text>
+    <text x="440" y="668" font-size="25" fill="#ffffff">Multiple possibilities can be near the surface at once</text>
+
+    <line x1="800" y1="692" x2="800" y2="732" stroke="#57a0ff" stroke-width="3" marker-end="url(#arrow)"/>
+    <text x="835" y="720" font-size="18" fill="#7fb8ff">bounded competition</text>
+
+    <rect x="470" y="745" width="660" height="78" rx="20" fill="#f7f8fa" stroke="#0fbfd5" stroke-width="3"/>
+    <text x="520" y="779" font-size="17" font-weight="750" letter-spacing="3" fill="#1665f2">FOREGROUND WORKSPACE</text>
+    <text x="520" y="807" font-size="23" fill="#051122">Very little crosses the boundary</text>
+
+    <path d="M1130 784 C1250 784, 1280 740, 1325 680" fill="none" stroke="#0fbfd5" stroke-width="2.5" marker-end="url(#arrow)"/>
+    <text x="1284" y="650" text-anchor="middle" font-size="18" fill="#9edee8">reasoning / expression</text>
+    <rect x="1225" y="545" width="285" height="90" rx="20" fill="#ffffff"/>
+    <text x="1260" y="582" font-size="17" font-weight="750" letter-spacing="3" fill="#1665f2">SLEEVE</text>
+    <text x="1260" y="612" font-size="22" fill="#051122">Active inference substrate</text>
+  </g>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="16" fill="#6fb1ff">
+    <circle cx="165" cy="318" r="10" fill="#1665f2"/><line x1="175" y1="318" x2="235" y2="318" stroke="#1665f2" stroke-width="2"/><text x="110" y="323" text-anchor="end">dormant</text>
+    <circle cx="165" cy="483" r="10" fill="#2778ff"/><line x1="175" y1="483" x2="285" y2="483" stroke="#2778ff" stroke-width="2"/><text x="110" y="488" text-anchor="end">cueable</text>
+    <circle cx="165" cy="643" r="10" fill="#0fbfd5"/><line x1="175" y1="643" x2="345" y2="643" stroke="#0fbfd5" stroke-width="2"/><text x="110" y="648" text-anchor="end">available</text>
+    <circle cx="165" cy="784" r="10" fill="#ffffff"/><line x1="175" y1="784" x2="425" y2="784" stroke="#ffffff" stroke-width="2"/><text x="110" y="789" text-anchor="end" fill="#ffffff">foreground</text>
+  </g>
+</svg>
