@@ -50,6 +50,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         A persistent system can preserve autobiographical episodes, maintain continuity across interactions, carry unresolved intentions forward, form expectations, and accumulate slower state. LUNA explores how those mechanisms can interact so that two otherwise similar systems may eventually behave differently because they lived through different experiences and therefore accumulated different histories.
       </p>
 
+      <h2>Memory is not a dump. Recall is progressive.</h2>
+      <p>
+        LUNA does not treat every relevant memory as material that should immediately be pasted into the next model prompt. Progressive recall separates <strong>stored history</strong>, <strong>recent-life cueing</strong>, <strong>cognitive availability</strong>, <strong>foreground access</strong>, and <strong>deeper reconstruction</strong>.
+      </p>
+      <p>
+        That distinction creates a place for information to become “near the surface” without automatically becoming foreground model context. A surfaced memory can also become a new cue, making related history more available. LUNA calls that internally triggered associative recall <strong>Reverie</strong>.
+      </p>
+      <figure style="margin:38px 0 18px">
+        <img src="/assets/research/progressive-recall-memory-not-dump.svg" alt="Comparison between ordinary memory retrieval into model context and LUNA's staged progressive recall architecture." style="display:block;width:100%;border-radius:18px;box-shadow:0 20px 55px rgba(5,17,34,.11)" />
+        <figcaption style="margin-top:12px;color:#6c7a8a;font-size:.86rem;line-height:1.45">
+          Progressive recall keeps storage, availability, foreground admission, and causal use as different states rather than one retrieval operation.
+        </figcaption>
+      </figure>
+      <div class="callout">
+        <strong>The past can become progressively available.</strong> Most history can stay dormant; a deliberately small amount reaches foreground reasoning, and richer detail is reconstructed only when cognition needs it.
+      </div>
+      <div class="page-actions">
+        <a class="button button-primary" href="/research/progressive-recall">Inside LUNA: Progressive Recall</a>
+      </div>
+
       <h2>Knowledge, experience, development</h2>
       <p>
         A simple stove example captures one of the project's central distinctions. Being told that a stove can burn you and being burned by the stove can produce the same propositional knowledge while producing very different later behavior.
@@ -106,7 +126,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </p>
 
       <div class="reading-path">
-        Continue with: <a href="/architecture">the public architecture overview</a> · <a href="/research/luna-describes-luna">how LUNA described itself</a> · <a href="/chronoforge">ChronoForge</a>
+        Continue with: <a href="/research/progressive-recall">progressive recall</a> · <a href="/architecture">the public architecture overview</a> · <a href="/research/luna-describes-luna">how LUNA described itself</a> · <a href="/chronoforge">ChronoForge</a>
       </div>
     </div>
   </section>
