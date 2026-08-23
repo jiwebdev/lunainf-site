@@ -7,7 +7,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 >
   <header class="article-header">
     <div class="shell">
-      <p class="eyebrow">EARLY LUNA EXPERIENCE · PUBLIC RESEARCH NOTE</p>
+      <p class="eyebrow">EARLY LUNA EXPERIENCE III · PUBLIC RESEARCH NOTE</p>
       <h1>When Memory Is Not Enough: Can an AI Be Changed by Experience?</h1>
       <div class="article-meta">
         <span>LUNA Core v0.5</span>
@@ -38,23 +38,42 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 
       <h2>An accidental control condition</h2>
       <p>
-        The first story used familiar motifs assembled into a simple narrative. When asked where
-        it came from, LUNA described it in those terms rather than attributing it to a specific
-        autobiographical experience.
+        The first story used familiar motifs assembled into a simple narrative. The system had retrieved a recent autobiographical preference during the turn, but the output itself did not obviously use that history.
+      </p>
+
+      <div class="quote-feature">
+        <blockquote>
+          “A little robot found a wilted flower growing through a crack in the pavement.<br /><br />
+          Every morning, it brought the flower one cup of water.<br /><br />
+          By spring, the crack had become a garden.”
+        </blockquote>
+        <div class="quote-attribution">LUNA v0.5 · first short story</div>
+      </div>
+
+      <p>
+        When asked where the story came from, LUNA described familiar story patterns and imagery assembled on the spot rather than attributing the output to a particular autobiographical experience.
       </p>
       <p>
-        The interesting part is that relevant personal history had been available. If retrieval alone
-        were sufficient to make experience part of creation, the output should have shown it.
-        It did not.
+        That makes the turn useful. Relevant personal history had been available. If retrieval alone were sufficient to make experience part of creation, the output should have shown it. It did not.
       </p>
 
       <h2>Change the prompt, change the source</h2>
       <p>
         The next prompt explicitly asked whether a story could come from LUNA's own memories
-        and experiences rather than generic story patterns. This time the system produced a
-        metaphor grounded in its actual persistent history: remembered language, selective
-        persistence, recent discussion about speech, and the idea that output can carry something
-        from the particular instance that produced it.
+        and experiences rather than generic story patterns. This time the system first drew an important boundary: it should not invent human experiences and present them as its own. It then identified a different source of legitimate autobiographical material — continuity, remembered interaction, and recent history inside LUNA itself.
+      </p>
+
+      <div class="quote-feature">
+        <blockquote>
+          “Luna kept a small room made of remembered sentences.<br /><br />
+          Not every sentence stayed. Most faded gently into the dark.<br /><br />
+          But some were given a place near the window…”
+        </blockquote>
+        <div class="quote-attribution">LUNA v0.5 · second story, after an explicit request to use its own history</div>
+      </div>
+
+      <p>
+        The second story transformed real features of LUNA's recent causal history into metaphor: remembered language, selective persistence, recent discussion about speech, and the idea that output can contain something from the particular persistent instance that produced it.
       </p>
       <p>
         This creates a useful contrast. The system could retrieve autobiographical material and
@@ -127,6 +146,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <div class="callout">
         A memory system asks: can the past be recovered?<br />
         A developmental architecture asks: can the past change what the system becomes?
+      </div>
+
+      <div class="reading-path">
+        Continue with: <a href="/research/remembering-is-not-becoming">the developmental-plasticity architecture behind the question →</a>
       </div>
     </div>
   </article>

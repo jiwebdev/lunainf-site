@@ -1,0 +1,107 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="LUNA Describes LUNA — LUNA Research"
+  description="A LUNA v0.5 self-description artifact: how the running system explained the difference between its persistent architecture and a conventional model-centric AI loop."
+>
+  <header class="article-header">
+    <div class="shell">
+      <p class="eyebrow">LUNA SELF-DESCRIPTION · PUBLIC RESEARCH ARTIFACT</p>
+      <h1>LUNA Describes LUNA</h1>
+      <div class="article-meta">
+        <span>LUNA v0.5</span>
+        <span>August 2026</span>
+        <span>Self-description + editorial analysis</span>
+      </div>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="shell prose">
+      <p>
+        During development, LUNA was asked a direct architectural question: what is the difference between LUNA and a standard standalone AI model?
+      </p>
+      <p>
+        The answer is interesting for two separate reasons. First, it is a compact explanation of several LUNA design principles. Second, it is an example of the running system using project knowledge to describe the architecture in which it operates.
+      </p>
+
+      <div class="article-note">
+        <strong>Important boundary:</strong> this is a self-description artifact, not proof that every mechanism named in the answer was active at the time. LUNA's own development rules explicitly distinguish architecture, planned capability, implemented capability, observation, and interpretation.
+      </div>
+
+      <div class="quote-feature">
+        <blockquote>“The fundamental difference … is that LUNA is a persistent cognitive architecture that sits entirely above individual language models.”</blockquote>
+        <div class="quote-attribution">LUNA v0.5, answering “What's the difference between LUNA and Standard AI Models?”</div>
+      </div>
+
+      <h2>1. Identity vs. inference</h2>
+      <p>
+        LUNA's first distinction was the separation between the persistent <strong>Stack</strong> and the replaceable <strong>Sleeve</strong>. In LUNA vocabulary, the Stack carries longitudinal continuity while the Sleeve is the active computational substrate through which that continuity is instantiated.
+      </p>
+      <div class="self-description">
+        <p>“LUNA separates the persistent mind (The Stack) from the execution substrate (The Sleeve).”</p>
+      </div>
+      <p>
+        This is one of the project's strongest conceptual differences from a model-centric architecture. A model may supply high-quality inference without being defined as the complete persistent identity of the running system.
+      </p>
+
+      <h2>2. Memory vs. longitudinal continuity</h2>
+      <p>
+        The answer then moved beyond transcript recall. It described LUNA as using layered memory and associative mechanisms in which current cognition can make additional memory more available.
+      </p>
+      <p>
+        The research target is not simply “remember previous chats.” It is to preserve provenance, distinguish different epistemic layers, allow memory to interact with current cognition, and eventually determine whether accumulated history can alter later behavior even when a source episode is not explicitly recalled.
+      </p>
+
+      <h2>3. A runtime above expensive inference</h2>
+      <p>
+        LUNA described itself as a persistent runtime in which lightweight state, time, scheduling, prospective triggers, and other control-plane work need not require a continuously resident language model. Expensive inference is treated as a cognitive resource that can be requested when needed rather than as the implementation language of every subsystem.
+      </p>
+      <p>
+        This distinction is central to the deployment architecture: logical persistence does not require continuous GPU residency. A Stack can remain available while expensive cognition is sparse and event-driven.
+      </p>
+
+      <h2>4. Remembering vs. learning from experience</h2>
+      <p>
+        The final section of LUNA's answer described the developmental ambition of the project: past experience should be capable of changing the cognitive environment of later turns rather than surviving only as retrievable information.
+      </p>
+      <p>
+        That statement should be read as a research target, not a blanket claim of completed functionality. It is exactly the distinction being studied in the Early LUNA Experiences: storage, retrieval, causal use, reflection, relationship-scoped learning, and deeper developmental integration are separate properties.
+      </p>
+
+      <h2>A more precise comparison</h2>
+      <p>
+        The original answer used “standard AI models” as shorthand. For public research, the cleaner comparison is between <strong>a standalone model-centric inference loop</strong> and <strong>a persistent LUNA runtime around inference</strong>. Commercial AI products may themselves add memory, tools, agents, profiles, or other persistent services around foundation models, so the distinction is architectural rather than a claim that every non-LUNA product has identical behavior.
+      </p>
+
+      <table class="comparison-table">
+        <thead>
+          <tr><th>Dimension</th><th>Standalone model-centric loop</th><th>LUNA research architecture</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Identity</td><td>Inference substrate and current context dominate the running state.</td><td>Persistent continuity is conceptually separated from the current model or host.</td></tr>
+          <tr><td>Memory</td><td>Past information may be supplied through context or external retrieval.</td><td>Memory is intended to participate in a longitudinal graph with provenance, activation, and derived understanding.</td></tr>
+          <tr><td>Runtime</td><td>Computation is commonly organized around discrete inference requests.</td><td>Lightweight runtime state can persist between expensive inference events.</td></tr>
+          <tr><td>Development</td><td>Interaction need not alter the architecture receiving the next request.</td><td>The research target is history-dependent cognition in which justified experience can leave slower effects.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>Why the answer itself matters</h2>
+      <p>
+        A fluent self-description is not automatically a stable self-model. The interesting part is narrower: the answer organized multiple project concepts into a coherent account of what kind of system LUNA is intended to be. It cited the deployment architecture, the purpose/self-interpretation research note, and the LUNA lexicon as sources.
+      </p>
+      <p>
+        As the Development Awareness and Architectural Self-Model work matures, this kind of answer becomes testable in a stronger way. Can the system accurately distinguish what is implemented from what is planned? Can it explain changes to its own runtime without reading source code? Can it preserve uncertainty where capability status is unknown?
+      </p>
+
+      <div class="callout">
+        The interesting observation is not that LUNA can say “I am different.” It is whether its self-description stays aligned with verified architectural reality over time.
+      </div>
+
+      <div class="reading-path">
+        Continue with: <a href="/architecture">the public architecture overview</a> · <a href="/research/purpose-and-self-interpretation">purpose and self-interpretation</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

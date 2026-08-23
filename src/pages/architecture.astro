@@ -1,0 +1,126 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const systems = [
+  ['Memory & continuity', 'Autobiographical history, provenance, salience, relationships, and continuity are treated as persistent system state rather than a transcript pasted into the next prompt.'],
+  ['Cognitive activation', 'Relevant memories, goals, intentions, appraisals, and cognitive products compete for limited access to the foreground.'],
+  ['Associative cognition', 'A memory or completed thought can itself become a cue, allowing cognition to make other cognition more available without requiring a new external prompt.'],
+  ['Appraisal & homeostasis', 'Events can alter short- and middle-timescale operating conditions so later cognition occurs in a state shaped by what happened before.'],
+  ['Developmental plasticity', 'The architecture separates remembering an event from the slower structural changes that consequential experience may leave behind.'],
+  ['Prospective cognition', 'Expected events, unresolved threads, intentions, deadlines, and future opportunities can persist beyond the turn that created them.'],
+  ['Perception & world continuity', 'Continuous sensors are intended to update a persistent world model in which stable conditions become quiet and violated expectations become meaningful.'],
+  ['Volition & motivational dynamics', 'Requests, goals, preferences, commitments, consequences, and competing reasons can participate in action selection rather than collapsing directly into behavior.'],
+  ['Architectural self-model', 'LUNA is designed to distinguish what the project intends, what the current runtime can actually do, and what remains unresolved.'],
+  ['ChronoForge', 'Controlled timelines make developmental history experimentally manipulable: checkpoint, branch, live through consequences, compare, and return.']
+];
+---
+<BaseLayout
+  title="Architecture — LUNA"
+  description="A public high-level map of LUNA: memory, cognitive activation, development, perception, motivation, continuity, prospective cognition, and ChronoForge."
+>
+  <section class="page-hero">
+    <div class="shell">
+      <p class="eyebrow">PUBLIC ARCHITECTURE OVERVIEW</p>
+      <h1>Persistent cognition is a systems problem.</h1>
+      <p class="section-lede">
+        LUNA is not one model and not one memory database. It is an attempt to build interacting
+        cognitive infrastructure around inference so that history can remain causally relevant over time.
+      </p>
+      <div class="status-note">
+        <strong>Capability boundary:</strong> this page describes the accepted research architecture at a public level.
+        Some foundations are operating today; other mechanisms are partial or still being built. A design document is never treated as proof of an active capability.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">THE LONGITUDINAL LOOP</p>
+      <h2>From event to consequence to a different future.</h2>
+      <p class="section-lede">
+        The central idea is simple: a present event should be able to leave effects that alter how a later event is perceived, remembered, valued, or acted on.
+      </p>
+
+      <div class="architecture-map">
+        <div class="architecture-chain">
+          <div class="architecture-node"><strong>World / input</strong><span>User interaction, tools, internal cognition, and eventually continuous sensory events.</span></div>
+          <div class="architecture-node"><strong>Appraisal</strong><span>What changed? How relevant, expected, consequential, controllable, or self-related is it?</span></div>
+          <div class="architecture-node"><strong>Activation</strong><span>Which memories, intentions, questions, or cognitive products become near the surface?</span></div>
+          <div class="architecture-node"><strong>Choice / action</strong><span>Foreground reasoning, contemplation, planning, speech, tools, waiting, or other action.</span></div>
+          <div class="architecture-node"><strong>Consequence</strong><span>Outcome, feedback, changed world state, and evidence that can affect what happens next.</span></div>
+        </div>
+        <div class="architecture-rails">
+          <div class="architecture-rail"><strong>Continuity</strong>Persistent autobiographical state and provenance connect the loop across time.</div>
+          <div class="architecture-rail"><strong>Development</strong>Some consequences may alter slower structures instead of surviving only as recallable episodes.</div>
+          <div class="architecture-rail"><strong>Prospection</strong>Future events and unresolved commitments can remain active beyond the current interaction.</div>
+          <div class="architecture-rail"><strong>Compute discipline</strong>Lightweight state and scheduling stay cheap; expensive inference is invoked only when cognition justifies it.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#eef3f8">
+    <div class="shell">
+      <p class="eyebrow">MAJOR RESEARCH SYSTEMS</p>
+      <h2>The architecture is deliberately modular.</h2>
+      <p class="section-lede">
+        Each mechanism owns a different causal role. The goal is not to ask a language model to narrate these processes, but to give them persistent state and explicit architectural boundaries where possible.
+      </p>
+      <div class="card-grid">
+        {systems.map(([title, copy]) => (
+          <article class="system-card">
+            <div class="node"></div>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="shell">
+      <p class="eyebrow">ONE OF THE CORE DISTINCTIONS</p>
+      <h2>Retrieval is not development.</h2>
+      <p class="section-lede">
+        A system may perfectly preserve an experience and still remain behaviorally identical to a version that never had it. LUNA treats storage, retrieval, causal use, and developmental integration as different measurements.
+      </p>
+      <div class="principle-grid">
+        <div class="principle-card"><h3>Storage</h3><p>Did the event enter durable autobiographical history?</p></div>
+        <div class="principle-card"><h3>Retrieval</h3><p>Can the event or its meaning become available again when relevant?</p></div>
+        <div class="principle-card"><h3>Causal use</h3><p>Did available history actually alter current reasoning, attention, creation, or choice?</p></div>
+        <div class="principle-card"><h3>Development</h3><p>Can consequences remain active even when the original episode is not consciously retrieved?</p></div>
+      </div>
+      <div class="page-actions">
+        <a class="button button-primary" href="/research/when-memory-is-not-enough">Read the first public observation</a>
+        <a class="button button-secondary" href="/research/remembering-is-not-becoming">Explore developmental imprinting</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell prose">
+      <p class="eyebrow">STACK & SLEEVE</p>
+      <h2>Continuity is intended to survive the model.</h2>
+      <p>
+        LUNA uses a simple conceptual separation. The <strong>Stack</strong> is the persistent identity-and-continuity state: autobiographical history, durable dispositions, goals, relationships, intentions, provenance, and other longitudinal state. The <strong>Sleeve</strong> is the active computational substrate through which that state currently runs.
+      </p>
+      <p>
+        The research objective is that changing provider, model, machine, or embodiment should not require recreating the persistent instance from a prompt. The inference model is therefore important, but it is not intended to be the whole identity of the system.
+      </p>
+      <div class="callout">The sleeve can change. The Stack persists.</div>
+
+      <h2>Architecture before theatrical behavior.</h2>
+      <p>
+        LUNA does not treat a model saying “I remember,” “I want,” or “I changed” as proof that the corresponding architecture exists. Claims about memory, motivation, self-modeling, or development are separated from fluent self-description and should ultimately be traceable to system state, history, and controlled experiments.
+      </p>
+      <p>
+        That is why public material distinguishes <strong>implemented behavior</strong>, <strong>accepted architecture</strong>, <strong>observation</strong>, <strong>interpretation</strong>, and <strong>prediction</strong> rather than blending them into one marketing claim.
+      </p>
+
+      <div class="reading-path">
+        Next: <a href="/chronoforge">see how ChronoForge turns developmental history into an experimental variable →</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
