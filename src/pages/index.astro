@@ -1,0 +1,160 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const systems = [
+  ['Memory & continuity', 'Persistent autobiographical history and provenance are treated as part of the system, not merely text placed in a prompt.'],
+  ['Associative cognition', 'LUNA explores cognition in which active memories and newly formed cognitive products can make other relevant material available.'],
+  ['Development', 'The research distinguishes remembering an experience from being structurally changed by it over time.'],
+  ['Perception', 'The architecture is designed for persistent environmental models in which stable input can become computationally quiet.'],
+  ['Motivation & choice', 'Requests, goals, expectations, preferences, and commitments can become reasons that participate in action selection rather than direct triggers.'],
+  ['ChronoForge', 'Controlled longitudinal simulated environments are designed to study development, branching histories, and comparative AI behavior.']
+];
+---
+<BaseLayout>
+  <section class="hero">
+    <div class="shell hero-grid">
+      <div>
+        <p class="eyebrow">Brain Architecture for AI Systems</p>
+        <h1>
+          LUNA
+          <span>Longitudinal Unified Narrative Architecture</span>
+        </h1>
+        <p class="hero-thesis">
+          Cognitive infrastructure for artificial systems that develop through memory,
+          experience, continuity, and time.
+        </p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="/luna">Understand LUNA</a>
+          <a class="button button-secondary" href="/research">Read the research</a>
+        </div>
+      </div>
+      <div class="hero-mark" aria-hidden="true">
+        <div class="hero-orbit"></div>
+        <img src="/assets/luna-icon-reverse.webp" alt="" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">THE CENTRAL QUESTION</p>
+      <h2>What changes when an AI system can accumulate a causal history?</h2>
+      <p class="section-lede">
+        Most AI systems are assembled from the information available to them now.
+        LUNA investigates what changes when the system interpreting the present has
+        itself been altered by what happened before.
+      </p>
+
+      <div class="contrast">
+        <div class="contrast-card">
+          <div class="contrast-label">Conventional framing</div>
+          <p>Give the model more context. Store information so it can be retrieved later.</p>
+        </div>
+        <div class="contrast-arrow">→</div>
+        <div class="contrast-card luna">
+          <div class="contrast-label">LUNA framing</div>
+          <p>Give the persistent system a history. Let experience change the conditions of later cognition.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#eef3f8">
+    <div class="shell">
+      <p class="eyebrow">AN ARCHITECTURE FOR A MIND</p>
+      <h2>Not another agent loop.</h2>
+      <p class="section-lede">
+        LUNA surrounds interchangeable inference models with longitudinal cognitive
+        infrastructure. The research is about how multiple systems interact across time,
+        not how to make one prompt imitate a persistent mind.
+      </p>
+
+      <div class="card-grid">
+        {systems.map(([title, copy]) => (
+          <article class="system-card">
+            <div class="node"></div>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="status-strip">
+        <strong>Research posture</strong>
+        <span>Concepts and observations are public where useful. Reproducibility-critical implementation details remain protected.</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="shell">
+      <p class="eyebrow">FIRST PUBLIC RESEARCH NOTE</p>
+      <h2>Remembering something is not the same as being changed by it.</h2>
+      <div class="research-feature">
+        <div class="research-meta">
+          <p class="eyebrow">EARLY LUNA EXPERIENCE</p>
+          <p class="date">LUNA Core v0.5 · August 2026</p>
+        </div>
+        <div class="research-copy">
+          <h3>When Memory Is Not Enough: Can an AI Be Changed by Experience?</h3>
+          <p>
+            An early interaction produced a useful accidental control condition:
+            autobiographical material was available to the system, but availability alone
+            did not make it part of creative output. The observation exposed a larger
+            research problem — the difference between storage, retrieval, causal use, and
+            developmental integration.
+          </p>
+          <a class="text-link" href="/research/when-memory-is-not-enough">Read the research note →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-blue">
+    <div class="shell chrono-teaser">
+      <div>
+        <p class="eyebrow">CHRONOFORGE</p>
+        <h2>Experience as infrastructure.</h2>
+        <p class="section-lede">
+          ChronoForge is the LUNA technology for controlled longitudinal simulated
+          experience: persistent worlds, consequences, branching timelines, checkpoints,
+          development, comparison, and return.
+        </p>
+        <p class="section-lede" style="font-size:1rem">
+          The research question is not whether an AI can read six months of data.
+          It is what changes when the system lives through a coherent history in which its
+          own choices have later consequences.
+        </p>
+      </div>
+      <div class="flow" aria-label="ChronoForge conceptual flow">
+        <div class="flow-row">
+          <div class="flow-step">checkpoint</div>
+          <span>→</span>
+          <div class="flow-step">enter</div>
+          <span>→</span>
+          <div class="flow-step active">live / branch</div>
+          <span>→</span>
+          <div class="flow-step">develop</div>
+          <span>→</span>
+          <div class="flow-step">return</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell">
+      <p class="eyebrow">OPEN RESEARCH · PROTECTED IMPLEMENTATION</p>
+      <h2>Follow the questions, the architecture, and the evidence.</h2>
+      <p class="section-lede">
+        LUNA publishes high-level architecture, research questions, selected observations,
+        experimental designs, and results where they can advance understanding without
+        turning the public site into a reconstruction manual.
+      </p>
+      <div class="hero-actions">
+        <a class="button button-primary" href="/research">Explore research</a>
+        <a class="button" style="border-color:#bac8d8" href="/about">About the project</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
