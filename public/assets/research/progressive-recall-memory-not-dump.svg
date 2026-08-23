@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Memory Is Not a Dump</title>
+  <desc id="desc">Comparison between a common memory-augmented AI flow and LUNA progressive recall.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f7f8fa"/>
+      <stop offset="1" stop-color="#edf3f9"/>
+    </linearGradient>
+    <linearGradient id="lunaBg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#071d3e"/>
+      <stop offset="1" stop-color="#051122"/>
+    </linearGradient>
+    <linearGradient id="lineGlow" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#1665f2"/>
+      <stop offset="1" stop-color="#0fbfd5"/>
+    </linearGradient>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="16"/>
+    </filter>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#8da0b3"/>
+    </marker>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#3f82ff"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#bg)"/>
+  <circle cx="1320" cy="140" r="140" fill="#1665f2" opacity=".08" filter="url(#soft)"/>
+  <circle cx="1440" cy="250" r="100" fill="#0fbfd5" opacity=".07" filter="url(#soft)"/>
+
+  <text x="90" y="92" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="22" font-weight="700" letter-spacing="5" fill="#1665f2">INSIDE LUNA · PROGRESSIVE RECALL</text>
+  <text x="90" y="152" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="52" font-weight="620" letter-spacing="-1.5" fill="#051122">Memory is not a dump.</text>
+  <text x="90" y="195" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" fill="#6c7a8a">The difference is not how much history is stored — it is how the past becomes available.</text>
+
+  <rect x="90" y="245" rx="26" ry="26" width="670" height="560" fill="#ffffff" stroke="#dbe3ec" stroke-width="2"/>
+  <rect x="840" y="245" rx="26" ry="26" width="670" height="560" fill="url(#lunaBg)" stroke="#22579d" stroke-width="2"/>
+
+  <text x="140" y="305" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="750" letter-spacing="3" fill="#6c7a8a">COMMON MEMORY-AUGMENTED FLOW</text>
+  <text x="890" y="305" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" font-weight="750" letter-spacing="3" fill="#6fb1ff">LUNA PROGRESSIVE-RECALL FLOW</text>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" font-size="24" fill="#273341" text-anchor="middle">
+    <rect x="235" y="350" width="380" height="72" rx="15" fill="#f7f8fa" stroke="#dbe3ec"/>
+    <text x="425" y="395">Input</text>
+    <line x1="425" y1="422" x2="425" y2="462" stroke="#8da0b3" stroke-width="3" marker-end="url(#arrowGray)"/>
+
+    <rect x="235" y="480" width="380" height="72" rx="15" fill="#f7f8fa" stroke="#dbe3ec"/>
+    <text x="425" y="525">Retrieve relevant items</text>
+    <line x1="425" y1="552" x2="425" y2="592" stroke="#8da0b3" stroke-width="3" marker-end="url(#arrowGray)"/>
+
+    <rect x="235" y="610" width="380" height="72" rx="15" fill="#f7f8fa" stroke="#dbe3ec"/>
+    <text x="425" y="655">Add retrieved material to context</text>
+    <line x1="425" y1="682" x2="425" y2="722" stroke="#8da0b3" stroke-width="3" marker-end="url(#arrowGray)"/>
+
+    <rect x="235" y="740" width="380" height="72" rx="15" fill="#f7f8fa" stroke="#dbe3ec"/>
+    <text x="425" y="785">Model reasons over enlarged prompt</text>
+  </g>
+
+  <g font-family="Inter,Segoe UI,Arial,sans-serif" fill="#eaf3ff" text-anchor="middle">
+    <circle cx="905" cy="372" r="8" fill="#1665f2"/>
+    <circle cx="1440" cy="372" r="8" fill="#0fbfd5"/>
+    <line x1="914" y1="372" x2="1431" y2="372" stroke="url(#lineGlow)" stroke-width="2" opacity=".35"/>
+    <text x="1175" y="390" font-size="23">Current event / cognition</text>
+
+    <line x1="1175" y1="412" x2="1175" y2="445" stroke="#3f82ff" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <rect x="955" y="460" width="440" height="62" rx="15" fill="#0b2347" stroke="#2a67b4"/>
+    <text x="1175" y="500" font-size="22">Relevant material becomes available</text>
+
+    <line x1="1175" y1="522" x2="1175" y2="555" stroke="#3f82ff" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <rect x="1000" y="570" width="350" height="62" rx="15" fill="#0a1c37" stroke="#1d4d86"/>
+    <text x="1175" y="610" font-size="22">Bounded competition</text>
+
+    <line x1="1175" y1="632" x2="1175" y2="665" stroke="#3f82ff" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <rect x="1030" y="680" width="290" height="62" rx="15" fill="#0a1c37" stroke="#0fbfd5" stroke-width="2"/>
+    <text x="1175" y="720" font-size="22">Tiny foreground admission</text>
+
+    <line x1="1175" y1="742" x2="1175" y2="770" stroke="#3f82ff" stroke-width="3" marker-end="url(#arrowBlue)"/>
+    <text x="1175" y="798" font-size="20" fill="#9fc5f5">Detail only when needed</text>
+  </g>
+
+  <text x="800" y="860" text-anchor="middle" font-family="Inter,Segoe UI,Arial,sans-serif" font-size="18" fill="#6c7a8a">Stored → retrievable → activated → foregrounded → causally used are different properties.</text>
+</svg>
