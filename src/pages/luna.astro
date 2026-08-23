@@ -13,49 +13,77 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         LUNA is a longitudinal cognitive architecture exploring what happens when artificial
         intelligence is given persistent memory, developmental experience, continuity, and time.
       </p>
+      <div class="page-actions">
+        <a class="button button-primary" href="/architecture">Explore the architecture</a>
+        <a class="button button-secondary" href="/research">Read the research</a>
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="shell prose">
       <p>
-        Foundation models are extraordinarily capable inference systems. But a model response is
-        normally assembled from the state available at inference time: its learned weights, the
-        current prompt, retrieved information, tool results, and whatever context has been supplied.
+        Foundation models are extraordinarily capable inference systems. But an inference response is normally assembled from the state available at that moment: learned weights, current context, retrieved information, tool results, and whatever surrounding software has supplied.
       </p>
       <p>
-        LUNA investigates a different systems question: what happens when the inference model
-        operates inside a persistent cognitive architecture whose own history can alter the
-        conditions of later cognition?
+        LUNA investigates a different systems question: what happens when the inference model operates inside a persistent cognitive architecture whose own history can alter the conditions of later cognition?
       </p>
 
       <div class="callout">
-        The goal is not merely to remember the past. The stronger research target is a system in
-        which the past can change how the future is interpreted.
+        The goal is not merely to remember the past. The stronger research target is a system in which the past can change how the future is interpreted.
+      </div>
+
+      <h2>Context vs. causal history</h2>
+      <div class="comparison-grid">
+        <div class="comparison-card">
+          <h3>Context</h3>
+          <p>“Here is information about what happened before.” The past is supplied to the current inference episode.</p>
+        </div>
+        <div class="comparison-card luna">
+          <h3>Causal history</h3>
+          <p>“What happened before changed the system receiving this information.” The history can alter future retrieval, expectation, motivation, attention, or choice.</p>
+        </div>
       </div>
 
       <h2>Causal history, not just context.</h2>
       <p>
-        A persistent system can preserve autobiographical episodes, maintain continuity across
-        interactions, carry unresolved intentions forward, form expectations, and accumulate
-        slower state. LUNA explores how those mechanisms can interact so that two otherwise
-        similar systems may eventually behave differently because they lived through different
-        histories.
+        A persistent system can preserve autobiographical episodes, maintain continuity across interactions, carry unresolved intentions forward, form expectations, and accumulate slower state. LUNA explores how those mechanisms can interact so that two otherwise similar systems may eventually behave differently because they lived through different histories.
       </p>
+
+      <h2>Knowledge, experience, development</h2>
+      <p>
+        A simple stove example captures one of the project's central distinctions. Being told that a stove can burn you and being burned by the stove can produce the same propositional knowledge while producing very different later behavior.
+      </p>
+      <p>
+        The developmental question is whether consequential experience can alter prediction, attention, aversion, confidence, association, or action valuation even when the source episode is not explicitly reconstructed every time.
+      </p>
+      <div class="principle-grid">
+        <div class="principle-card"><h3>Knowledge</h3><p>The system can state what is true or what usually happens.</p></div>
+        <div class="principle-card"><h3>Experience</h3><p>The running instance acts, encounters a consequence, and preserves that event as part of its own history.</p></div>
+        <div class="principle-card"><h3>Development</h3><p>The consequences of that history alter later cognition or behavior in a stable, provenance-backed way.</p></div>
+        <div class="principle-card"><h3>Revision</h3><p>Later evidence can weaken, narrow, or reinterpret what earlier experience caused without rewriting history.</p></div>
+      </div>
 
       <h2>Architecture before performance.</h2>
       <p>
-        LUNA does not attempt to create mind-like behavior by placing a large identity script in
-        front of a language model. The research posture is to build mechanisms that have real causal
-        roles — memory, activation, appraisal, development, perception, motivation, future-oriented
-        cognition, continuity — and then observe the behavior that results.
+        LUNA does not attempt to create mind-like behavior by placing a large identity script in front of a language model. The research posture is to build mechanisms that have real causal roles — memory, activation, appraisal, development, perception, motivation, future-oriented cognition, continuity — and then observe the behavior that results.
       </p>
+
+      <h2>The Stack and the Sleeve</h2>
+      <p>
+        LUNA separates persistent continuity from the substrate currently performing inference. The <strong>Stack</strong> is the continuity-bearing state: autobiographical history, persistent identity and self-model state, durable goals, dispositions, relationships, intentions, and provenance. The <strong>Sleeve</strong> is the replaceable computational substrate through which that Stack is currently instantiated.
+      </p>
+      <p>
+        The design objective is that changing model, provider, machine, interface, or eventual embodiment should not require reconstructing the same LUNA instance from a prompt.
+      </p>
+      <div class="callout">The sleeve can change. The Stack persists.</div>
 
       <h2>Not one foundation model.</h2>
       <p>
-        The inference substrate is conceptually separable from the persistent architecture around
-        it. A continuing LUNA instance is intended to be defined by more than the model currently
-        generating its next response.
+        The inference substrate is conceptually separable from the persistent architecture around it. LUNA treats model inference as an important cognitive resource, but not as the implementation language of every subsystem and not as the sole definition of persistent identity.
+      </p>
+      <p>
+        Lightweight state, scheduling, time, graph operations, prospective triggers, and control logic can remain active without a large model continuously resident. High-capability inference can be requested when a cognitive operation actually needs it.
       </p>
 
       <h2>What LUNA is not.</h2>
@@ -66,21 +94,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <li>Not a consciousness module.</li>
         <li>Not evidence that current artificial systems are phenomenally conscious.</li>
         <li>Not a claim that every mechanism described by the research architecture is already implemented.</li>
+        <li>Not one particular foundation model or provider.</li>
       </ul>
 
       <h2>The research stance.</h2>
       <p>
-        LUNA distinguishes implemented behavior, accepted architecture, observation,
-        interpretation, and prediction. That boundary matters especially when the subject is
-        persistent artificial cognition, where fluent self-description can easily be mistaken for
-        stronger evidence than it actually provides.
+        LUNA distinguishes implemented behavior, accepted architecture, observation, interpretation, and prediction. That boundary matters especially when the subject is persistent artificial cognition, where fluent self-description can easily be mistaken for stronger evidence than it actually provides.
+      </p>
+      <p>
+        The project is therefore intentionally open about its questions and selected observations, while keeping implementation details private where publication would mainly lower the cost of reproducing the system rather than improve understanding.
       </p>
 
-      <p>
-        The project is therefore intentionally open about its questions and selected observations,
-        while keeping implementation details private where publication would mainly lower the
-        cost of reproducing the system rather than improve understanding.
-      </p>
+      <div class="reading-path">
+        Continue with: <a href="/architecture">the public architecture overview</a> · <a href="/research/luna-describes-luna">how LUNA described itself</a> · <a href="/chronoforge">ChronoForge</a>
+      </div>
     </div>
   </section>
 </BaseLayout>

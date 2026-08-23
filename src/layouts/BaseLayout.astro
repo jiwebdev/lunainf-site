@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/expansion.css';
 
 interface Props {
   title?: string;
@@ -12,8 +13,12 @@ const {
 } = Astro.props;
 
 const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site ?? Astro.url).toString();
+const socialImage = new URL('/assets/luna-icon-reverse.webp', Astro.site ?? Astro.url).toString();
 const nav = [
   { href: '/luna', label: 'What is LUNA?' },
+  { href: '/architecture', label: 'Architecture' },
+  { href: '/chronoforge', label: 'ChronoForge' },
   { href: '/research', label: 'Research' },
   { href: '/about', label: 'About' }
 ];
@@ -25,8 +30,18 @@ const nav = [
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#051122" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LUNA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     <link rel="icon" type="image/webp" href="/assets/luna-icon-reverse.webp" />
-    <link rel="canonical" href={Astro.url} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
   </head>
   <body>
@@ -62,6 +77,8 @@ const nav = [
         </div>
         <div class="footer-links">
           <a href="/luna">What is LUNA?</a>
+          <a href="/architecture">Architecture</a>
+          <a href="/chronoforge">ChronoForge</a>
           <a href="/research">Research</a>
           <a href="/about">About / Contact</a>
         </div>
