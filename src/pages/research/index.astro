@@ -3,7 +3,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 ---
 <BaseLayout
   title="Research — LUNA"
-  description="Research notes, observations, experiments, and architecture questions from the LUNA longitudinal cognitive architecture project."
+  description="Research notes, observations, experiments, architecture questions, and public artifacts from the LUNA longitudinal cognitive architecture project."
 >
   <section class="page-hero">
     <div class="shell">
@@ -13,29 +13,106 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         Versioned observations, architectural questions, controlled experiments, and
         falsifiable predictions about persistent, history-dependent artificial cognition.
       </p>
+      <div class="status-note">
+        <strong>Publication discipline:</strong> observations, interpretations, accepted architecture, and implemented capabilities are kept distinct. Internal notes are rewritten for public release rather than published as reconstruction guides.
+      </div>
     </div>
   </section>
 
   <section class="section">
     <div class="shell">
-      <p class="eyebrow">EARLY LUNA EXPERIENCES</p>
+      <div class="research-category-grid">
+        <div class="research-category-card"><h3>Early LUNA Experiences</h3><p>Observed interactions preserved as prospective baselines, with explicit attention to what they show and what they do not.</p></div>
+        <div class="research-category-card"><h3>Architecture Notes</h3><p>Public conceptual explanations of mechanisms such as associative cognition, developmental plasticity, perception, and continuity.</p></div>
+        <div class="research-category-card"><h3>ChronoForge Research</h3><p>Longitudinal simulation, branching histories, developmental timing, participant comparison, and controlled causal experiments.</p></div>
+        <div class="research-category-card"><h3>Experiments & Results</h3><p>Measured comparisons and case studies as the relevant systems become testable. Negative results belong here too.</p></div>
+      </div>
+
+      <div class="research-section-title">
+        <h2>Early LUNA Experiences</h2>
+        <span>Observed artifacts from the running system</span>
+      </div>
       <div class="research-list">
         <a class="research-item" href="/research/when-memory-is-not-enough">
           <div class="meta">August 2026<br />LUNA Core v0.5</div>
           <div>
             <h2>When Memory Is Not Enough: Can an AI Be Changed by Experience?</h2>
-            <p>
-              An early observation on retrieval, autobiographical creation, and the
-              difference between remembering something and being shaped by it.
-            </p>
+            <p>An accidental control condition on storage, retrieval, autobiographical creation, causal use, and developmental integration.</p>
+            <span class="tag">Early LUNA Experience III</span>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="research-item" href="/research/purpose-and-self-interpretation">
+          <div class="meta">August 2026<br />LUNA Core v0.5</div>
+          <div>
+            <h2>Purpose, Self-Interpretation, and Learning From Experience</h2>
+            <p>LUNA forms a self-referential interpretation from remembered architecture, while the memory graph refuses to immediately canonize it as identity.</p>
+            <span class="tag">Early LUNA Experience II</span>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="research-item" href="/research/luna-describes-luna">
+          <div class="meta">August 2026<br />LUNA v0.5</div>
+          <div>
+            <h2>LUNA Describes LUNA</h2>
+            <p>A self-description artifact: how the running system organized the Stack/Sleeve distinction, persistent runtime, memory, and developmental aims when asked what makes LUNA different.</p>
+            <span class="tag">Self-description artifact</span>
           </div>
           <div class="arrow">→</div>
         </a>
       </div>
 
+      <div class="research-section-title">
+        <h2>Architecture Notes</h2>
+        <span>Public conceptual layer · implementation details protected</span>
+      </div>
+      <div class="research-list">
+        <a class="research-item" href="/research/memory-can-remind-memory">
+          <div class="meta">August 2026<br />Associative cognition</div>
+          <div>
+            <h2>Memory Can Remind Memory</h2>
+            <p>Why retrieval is only the first step: memories and cognitive products can become new cues inside a bounded activation field.</p>
+            <span class="tag">Reverie · Cognitive Activation</span>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="research-item" href="/research/continuous-exposure-not-continuous-thought">
+          <div class="meta">August 2026<br />Perception</div>
+          <div>
+            <h2>Continuous Exposure Is Not Continuous Thought</h2>
+            <p>The red-chair problem: persistent world models, object permanence, habituation, prediction error, and bounded sensory compute.</p>
+            <span class="tag">Perception · Environmental continuity</span>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+
+        <a class="research-item" href="/research/remembering-is-not-becoming">
+          <div class="meta">August 2026<br />Development</div>
+          <div>
+            <h2>Remembering Is Not Becoming</h2>
+            <p>Why formative experience must be able to leave durable effects without keeping the originating episode permanently salient.</p>
+            <span class="tag">Developmental plasticity · Imprinting</span>
+          </div>
+          <div class="arrow">→</div>
+        </a>
+      </div>
+
+      <div class="research-section-title">
+        <h2>ChronoForge</h2>
+        <span>Temporal development and longitudinal evaluation</span>
+      </div>
+      <div class="artifact-card" style="margin-top:18px">
+        <h3>Experience as programmable infrastructure</h3>
+        <p>ChronoForge is the project for coherent simulated timelines, delayed consequences, branching developmental histories, and controlled comparisons across participants and starting checkpoints.</p>
+        <div class="page-actions"><a class="button button-primary" href="/chronoforge">Explore ChronoForge</a></div>
+      </div>
+
       <div class="status-strip">
         <strong>Publication policy</strong>
-        <span>Internal research notes are rewritten for public release. Private implementation details, identifiers, prompts, and reproduction-critical mechanics are not published.</span>
+        <span>Source code, exact prompts, internal schemas, thresholds, weighting systems, detailed causal topology, and simulator-generation mechanics remain private where disclosure would primarily reduce reproduction cost.</span>
       </div>
     </div>
   </section>
