@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Continuous Exposure Is Not Continuous Thought — LUNA Research"
+  description="A public LUNA architecture note on persistent perception, object permanence, habituation, prediction error, and keeping sensory compute bounded."
+>
+  <header class="article-header">
+    <div class="shell">
+      <p class="eyebrow">ARCHITECTURE NOTE · PERCEPTION</p>
+      <h1>Continuous Exposure Is Not Continuous Thought</h1>
+      <div class="article-meta">
+        <span>LUNA architecture</span>
+        <span>August 2026</span>
+        <span>Public conceptual overview</span>
+      </div>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="shell prose">
+      <p>
+        Adding a camera to an AI system is easy. Giving it a persistent visual world is a different problem.
+      </p>
+      <p>
+        A naïve system can treat every frame as a new image, repeatedly ask a multimodal model what is visible, and repeatedly search memory against the result. That scales expensive cognition with raw sensor bandwidth — exactly the wrong direction for a continuously exposed system.
+      </p>
+
+      <div class="callout">Camera on should mean world model alive — not language model permanently running.</div>
+
+      <h2>The red chair</h2>
+      <p>
+        Imagine LUNA sees a red chair beside a desk. At first the chair is new. After remaining unchanged for hours, it should become computationally quiet without disappearing from the world model.
+      </p>
+      <p>
+        Someone then stands in front of the chair. A frame-only system might stop detecting it. A persistent perceptual system can instead represent the chair as temporarily occluded. If the camera turns away, the chair becomes out of view rather than nonexistent.
+      </p>
+      <p>
+        Later the camera returns to the original view. The chair is gone.
+      </p>
+
+      <div class="mono-flow">
+        09:00 — red chair observed<br />
+        09:05 — familiar / stable baseline<br />
+        09:20 — person blocks view → <strong>OCCLUDED</strong><br />
+        09:30 — camera turns away → <strong>OUT OF VIEW</strong><br />
+        09:40 — camera returns; expected chair absent → <strong>MISSING</strong>
+      </div>
+
+      <p>
+        The disappearance becomes meaningful only because an expectation survived the period in which the chair was not visible. Surprise requires a comparison between the current world and an expected world.
+      </p>
+
+      <h2>Persist entities, not pixels</h2>
+      <p>
+        LUNA's perception research therefore treats sensory observations as evidence about persistent entities. A frame is evidence about a chair; it is not the chair. An audio segment is evidence that someone spoke; it is not the person.
+      </p>
+      <p>
+        A compact world model can preserve object identity, location, visibility, familiarity, confidence, spatial relationships, and expectations across time while raw sensor streams remain mostly ephemeral.
+      </p>
+
+      <h2>Habituation without blindness</h2>
+      <p>
+        Stable input should become less cognitively demanding. The chair can remain strongly represented while contributing almost nothing to current activation because it is familiar, unchanged, and irrelevant to active goals.
+      </p>
+      <p>
+        A meaningful change resets that quiet state. Movement, disappearance, an unusual relationship, direct attention, or a violated prediction can make the same object salient again.
+      </p>
+
+      <h2>Different layers should run at different rates</h2>
+      <table class="comparison-table">
+        <thead><tr><th>Layer</th><th>Role</th><th>Expected cadence</th></tr></thead>
+        <tbody>
+          <tr><td>Sensor acquisition</td><td>Capture pixels, audio, depth, motion, or other raw signals.</td><td>Hardware rate.</td></tr>
+          <tr><td>Low-level perception</td><td>Detect motion, voice activity, tracking primitives, and scene change.</td><td>Fast and local.</td></tr>
+          <tr><td>Persistent world model</td><td>Maintain entity identity, visibility, familiarity, and expectations.</td><td>Event-driven / periodic.</td></tr>
+          <tr><td>Perceptual events</td><td>Emit meaningful appeared, moved, missing, spoken, changed, or anomalous events.</td><td>Only on meaningful transitions.</td></tr>
+          <tr><td>High-level cognition</td><td>Reason, retrieve detail, plan, speak, or act.</td><td>Rare relative to raw sensing.</td></tr>
+        </tbody>
+      </table>
+
+      <h2>The compute invariant</h2>
+      <p>
+        High-level cognitive cost should scale primarily with significance and change — not with camera frame rate, microphone sample rate, sensor count, or raw data volume. A physically stable environment should asymptotically approach low cognitive cost even while sensors remain fully active.
+      </p>
+
+      <h2>Why this matters beyond vision</h2>
+      <p>
+        The same architecture applies to a machine that normally hums and suddenly goes silent, a person expected to arrive but absent, a door usually closed but now open, or an ambient sound that becomes familiar enough to disappear from attention. Prediction error is meaningful because a persistent model of normality exists underneath it.
+      </p>
+
+      <h2>The research program</h2>
+      <p>
+        A first-class perception layer would make controlled experiments possible on object permanence, habituation, expectation, change blindness analogues, sensory deprivation, cross-modal binding, and the relationship between environmental richness and cognitive activity.
+      </p>
+      <p>
+        The goal is not to make LUNA constantly narrate what it sees. It is to create an environment that can quietly remain present — until something changes enough to matter.
+      </p>
+
+      <div class="reading-path">
+        Related: <a href="/architecture">public architecture map</a> · <a href="/research/memory-can-remind-memory">associative cognition</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
