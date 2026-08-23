@@ -122,6 +122,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </table>
       </div>
 
+      <div class="verification-snapshot">
+        <span>VERIFICATION SNAPSHOT · 23 AUGUST 2026</span>
+        <strong>The public Reverie cutaway was checked against the implemented path and deterministic acceptance tests, not inferred from an architecture brief.</strong>
+        <p>The verified suite covers the positive zero-or-one admission case, no-admission cases, disabled-path equivalence, bounded reconstruction, preservation of memory authority, and the invariant that workspace admission itself makes zero general-model calls. A later current-main test run also remained green after subsequent cognitive changes.</p>
+        <p>This evidence supports the bounded Reverie workspace path described here. It does not upgrade the full Progressive Recall or Cognitive Activation architecture to “complete.”</p>
+      </div>
+
       <h3>A sanitized acceptance example</h3>
       <p>
         One deterministic acceptance fixture begins with a <strong>current vehicle problem</strong> already present in ordinary retrieval. The activation pulse contains two internally associated candidates: a <strong>cooling-system incident</strong> that is useful to the present problem, and an <strong>older service detail</strong> that should not also flood the workspace.
@@ -191,6 +198,10 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .status { display: inline-block; padding: 4px 9px; border-radius: 999px; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
     .status.active { color: #005c69; background: #d9f7fa; }
     .status.partial { color: #0c4eab; background: #e5efff; }
+    .verification-snapshot { margin: 6px 0 44px; padding: 26px 28px; border: 1px solid #cddceb; border-radius: 16px; background: #f5f9fe; }
+    .verification-snapshot > span { display: block; margin-bottom: 8px; color: #1665f2; font-size: .72rem; font-weight: 800; letter-spacing: .12em; }
+    .verification-snapshot > strong { display: block; margin-bottom: 10px; color: #17375f; font-size: 1.05rem; line-height: 1.45; }
+    .verification-snapshot p { margin: 8px 0 0; color: #5d7084; font-size: .93rem; line-height: 1.55; }
     .acceptance-steps { list-style: none; counter-reset: step; padding: 0; margin: 28px 0 36px; }
     .acceptance-steps li { counter-increment: step; display: grid; grid-template-columns: 42px 190px 1fr; gap: 14px; align-items: start; padding: 15px 0; border-bottom: 1px solid #dbe3ec; }
     .acceptance-steps li::before { content: counter(step); display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; color: #fff; background: #1665f2; font-size: .82rem; font-weight: 800; }
