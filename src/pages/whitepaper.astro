@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const propositions = [
+  ['Capability is not continuity', 'A powerful model can reason well without possessing a persistent causal history. LUNA treats those as different properties.'],
+  ['Memory is necessary but insufficient', 'A system can store and retrieve an episode perfectly yet remain behaviorally indistinguishable from a branch in which the episode never occurred.'],
+  ['Development requires multiple timescales', 'Immediate interpretation, associative availability, persistent memory, future commitments, action consequences, and slower structural change must interact without collapsing into one prompt.'],
+  ['Experience is causally different from data', 'In experience, the running participant chooses actions, consequences arrive later, actors and projects recur, and the resulting history can change the participant.'],
+  ['Continuity should survive substrate changes', 'The persistent instance should not be identical to one model, provider, machine, or device. LUNA separates the Stack from the replaceable Sleeve.'],
+  ['The claims are experimentally approachable', 'Equivalent starting states can be exposed to different histories, model Sleeves, architectural topologies, or developmental timing and compared under neutral post-history probes.']
+];
+---
+<BaseLayout
+  title="LUNA White Paper v0.1 — A Longitudinal Architecture for Developmental Artificial Cognition"
+  description="The canonical public technical thesis for LUNA: longitudinal cognitive architecture, persistent causal history, developmental artificial cognition, and the ChronoForge experimental program."
+>
+  <section class="page-hero">
+    <div class="shell">
+      <p class="eyebrow">WHITE PAPER · v0.1 · 23 AUGUST 2026</p>
+      <h1>A Longitudinal Architecture for Developmental Artificial Cognition</h1>
+      <p class="section-lede">
+        The canonical public technical thesis for LUNA — Longitudinal Unified Narrative Architecture.
+      </p>
+      <div class="status-note">
+        <strong>Publication status:</strong> Public technical white paper. This is a research thesis, not a peer-reviewed publication and not a completion claim. The architecture described includes implemented, partial, shadow-only, and proposed systems.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell prose">
+      <p class="eyebrow">ABSTRACT</p>
+      <p>
+        Modern foundation models can generate remarkably capable responses, yet an individual model invocation remains episodic: each inference is assembled from model weights plus the state supplied at that moment. Products can add memory, tools, profiles, and agent loops around inference, but persistent storage alone does not establish longitudinal cognition.
+      </p>
+      <p>
+        LUNA explores a stronger systems question: <strong>what happens when the artificial system interpreting the present has itself been causally altered by what happened before?</strong>
+      </p>
+      <p>
+        The architecture separates the persistent system from the replaceable inference substrate and organizes cognition across multiple timescales: evidence-grounded memory, associative availability, goals and prospective state, appraisal, persistent modulation, action selection, perception with environmental continuity, reflection, and developmental consolidation. The central distinction is between <em>remembering an experience</em> and <em>being changed by it</em>.
+      </p>
+      <div class="callout">
+        A memory architecture asks whether the past can be recovered. A developmental architecture asks whether the past can change the system that will interpret the future.
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#eef3f8">
+    <div class="shell">
+      <p class="eyebrow">THE PROPOSITION AT A GLANCE</p>
+      <h2>Six claims organize the research program.</h2>
+      <div class="principle-grid">
+        {propositions.map(([title, copy], index) => (
+          <article class="principle-card">
+            <span class="status-badge research">Proposition {index + 1}</span>
+            <h3>{title}</h3>
+            <p>{copy}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell prose">
+      <p class="eyebrow">CENTRAL RESEARCH DISTINCTION</p>
+      <h2>Memory is not development.</h2>
+      <p>
+        LUNA's implemented memory foundation distinguishes RAW evidence, CURATED durable memory, and DERIVED understanding with provenance and temporal semantics. That separation is necessary, but it does not by itself solve development.
+      </p>
+      <p>
+        The white paper separates four measurements that are often collapsed into one: <strong>storage</strong>, <strong>retrieval</strong>, <strong>causal use</strong>, and <strong>developmental integration</strong>. A system may succeed at any one layer while failing at the next.
+      </p>
+      <div class="comparison-grid">
+        <article class="comparison-card">
+          <h3>Persistence of recall</h3>
+          <p>Can the originating episode still be reconstructed or brought back into the foreground?</p>
+        </article>
+        <article class="comparison-card luna">
+          <h3>Persistence of effect</h3>
+          <p>Can a consequential experience continue altering later cognition even when the source episode is no longer easy to retrieve?</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-dark">
+    <div class="shell">
+      <p class="eyebrow">CURRENT PROTOTYPE BOUNDARY</p>
+      <h2>Architecture documents are not capability claims.</h2>
+      <p class="section-lede">
+        LUNA Core v0.5 already contains working cognitive-kernel foundations: persistent local memory and provenance, progressive retrieval, typed graph memory, Goal/Task pursuit state, proposal-only reflection, dispositions foundations, provider-independent inference, Brain Map/self-model access, tools, and separate expression channels.
+      </p>
+      <p class="section-lede" style="font-size:1rem">
+        Stronger associative activation, broad autonomous Sleep/Reflection, homeostatic modulation, full volitional dynamics, continuous perceptual continuity, developmental plasticity, and ChronoForge remain partial or proposed. The white paper preserves that distinction deliberately.
+      </p>
+      <div class="status-note">
+        <strong>Capability-truth rule:</strong> Current executable capability must be grounded in the active implementation. A newer architecture brief may define where LUNA is going without proving that the running system is already there.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell prose">
+      <p class="eyebrow">CHRONOFORGE</p>
+      <h2>Experience as experimental infrastructure.</h2>
+      <div class="callout">
+        Do not give an artificial system six months of data. Give it six months of life — then compare what the experience changed.
+      </div>
+      <p>
+        ChronoForge is the planned temporal development and longitudinal AI evaluation infrastructure for controlled causal histories. Identical checkpoints can be forked into different lived histories and later compared. Other experiments can hold history constant while changing model Sleeve, cognitive architecture, or developmental timing.
+      </p>
+      <p>
+        The aim is not a theatrical simulation of having memories. The participant must perceive situations, choose actions, encounter consequences, carry outcomes forward, and later meet situations whose meaning depends on that history.
+      </p>
+      <div class="page-actions">
+        <a class="button button-primary" href="/chronoforge">Explore ChronoForge</a>
+        <a class="button" style="border-color:#bac8d8" href="/architecture">See the architecture</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" style="background:#eef3f8">
+    <div class="shell prose">
+      <p class="eyebrow">EPISTEMIC BOUNDARY</p>
+      <h2>The paper is deliberately falsifiable.</h2>
+      <p>
+        LUNA does not present fluent self-description as proof of consciousness, sentience, human-equivalent experience, or a mature artificial personality. It proposes testable questions about persistent, history-dependent artificial cognition.
+      </p>
+      <p>
+        If richer persistence produces no meaningful developmental divergence, that is evidence. If apparent differences disappear when old text is explicitly retrieved, that is evidence. If separate histories create stable, scoped, reproducible changes that survive neutral probes and substrate changes, that is evidence too.
+      </p>
+      <div class="callout">
+        Do not engineer the conclusion. Build increasingly rich conditions for persistent cognition and development, instrument the causal paths, preserve earlier states, and let the experiments produce inconvenient answers.
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="shell prose">
+      <p class="eyebrow">PUBLICATION INFORMATION</p>
+      <h2>White Paper v0.1</h2>
+      <p><strong>Title:</strong> LUNA: A Longitudinal Architecture for Developmental Artificial Cognition</p>
+      <p><strong>Author:</strong> Nathan Meloul — Project LUNA</p>
+      <p><strong>Version:</strong> 0.1 · 23 August 2026</p>
+      <p><strong>Public posture:</strong> Open research. Protected implementation.</p>
+      <p>
+        Exact prompts, database schemas, scoring functions, thresholds, tuned parameters, orchestration logic, authorization mechanics, deployment/security details, and proprietary ChronoForge simulator machinery are intentionally omitted. Public material explains the research object, architectural roles, evidence, hypotheses, and experimental program without serving as a reconstruction manual.
+      </p>
+      <div class="reading-path">
+        <strong>Continue reading:</strong> <a href="/research">Research library</a> · <a href="/architecture">Architecture</a> · <a href="/chronoforge">ChronoForge</a> · <a href="/about">About / contact</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
