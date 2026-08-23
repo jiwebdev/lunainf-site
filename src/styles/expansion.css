@@ -200,7 +200,7 @@
   border-radius: 16px;
   border: 1px solid rgba(112,170,235,.24);
   background: rgba(0,0,0,.16);
-  color: #c5d5e7;
+  /*color: #c5d5e7;*/
   font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   font-size: .9rem;
   line-height: 1.9;
