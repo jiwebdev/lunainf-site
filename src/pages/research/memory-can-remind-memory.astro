@@ -1,0 +1,95 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Memory Can Remind Memory — LUNA Research"
+  description="A public LUNA architecture explainer on associative activation: how retrieved memories and cognitive products can become new cues for later cognition."
+>
+  <header class="article-header">
+    <div class="shell">
+      <p class="eyebrow">ARCHITECTURE NOTE · ASSOCIATIVE COGNITION</p>
+      <h1>Memory Can Remind Memory</h1>
+      <div class="article-meta">
+        <span>LUNA architecture</span>
+        <span>August 2026</span>
+        <span>Public conceptual overview</span>
+      </div>
+    </div>
+  </header>
+
+  <article class="article-body">
+    <div class="shell prose">
+      <p>
+        Conventional retrieval usually begins with an external cue: a user says something, the system searches memory, and selected results are inserted into the current context.
+      </p>
+      <p>
+        LUNA asks what should happen <em>after</em> a memory becomes active.
+      </p>
+
+      <div class="callout">A retrieved memory should be able to become a new cue.</div>
+
+      <h2>The missing second layer of recall</h2>
+      <p>
+        Imagine a user says “red.” That cue retrieves a memory of a red car. In a simple retrieval system, the process may stop there. In an associative architecture, the red-car memory can increase the availability of a recent breakdown, which can make an unfinished repair intention more relevant.
+      </p>
+
+      <div class="mono-flow">
+        external cue: “red”<br />
+        → red-car memory<br />
+        → recent car problem<br />
+        → unresolved repair intention<br />
+        → possible foreground thought: “What happened with that car issue?”
+      </div>
+
+      <p>
+        The original user message did not need to contain the words “repair,” “breakdown,” or “unfinished task.” The system's own activated history supplied the later cues.
+      </p>
+
+      <h2>Reverie</h2>
+      <p>
+        LUNA calls this class of internally triggered associative propagation a <strong>Reverie</strong>. The term refers to a mechanism in which an active memory, thought, appraisal, intention, or completed cognitive product can make related material more available without requiring another explicit retrieval request from outside the system.
+      </p>
+      <p>
+        This is not intended to be unrestricted recursion. A persistent memory graph can contain enormous numbers of possible associations, so activation must remain bounded, competitive, decaying, and selective.
+      </p>
+
+      <h2>Activation is not consciousness</h2>
+      <p>
+        Most candidate material should never enter the foreground. A cognitive activation field can keep many items partially relevant while only a tiny number win admission to the current workspace.
+      </p>
+      <p>
+        That distinction matters. A memory can become easier to retrieve without becoming an explicit thought. It can influence competition without being narrated. And a surfaced item can fade again without requiring a response.
+      </p>
+
+      <h2>Cognition can trigger cognition</h2>
+      <p>
+        The larger architecture goes beyond memory-to-memory propagation. A recalled event can provoke a comparison. The comparison can produce a hypothesis. A hypothesis can reactivate evidence. A realization can become a future intention. These middle steps are newly formed cognitive products, not necessarily stored memories.
+      </p>
+
+      <div class="mono-flow">
+        memory → comparison → hypothesis → related evidence → realization → prospective intention
+      </div>
+
+      <p>
+        This is the point at which the design stops being only a retrieval enhancement and becomes infrastructure for ongoing cognition. External input is no longer the only thing capable of changing what the system thinks about next.
+      </p>
+
+      <h2>Why this is computationally practical</h2>
+      <p>
+        The expensive mistake would be to invoke a language model for every possible associative hop. LUNA's architecture instead reserves most activation work for cheap graph operations, recency, salience, relationship strength, similarity, decay, competition, and other bounded signals. High-capability inference is requested only after cheaper processes have already selected something worth deeper cognition.
+      </p>
+
+      <h2>The research question</h2>
+      <p>
+        If this mechanism works, LUNA should sometimes be reminded by its own cognition rather than only by a user's words. Over longer periods, that may support natural trains of thought, resurfacing unresolved threads, spontaneous recollection, and self-generated questions.
+      </p>
+      <p>
+        The important test is not whether the system can be prompted to say “that reminds me of something.” It is whether inspectable activation dynamics actually produce relevant secondary recall when conditions justify it — and just as importantly, whether they usually remain quiet when nothing deserves the foreground.
+      </p>
+
+      <div class="reading-path">
+        Next: <a href="/research/continuous-exposure-not-continuous-thought">continuous perception without continuous thought →</a>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
