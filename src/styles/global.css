@@ -74,6 +74,10 @@ img { max-width: 100%; }
   object-fit: contain;
 }
 
+.menu-toggle {
+  display: none;
+}
+
 nav {
   display: flex;
   gap: 28px;

@@ -51,7 +51,18 @@ const nav = [
           <img src="/assets/luna-icon-reverse.webp" alt="" />
           <span>LUNA</span>
         </a>
-        <nav aria-label="Primary navigation">
+        <button
+          class="menu-toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-controls="primary-navigation"
+          aria-expanded="false"
+        >
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+        <nav id="primary-navigation" aria-label="Primary navigation">
           {nav.map((item) => (
             <a href={item.href} class:list={{ active: path === item.href || path.startsWith(item.href + '/') }}>
               {item.label}
@@ -94,5 +105,30 @@ const nav = [
           </div>
       </div>
     </footer>
+    <script>
+      const menuToggle = document.querySelector<HTMLButtonElement>('.menu-toggle');
+      const navigation = document.querySelector<HTMLElement>('#primary-navigation');
+
+      const closeMenu = () => {
+        menuToggle?.setAttribute('aria-expanded', 'false');
+        menuToggle?.setAttribute('aria-label', 'Open navigation menu');
+        navigation?.classList.remove('is-open');
+      };
+
+      menuToggle?.addEventListener('click', () => {
+        const isOpen = menuToggle.getAttribute('aria-expanded') === 'true';
+        menuToggle.setAttribute('aria-expanded', String(!isOpen));
+        menuToggle.setAttribute('aria-label', isOpen ? 'Open navigation menu' : 'Close navigation menu');
+        navigation?.classList.toggle('is-open', !isOpen);
+      });
+
+      navigation?.addEventListener('click', (event) => {
+        if ((event.target as Element).closest('a')) closeMenu();
+      });
+
+      document.addEventListener('keydown', (event) => {
+        if (event.key === 'Escape') closeMenu();
+      });
+    </script>
   </body>
 </html>
