@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = 'LUNA — Brain Architecture for AI Systems',
+  description = 'LUNA is a longitudinal cognitive architecture exploring what happens when artificial intelligence is given persistent memory, developmental experience, continuity, and time.'
+} = Astro.props;
+
+const path = Astro.url.pathname;
+const nav = [
+  { href: '/luna', label: 'What is LUNA?' },
+  { href: '/research', label: 'Research' },
+  { href: '/about', label: 'About' }
+];
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#051122" />
+    <link rel="icon" type="image/webp" href="/assets/luna-icon-reverse.webp" />
+    <link rel="canonical" href={Astro.url} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="shell header-inner">
+        <a class="brand" href="/" aria-label="LUNA home">
+          <img src="/assets/luna-icon-reverse.webp" alt="" />
+          <span>LUNA</span>
+        </a>
+        <nav aria-label="Primary navigation">
+          {nav.map((item) => (
+            <a href={item.href} class:list={{ active: path === item.href || path.startsWith(item.href + '/') }}>
+              {item.label}
+            </a>
+          ))}
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="shell footer-grid">
+        <div>
+          <div class="footer-brand">LUNA</div>
+          <p>Longitudinal Unified Narrative Architecture</p>
+        </div>
+        <div>
+          <p class="eyebrow">PUBLIC POSTURE</p>
+          <p>Open research. Protected implementation.</p>
+        </div>
+        <div class="footer-links">
+          <a href="/luna">What is LUNA?</a>
+          <a href="/research">Research</a>
+          <a href="/about">About / Contact</a>
+        </div>
+      </div>
+      <div class="shell footer-bottom">
+        <span>Brain Architecture for AI Systems</span>
+        <span>lunainf.com</span>
+      </div>
+    </footer>
+  </body>
+</html>
