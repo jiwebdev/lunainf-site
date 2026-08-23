@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import '../styles/expansion.css';
 
 interface Props {
   title?: string;
@@ -14,6 +15,8 @@ const {
 const path = Astro.url.pathname;
 const nav = [
   { href: '/luna', label: 'What is LUNA?' },
+  { href: '/architecture', label: 'Architecture' },
+  { href: '/chronoforge', label: 'ChronoForge' },
   { href: '/research', label: 'Research' },
   { href: '/about', label: 'About' }
 ];
@@ -62,6 +65,8 @@ const nav = [
         </div>
         <div class="footer-links">
           <a href="/luna">What is LUNA?</a>
+          <a href="/architecture">Architecture</a>
+          <a href="/chronoforge">ChronoForge</a>
           <a href="/research">Research</a>
           <a href="/about">About / Contact</a>
         </div>
