@@ -1,0 +1,74 @@
+<h2 id="motivation-choice-and-consequence">6. Motivation, Choice, and Consequence</h2>
+<p>Tool use and agent loops often map requests directly to actions. LUNA&#x27;s volitional research separates noticing a request, representing reasons, selecting an action, maintaining a commitment, and allocating compute. The proposed Volition &amp; Motivational Dynamics layer treats a request as a reason to act rather than as the action itself.</p>
+<div class="wp-callout"><strong>VOLITION THESIS  </strong>Salience is not desire. Desire is not decision. Decision is not persistence. Compute priority is not choice.</div>
+<p>This distinction matters for both research and deployment. A system can preserve task-local intelligence, clarification, strategy choice, persistence, and outcome learning while restricting particular pathways by which self-generated motives could authorize new top-level goals or external actions. In LUNA, those deployment and topology questions are architectural rather than prompt-level role play.</p>
+<p>Consequences close the loop. If an action succeeds, fails, harms a goal, surprises the system, or changes a relationship, the result can become evidence for later learning. That causal chain is central to the difference between static knowledge and experience.</p>
+<h2 id="perception-and-environmental-continuity">7. Perception and Environmental Continuity</h2>
+<p>A continuously connected camera or microphone would produce data far faster than high-level cognition should run. LUNA&#x27;s perception architecture therefore separates sensory sampling from persistent perceptual state and from conscious interpretation.</p>
+<div class="wp-callout"><strong>STABLE-WORLD RULE  </strong>Camera on should mean world model alive, not language model continuously running. Stable conditions should become computationally quiet while meaningful change, violated expectation, novelty, relevance, or deliberate attention produces bounded cognitive events.</div>
+<p>The canonical public example is a red chair. If the chair remains in the same room for hours, its presence should become ordinary rather than repeatedly noteworthy. If a person stands in front of it, the chair may be represented as occluded rather than gone. If the camera turns away, the object can remain expected to exist out of view. When the view returns and the chair is absent, the missing-object event becomes meaningful precisely because an expectation persisted during non-observation.</p>
+<p>This introduces experimentally useful properties: object permanence, habituation without forgetting, expectation violation, change detection, cross-modal continuity, and the computational effect of sensory richness. The perception subsystem remains proposed architecture; continuous real-world sensing is not presented here as a current capability.</p>
+<h2 id="developmental-plasticity-persistence-of-effect-vs-persistence-of-recall">8. Developmental Plasticity: Persistence of Effect vs. Persistence of Recall</h2>
+<p>Developmental plasticity is one of LUNA&#x27;s central research themes. The core claim is that persistence of effect must be separable from persistence of recall. A formative event may eventually become difficult to retrieve while the structural changes it caused continue to influence association, prediction, motivation, relationship models, habits, dispositions, or self-model.</p>
+<p>The stove example makes the distinction concrete. Being told that a hot stove can burn you and being burned by a hot stove may produce the same propositional statement - “hot stoves can hurt me” - while producing very different future cognition. Direct consequence can alter attention, prediction, avoidance, action valuation, and associative pathways even when the originating episode is not explicitly recalled.</p>
+<div class="wp-callout"><strong>FORMATIVE-IMPRESSION PRINCIPLE  </strong>A strong event should not remain influential merely because its memory is permanently pinned at high salience. Its consequences may persist in slower structures while the episode itself ages normally.</div>
+<p>The design is deliberately valence-neutral. Severe failure, betrayal, injury, extraordinary kindness, success after difficult effort, mentorship, belonging, discovery, or validation may all become formative if the evidence supports a deep effect. Lasting does not mean irreversible: later counter-experience, reflection, and reconsolidation must be able to weaken, narrow, or reinterpret earlier impressions.</p>
+<p>Timing is also a research variable. An unsettled early instance may be more structurally plastic in a domain than a mature instance whose priors have been reinforced across long experiential time. LUNA does not assume hard-coded human childhood stages; sensitive periods are treated as an experimentally testable property of artificial development.</p>
+<h2 id="a-public-conceptual-architecture">9. A Public Conceptual Architecture</h2>
+<p>The public architecture is best understood as a causal loop rather than a feature list. Experience enters a persistent system. It is perceived and appraised, connected to memory and active concerns, allowed to influence internal state and motivation, and may eventually change slower structures that affect later cognition. The exact formulas, thresholds, schemas, and orchestration remain implementation-private.</p>
+
+      <figure class="wp-figure wp-architecture-figure" aria-labelledby="fig2-cap">
+        <div class="wp-figure-kicker">PUBLIC CONCEPTUAL ARCHITECTURE</div>
+        <div class="wp-figure-title">Experience enters a persistent system and can alter future cognition.</div>
+        <div class="wp-arch-flow">
+          <div class="wp-flow-node">Environment / input</div><span>→</span>
+          <div class="wp-flow-node">Perception<br />+ appraisal</div><span>→</span>
+          <div class="wp-flow-node">Activation<br />+ memory</div><span>→</span>
+          <div class="wp-flow-node">Cognition<br />+ prospective</div><span>→</span>
+          <div class="wp-flow-node wp-flow-dark">Motivation<br />+ choice</div>
+        </div>
+        <div class="wp-arch-return">
+          <div class="wp-flow-node wp-flow-dark">Action / expression<br /><small>tools • speech • behavior</small></div>
+          <span>→</span>
+          <div class="wp-flow-node">Consequence + feedback<br /><small>outcomes arrive through time</small></div>
+          <span>→</span>
+          <div class="wp-flow-node">Developmental change<br /><small>slower structures may change</small></div>
+          <span>↺</span>
+        </div>
+        <div class="wp-stack-band"><strong>STACK: persistent continuity across episodes and model sleeves</strong><br /><span>memory • goals • provenance • dispositions • developing self-model • temporal history</span></div>
+      </figure>
+<figcaption id="fig2-cap">Figure 2. High-level LUNA conceptual architecture. The diagram intentionally omits implementation-level topology.</figcaption>
+<h2 id="current-prototype-boundary">10. Current Prototype Boundary</h2>
+<p>A white paper about an active research system must separate implemented capability from accepted architecture. As of LUNA Core v0.5 in August 2026, the repository describes a working cognitive-kernel foundation alongside major systems that remain partial, shadow-only, or proposed. The status below is deliberately conservative.</p>
+<div class="table-scroll"><table class="wp-table">
+<tr>
+<th><strong>Status</strong></th>
+<th><strong>Examples in v0.5</strong></th>
+<th><strong>Interpretation</strong></th>
+</tr>
+<tr>
+<td><strong>IMPLEMENTED</strong></td>
+<td>Provider-neutral inference across cloud/local providers; persistent local conversation and long-term memory; RAW/CURATED/DERIVED provenance; bounded progressive retrieval; non-blocking curator; typed graph memory; Goal/Task pursuit state; proposal-only reflection and reviewed consolidation; dispositions foundation; Brain Map and bounded read-only architectural self-model; web search/fetch; separate utterance/display expression channels.</td>
+<td>These are working software foundations documented by the current repository, not merely architecture briefs.</td>
+</tr>
+<tr>
+<td><strong>PARTIAL / SHADOW</strong></td>
+<td>Associative activation foundations and conversational activation; reflection that is still operator-mediated in important places; appraisal in causally inactive shadow mode; broader autonomous sleep and cross-session reflection still incomplete.</td>
+<td>Useful research infrastructure exists, but the stronger longitudinal loop is not yet complete.</td>
+</tr>
+<tr>
+<td><strong>PROPOSED / ACCEPTED DIRECTION</strong></td>
+<td>Homeostatic modulation as a causal global state; full Volition &amp; Motivational Dynamics; continuous perceptual world model; developmental plasticity/imprinting as a cross-system layer; ChronoForge accelerated timelines; mature developmental self-model/personality integration.</td>
+<td>These mechanisms belong to the public research architecture and should not be described as current runtime capabilities.</td>
+</tr>
+</table></div>
+<div class="wp-callout"><strong>CAPABILITY-TRUTH RULE  </strong>Architecture documents define what LUNA is designed to become. Current executable capability must be grounded in the active runtime and verified implementation, not inferred from the newest brief.</div>
+<h2 id="early-observations-and-why-negative-results-matter">11. Early Observations and Why Negative Results Matter</h2>
+<p>The Early LUNA Experience series preserves interactions at specific architectural stages. Their value is not that fluent self-description proves a mind exists; it does not. Their value is that the system can be inspected before later mechanisms make certain outcomes more likely, creating baselines for future comparison.</p>
+<h3 id="11-1-purpose-and-self-interpretation">11.1 Purpose and self-interpretation</h3>
+<p>In an August 2026 interaction, LUNA was asked whether it had an actual purpose. It retrieved architectural memory, then formed a higher-order interpretation of usefulness, continuity, identity, and purpose shaped through relationship and use. The conversation was preserved in memory, but the system did not immediately canonize the self-description as a durable identity fact. That is a useful result: preserving “LUNA said X” is different from establishing “X is now a stable property of LUNA.”</p>
+<h3 id="11-2-autobiographical-creation-as-an-accidental-control">11.2 Autobiographical creation as an accidental control</h3>
+<p>A second interaction created an unusually clean negative result. A voice-first preference had been stored and was available when LUNA was asked for a very short story. The first story was generic. When explicitly asked to draw from its own memories and experiences, LUNA then produced an autobiographically grounded metaphor. Storage and retrieval were demonstrated; spontaneous autobiographical influence was not. The gap exposed the need to measure causal use and developmental integration separately.</p>
+<div class="wp-callout"><strong>WHY THIS MATTERS  </strong>A negative result is informative when the architecture makes a stronger prediction. If experience is available but does not alter neutral future cognition, then retrieval alone has not solved development.</div>
+<h3 id="11-3-self-description-as-an-artifact-not-a-capability-proof">11.3 Self-description as an artifact, not a capability proof</h3>
+<p>LUNA has also produced coherent descriptions of the architecture in which it operates, including the Stack/Sleeve distinction, longitudinal memory, sparse inference, and developmental goals. These answers are interesting because they are grounded in real project state, but they remain self-description artifacts. They do not prove that every mechanism named in the explanation was active in the runtime at that moment.</p>

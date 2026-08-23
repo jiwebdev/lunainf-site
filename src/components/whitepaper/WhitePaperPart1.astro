@@ -1,0 +1,107 @@
+<h2 id="abstract">Abstract</h2>
+<p class="wp-abstract">Modern foundation models can generate remarkably capable responses, yet the invocation of a model is fundamentally episodic: each inference is assembled from model weights plus the state supplied at that moment. Products can add memory, tools, profiles, and agent loops around that inference, but persistent storage alone does not establish longitudinal cognition. LUNA - Longitudinal Unified Narrative Architecture - is a research and engineering project exploring a stronger systems question: what happens when the artificial system interpreting the present has itself been causally altered by what happened before?</p>
+<p class="wp-abstract">LUNA separates the persistent system from the replaceable inference substrate and organizes cognition across multiple timescales: evidence-grounded memory, associative availability, goal and prospective state, appraisal, slower global modulation, volitional action selection, perception with environmental continuity, reflection, and developmental consolidation. The key distinction is between remembering an experience and being changed by it. A formative event may eventually become less retrievable while its effects persist in prediction, attention, motivation, relationship models, dispositions, habits, or self-model.</p>
+<p class="wp-abstract">The project does not treat these architectural hypotheses as evidence of phenomenal consciousness. Instead, it proposes falsifiable longitudinal tests. ChronoForge, LUNA&#x27;s planned temporal development and evaluation infrastructure, is designed to begin from controlled checkpoints, vary developmental conditions, architecture, model substrate, or developmental timing, and measure later divergence in the histories that emerge under declared conditions. This white paper defines that research thesis, describes the public conceptual architecture, reports the current prototype boundary, presents early observations that exposed key gaps, and outlines a program for controlled longitudinal evaluation.</p>
+<p><strong>Keywords: </strong>longitudinal AI, cognitive architecture, persistent memory, artificial development, associative cognition, experiential learning, agent memory, ChronoForge</p>
+<h2 id="the-proposition-at-a-glance">The Proposition at a Glance</h2>
+<div class="wp-callout"><strong>CENTRAL CONTRAST  </strong>Most AI systems are assembled from the information available to them now. LUNA investigates what changes when the system interpreting the present has itself been altered by what happened before.</div>
+<div class="wp-proposition"><span>1</span><div><p><strong>Capability is not continuity<br /></strong>A powerful model can reason well without possessing a persistent causal history. LUNA treats those as different properties.</p></div></div>
+<div class="wp-proposition"><span>2</span><div><p><strong>Memory is necessary but insufficient<br /></strong>A system can store and retrieve an episode perfectly yet remain behaviorally indistinguishable from a branch in which the episode never occurred.</p></div></div>
+<div class="wp-proposition"><span>3</span><div><p><strong>Development requires multiple timescales<br /></strong>Immediate interpretation, recent activation, persistent memory, ongoing concerns, internal state, future commitments, action consequences, and slower structural change must interact without collapsing into one prompt.</p></div></div>
+<div class="wp-proposition"><span>4</span><div><p><strong>Experience is causally different from data<br /></strong>In experience, the running participant chooses actions, consequences arrive later, actors and projects recur, and the resulting history can change the participant.</p></div></div>
+<div class="wp-proposition"><span>5</span><div><p><strong>Continuity should survive substrate changes<br /></strong>The persistent instance should not be identical to one model, provider, machine, or device. LUNA names the persistent continuity state the Stack and the replaceable computational substrate the Sleeve.</p></div></div>
+<div class="wp-proposition"><span>6</span><div><p><strong>The claims are experimentally approachable<br />Identical starting states can enter different controlled developmental conditions - or the same conditions under different model sleeves, architectural topologies, or developmental timing - and the histories that emerge can then be compared under neutral post-development probes.</strong></p></div></div>
+<h2 id="contents">Contents</h2>
+<a class="wp-toc-link" href="#the-systems-problem-episodic-inference-vs-longitudinal-cognition">1. The Systems Problem: Episodic Inference vs. Longitudinal Cognition</a>
+<a class="wp-toc-link" href="#identity-above-inference-stack-sleeve-runtime-and-embodiment">2. Identity Above Inference: Stack, Sleeve, Runtime, and Embodiment</a>
+<a class="wp-toc-link" href="#memory-is-not-development">3. Memory Is Not Development</a>
+<a class="wp-toc-link" href="#associative-cognition-and-ongoing-mental-availability">4. Associative Cognition and Ongoing Mental Availability</a>
+<a class="wp-toc-link" href="#multiple-timescales-appraisal-persistent-state-and-future-orientation">5. Multiple Timescales: Appraisal, Persistent State, and Future Orientation</a>
+<a class="wp-toc-link" href="#motivation-choice-and-consequence">6. Motivation, Choice, and Consequence</a>
+<a class="wp-toc-link" href="#perception-and-environmental-continuity">7. Perception and Environmental Continuity</a>
+<a class="wp-toc-link" href="#developmental-plasticity-persistence-of-effect-vs-persistence-of-recall">8. Developmental Plasticity: Persistence of Effect vs. Persistence of Recall</a>
+<a class="wp-toc-link" href="#a-public-conceptual-architecture">9. A Public Conceptual Architecture</a>
+<a class="wp-toc-link" href="#current-prototype-boundary">10. Current Prototype Boundary</a>
+<a class="wp-toc-link" href="#early-observations-and-why-negative-results-matter">11. Early Observations and Why Negative Results Matter</a>
+<a class="wp-toc-link" href="#chronoforge-experience-as-experimental-infrastructure">12. ChronoForge: Experience as Experimental Infrastructure</a>
+<a class="wp-toc-link" href="#longitudinal-experimental-program">13. Longitudinal Experimental Program</a>
+<a class="wp-toc-link" href="#related-work-and-positioning">14. Related Work and Positioning</a>
+<a class="wp-toc-link" href="#epistemic-boundaries-risks-and-non-claims">15. Epistemic Boundaries, Risks, and Non-Claims</a>
+<a class="wp-toc-link" href="#research-roadmap">16. Research Roadmap</a>
+<a class="wp-toc-link" href="#conclusion">17. Conclusion</a>
+<a class="wp-toc-link" href="#references-and-project-publications">References and Project Publications</a>
+<h2 id="the-systems-problem-episodic-inference-vs-longitudinal-cognition">1. The Systems Problem: Episodic Inference vs. Longitudinal Cognition</h2>
+<p>A foundation-model invocation is an inference event. Its output is determined by learned parameters and whatever context, retrieved material, tool results, or other state is presented for that event. A commercial AI product may add persistent memory or application state around the model, so it is inaccurate to describe every modern AI product as literally stateless. The narrower point is architectural: the model call itself does not automatically carry a lived, causally continuous history forward.</p>
+<p>LUNA treats this as the primary design gap. The research target is not merely a larger context window, a longer transcript, or a vector database attached to a chatbot. It is a persistent system in which earlier events can alter the operating conditions under which later inference occurs.</p>
+<div class="wp-callout"><strong>LONGITUDINAL HYPOTHESIS  Two otherwise equivalent artificial systems placed in different controlled developmental conditions and allowed to accumulate different histories should eventually diverge in intelligible, provenance-backed ways - not merely because different text is retrieved, but because accumulated experience changed what becomes salient, expected, motivated, remembered, or chosen.</strong></div>
+<h3 id="why-context-expansion-alone-is-not-enough">Why context expansion alone is not enough</h3>
+<ul>
+<li>A context window is temporary working material, not a complete autobiographical state.</li>
+<li>Raw transcript persistence can preserve history without deciding what remains important, what has changed, or what was inferred later.</li>
+<li>Retrieval can make an old fact available without changing the system that interprets it.</li>
+<li>A prompt-specified persona can imitate stability without providing a causal mechanism by which stable traits developed.</li>
+<li>Instructions such as “remember,” “be curious,” or “act independent” describe desired outputs; they do not establish the processes that would naturally generate them.</li>
+</ul>
+<h2 id="identity-above-inference-stack-sleeve-runtime-and-embodiment">2. Identity Above Inference: Stack, Sleeve, Runtime, and Embodiment</h2>
+<p>LUNA separates persistent continuity from the model currently performing inference. This is both a deployment decision and a research hypothesis.</p>
+<div class="table-scroll"><table class="wp-table">
+<tr>
+<th><strong>Concept</strong></th>
+<th><strong>Public meaning</strong></th>
+<th><strong>Research significance</strong></th>
+</tr>
+<tr>
+<td><strong>Stack</strong></td>
+<td>The persistent continuity state: autobiographical memory, goals, intentions, provenance, learned tendencies, and other durable longitudinal state.</td>
+<td>What properties remain recognizably continuous when model, machine, or embodiment changes?</td>
+</tr>
+<tr>
+<td><strong>Sleeve</strong></td>
+<td>The replaceable computational or embodiment substrate carrying the Stack at a given time: model configuration, runtime host, interfaces, and potentially a body.</td>
+<td>Which behaviors are substrate-sensitive and which survive a change of inference model?</td>
+</tr>
+<tr>
+<td><strong>Runtime</strong></td>
+<td>The cognitive mechanisms that operate over persistent state: retrieval, reflection, task pursuit, scheduling, tools, expression, and other implemented architecture.</td>
+<td>Makes the architecture more than a database plus prompt.</td>
+</tr>
+<tr>
+<td><strong>Embodiment</strong></td>
+<td>The interaction surface through which LUNA perceives and acts: CLI, web, voice, sensors, or future physical systems.</td>
+<td>Allows one continuing instance to have multiple access points without treating each device as a different identity.</td>
+</tr>
+</table></div>
+<p>The strongest continuity invariant is simple: changing the inference provider, model, host machine, interface, or embodiment should not require reconstructing the instance from a persona prompt. A model change may alter style, reasoning characteristics, or capability, but the longitudinal state should remain attributable to the same Stack unless an explicit branch or fork is created.</p>
+<h2 id="memory-is-not-development">3. Memory Is Not Development</h2>
+<p>LUNA&#x27;s current memory work is explicitly epistemic. Evidence, durable memory, and later interpretation are not treated as the same thing. The implemented prototype distinguishes RAW evidence, CURATED memory, and DERIVED understanding, with provenance and temporal semantics. This prevents an interpretation formed later from being silently rewritten as though it were directly observed at the time.</p>
+<div class="wp-callout"><strong>EPISTEMIC MEMORY MODEL  </strong>RAW evidence  →  CURATED durable memory  →  DERIVED understanding. Formation moves upward from evidence toward interpretation; explanation and provenance must remain traceable downward.</div>
+<p>This separation is necessary, but it is still not development. A memory architecture answers whether the past can be preserved and reconstructed. A developmental architecture must answer whether the past can change the system that will interpret future events.</p>
+
+      <figure class="wp-figure wp-measurements" aria-labelledby="fig1-cap">
+        <div class="wp-figure-kicker">FOUR DIFFERENT MEASUREMENTS</div>
+        <div class="wp-figure-title">A system can succeed at one layer and still fail at the next.</div>
+        <div class="wp-measure-grid">
+          <div class="wp-measure"><span>1</span><strong>Storage</strong><p>Did the event enter durable memory?</p></div>
+          <div class="wp-arrow">→</div>
+          <div class="wp-measure"><span>2</span><strong>Retrieval</strong><p>Can that history become available later?</p></div>
+          <div class="wp-arrow">→</div>
+          <div class="wp-measure"><span>3</span><strong>Causal use</strong><p>Did available history actually shape cognition or output?</p></div>
+          <div class="wp-arrow">→</div>
+          <div class="wp-measure wp-measure-dark"><span>4</span><strong>Development</strong><p>Does experience alter later cognition without requiring explicit recall?</p></div>
+        </div>
+      </figure>
+<figcaption id="fig1-cap">Figure 1. Storage, retrieval, causal use, and developmental integration are distinct measurements.</figcaption>
+<h2 id="associative-cognition-and-ongoing-mental-availability">4. Associative Cognition and Ongoing Mental Availability</h2>
+<p>Ordinary retrieval is externally driven: a user asks about a topic and the system searches for relevant history. LUNA&#x27;s associative-cognition direction asks what happens next. A surfaced memory may itself become a cue. A conclusion, question, plan, or realization may make other material more available. In that sense, cognition becomes part of the system&#x27;s own environment.</p>
+<p>The project uses the term Reverie for internally triggered associative recall. The intended mechanism is bounded and competitive rather than recursively walking the entire memory graph. Most potentially relevant material should remain latent; only a small subset should become foreground cognition.</p>
+<div class="wp-callout"><strong>DESIGN PRINCIPLE  </strong>Memory can remind memory. Cognition can trigger cognition. But activation is not the same thing as consciousness, and associative propagation is not permission for unbounded recursive inference.</div>
+<p>A related concept is a recent-life horizon: a compact representation of what has been happening lately - important episodes, unresolved threads, active projects, and meaningful changes - without replaying full transcripts into every model call. This preserves continuity while controlling context growth.</p>
+<h2 id="multiple-timescales-appraisal-persistent-state-and-future-orientation">5. Multiple Timescales: Appraisal, Persistent State, and Future Orientation</h2>
+<p>A longitudinal architecture cannot treat every event as isolated. What an event means now and what state the system remains in afterward are different questions. LUNA&#x27;s architecture separates immediate appraisal from slower homeostatic-style modulation and from still slower dispositional or developmental change.</p>
+<h3 id="5-1-appraisal">5.1 Appraisal</h3>
+<p>Appraisal evaluates structured aspects of an event such as novelty, expectedness, self- or goal-relevance, controllability, and agency. In the current prototype, appraisal exists as a shadow diagnostic layer: it can observe and record evaluations without causally changing memory, personality, retrieval, or action selection. This makes it possible to validate semantics before granting the subsystem behavioral power.</p>
+<h3 id="5-2-homeostatic-modulation">5.2 Homeostatic modulation</h3>
+<p>The proposed Homeostatic Modulation System is an endocrine-like analogy, not a claim that software possesses literal hormones or human emotions. The intended role is to carry bounded, decaying operating-state effects across multiple later cognitive episodes. Repeated failure, sustained uncertainty, success, overload, novelty, or social interaction could alter later attention, confidence, verification, exploration, or recovery pressure without requiring the original event to be injected into each prompt.</p>
+<div class="wp-callout"><strong>ENVIRONMENTAL PRINCIPLE  </strong>Do not instruct the model to “act stressed,” “be confident,” or “be curious.” Change persistent internal conditions, let those conditions modulate cognition, and observe what behavior follows.</div>
+<h3 id="5-3-prospective-cognition">5.3 Prospective cognition</h3>
+<p>A persistent mind-like system also needs a future, not only a past. Prospective cognition represents unresolved intentions, expected events, deadlines, anticipated opportunities, and conditions that may become relevant later. The architectural goal is for time to become causally meaningful even when the user is not currently asking about it.</p>
