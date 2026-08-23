@@ -13,6 +13,8 @@ const {
 } = Astro.props;
 
 const path = Astro.url.pathname;
+const canonical = new URL(path, Astro.site ?? Astro.url).toString();
+const socialImage = new URL('/assets/luna-icon-reverse.webp', Astro.site ?? Astro.url).toString();
 const nav = [
   { href: '/luna', label: 'What is LUNA?' },
   { href: '/architecture', label: 'Architecture' },
@@ -28,8 +30,18 @@ const nav = [
     <meta name="viewport" content="width=device-width" />
     <meta name="description" content={description} />
     <meta name="theme-color" content="#051122" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="LUNA" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={socialImage} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
     <link rel="icon" type="image/webp" href="/assets/luna-icon-reverse.webp" />
-    <link rel="canonical" href={Astro.url} />
+    <link rel="canonical" href={canonical} />
     <title>{title}</title>
   </head>
   <body>
