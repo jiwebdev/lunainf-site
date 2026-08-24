@@ -1,0 +1,69 @@
+---
+interface Props {
+  active: 'simple' | 'technical';
+}
+
+const { active } = Astro.props;
+---
+
+<div class="explanation-level" aria-label="Choose explanation level">
+  <span class="explanation-label">Explanation level</span>
+  <div class="explanation-switch" role="group" aria-label="What is LUNA explanation level">
+    <a href="/luna/simple" class:list={{ active: active === 'simple' }} aria-current={active === 'simple' ? 'page' : undefined}>Plain English</a>
+    <a href="/luna" class:list={{ active: active === 'technical' }} aria-current={active === 'technical' ? 'page' : undefined}>Technical</a>
+  </div>
+</div>
+
+<style>
+  .explanation-level {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 16px;
+    margin-top: 30px;
+  }
+
+  .explanation-label {
+    color: #8ea7c3;
+    font-size: .72rem;
+    font-weight: 750;
+    letter-spacing: .13em;
+    text-transform: uppercase;
+  }
+
+  .explanation-switch {
+    display: inline-flex;
+    padding: 4px;
+    gap: 3px;
+    border: 1px solid rgba(160, 196, 236, .22);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, .045);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, .04);
+  }
+
+  .explanation-switch a {
+    min-width: 112px;
+    padding: 8px 15px;
+    border-radius: 999px;
+    color: #aebfd2;
+    text-align: center;
+    text-decoration: none;
+    font-size: .82rem;
+    font-weight: 700;
+    transition: color .2s ease, background .2s ease, box-shadow .2s ease;
+  }
+
+  .explanation-switch a:hover { color: white; }
+
+  .explanation-switch a.active {
+    color: white;
+    background: linear-gradient(135deg, #1665f2, #3182fb);
+    box-shadow: 0 7px 20px rgba(22, 101, 242, .25);
+  }
+
+  @media (max-width: 520px) {
+    .explanation-level { align-items: flex-start; flex-direction: column; }
+    .explanation-switch { width: 100%; }
+    .explanation-switch a { flex: 1; min-width: 0; }
+  }
+</style>
