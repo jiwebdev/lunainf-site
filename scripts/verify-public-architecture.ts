@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { validatePublicArchitecture, publicArchitectureCounts } from '../src/lib/publicArchitecture';
 
 const artifactUrl = new URL('../src/data/public-architecture.json', import.meta.url);
-const expectedSha256 = '521faf4d63c3d5c155ce45e3e69ee40a68566fd808457bdbe29c8692a95b24cd';
+const expectedSha256 = '0c8f24f44c363cc8dc9fe3113f5cdf7cb0584769277d288f6e804fa343f09cd2';
 const artifactBytes = await readFile(artifactUrl);
 const actualSha256 = createHash('sha256').update(artifactBytes).digest('hex');
 if (actualSha256 !== expectedSha256) {
