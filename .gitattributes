@@ -1,0 +1,2 @@
+# Preserve the repository's byte-reviewed public architecture copy on every checkout.
+src/data/public-architecture.json text eol=lf

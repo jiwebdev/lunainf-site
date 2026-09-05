@@ -1,0 +1,986 @@
+{
+  "schema_version": 1,
+  "disclosure_version": "public-architecture-v1",
+  "title": "LUNA Architecture",
+  "summary": "A public, plain-English map of the interacting systems around LUNA's language-model inference boundary. These labels describe development scope, not quality. Working + Growing means the subsystem already works today and is still being expanded.",
+  "families": [
+    {
+      "id": "memory",
+      "label": "Memory",
+      "description": "How experience is kept, recalled, and made useful across time.",
+      "color": "#57d5ef"
+    },
+    {
+      "id": "cognition",
+      "label": "Cognition",
+      "description": "How information, goals, and possibilities become useful in the current moment.",
+      "color": "#a78bfa"
+    },
+    {
+      "id": "background-cognition",
+      "label": "Background Cognition",
+      "description": "Work that can continue around a conversation without taking attention away from the person LUNA is talking with.",
+      "color": "#74a7ff"
+    },
+    {
+      "id": "evaluation",
+      "label": "Evaluation",
+      "description": "How events, relationships, and LUNA's current condition can shape later judgments.",
+      "color": "#f4c96b"
+    },
+    {
+      "id": "perception",
+      "label": "Perception",
+      "description": "How LUNA makes sense of messages and changes in her surroundings.",
+      "color": "#70d6a4"
+    },
+    {
+      "id": "interfaces",
+      "label": "Interfaces",
+      "description": "How people interact with LUNA and receive its responses.",
+      "color": "#f39ee8"
+    },
+    {
+      "id": "inference",
+      "label": "Inference",
+      "description": "Where requests to AI language models connect with the rest of LUNA.",
+      "color": "#ff9b75"
+    },
+    {
+      "id": "infrastructure",
+      "label": "Infrastructure",
+      "description": "Shared support for the architecture, experiments, observation, and continuity over time.",
+      "color": "#98a3ba"
+    }
+  ],
+  "nodes": [
+    {
+      "id": "foreground-input",
+      "label": "Foreground Input",
+      "family": "perception",
+      "description": "Brings the person's current message and nearby conversation context into LUNA so the message can be understood and answered.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 70,
+        "y": 300
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "luna-workbench",
+      "label": "Workbench",
+      "family": "interfaces",
+      "description": "Gives people a browser workspace for conversations, projects, reference material, and optional speech features that all use LUNA's normal interaction path.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 70,
+        "y": 400
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Available when the Workbench interface is being used."
+    },
+    {
+      "id": "expression-system",
+      "label": "Expression",
+      "family": "interfaces",
+      "description": "Turns LUNA's completed response into the chosen text or speech output without changing the meaning of what she decided to say.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 70,
+        "y": 500
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "working-memory",
+      "label": "Working Memory",
+      "family": "memory",
+      "description": "Keeps the current conversation and a small amount of useful nearby context available while LUNA handles the present exchange.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 285,
+        "y": 100
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "recent-experience",
+      "label": "Recent Experience",
+      "family": "memory",
+      "description": "Keeps a reliable record of completed conversations so memory, reflection, and other later review can work from what actually happened.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 520,
+        "y": 100
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "recent-life",
+      "label": "Recent-Life Horizon",
+      "family": "memory",
+      "description": "Helps recent experiences stay easy to bring back to mind over time without treating every passing detail as permanent memory.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 655,
+        "y": 165
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "foreground-cognition",
+      "label": "Foreground Cognition",
+      "family": "cognition",
+      "description": "Handles LUNA's ordinary speaking and decision-making, using selected context while giving each new conversation priority over optional work happening in the background.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 370,
+        "y": 300
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "activation-field",
+      "label": "Cognitive Activation Field",
+      "family": "cognition",
+      "description": "Decides what information is most relevant right now so memories, goals, and other possibilities do not all compete equally.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 385,
+        "y": 430
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "reverie-admission",
+      "label": "Reverie",
+      "family": "cognition",
+      "description": "Lets one remembered idea make a related memory easier to notice, without automatically filling the current conversation with extra material.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 300,
+        "y": 555
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "cognitive-products",
+      "label": "Cognitive Products",
+      "family": "cognition",
+      "description": "Carries small results from background thinking without automatically treating them as facts, memories, spoken answers, goals, or permission to act.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 500,
+        "y": 665
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Used in controlled research and review."
+    },
+    {
+      "id": "async-contemplation",
+      "label": "Contemplation",
+      "family": "cognition",
+      "description": "Allows limited background thinking after a conversation finishes, while stepping aside when a person starts another conversation with LUNA.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 505,
+        "y": 585
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Used as a limited background research feature."
+    },
+    {
+      "id": "cognitive-scheduler",
+      "label": "Cognitive Scheduler",
+      "family": "cognition",
+      "description": "Coordinates optional background work so it uses resources carefully and always gives priority to a person's active conversation with LUNA.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 590,
+        "y": 430
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "prospective-cognition",
+      "label": "Prospective Cognition",
+      "family": "cognition",
+      "description": "Keeps unfinished intentions and future situations available after their original conversation so they can matter again when the time is relevant.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 385,
+        "y": 890
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "goal-task-state",
+      "label": "Goal and Task State",
+      "family": "cognition",
+      "description": "Keeps goals, attempts, observations, obstacles, possible paths, and completion reasons organized across work that continues through several conversations.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 485,
+        "y": 790
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "motivational-dynamics",
+      "label": "Volition and Motivational Dynamics",
+      "family": "cognition",
+      "description": "Weighs goals, commitments, preferences, and reasons during some choices without giving LUNA broad independence or permission to act in the world.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 590,
+        "y": 805
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "inference-fabric",
+      "label": "Inference Fabric",
+      "family": "cognition",
+      "description": "Sends approved language-model requests to the cloud or local AI option selected for the current LUNA setup and task.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 610,
+        "y": 300
+      },
+      "annotation_ids": [
+        "model-inference"
+      ]
+    },
+    {
+      "id": "cloud-ai-provider",
+      "label": "Cloud AI Provider (ORBIT)",
+      "family": "inference",
+      "description": "Represents the cloud-based AI model option LUNA can use for approved language work when that option is available and configured.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 820,
+        "y": 205
+      },
+      "annotation_ids": [
+        "model-inference"
+      ],
+      "maturity_explanation": "Availability depends on the selected LUNA setup."
+    },
+    {
+      "id": "local-ai-provider",
+      "label": "Local AI Provider (LANDED)",
+      "family": "inference",
+      "description": "Represents the locally hosted AI model option LUNA can use for language work when that option is available and configured.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 820,
+        "y": 390
+      },
+      "annotation_ids": [
+        "model-inference"
+      ],
+      "maturity_explanation": "Availability depends on the selected LUNA setup."
+    },
+    {
+      "id": "long-term-memory",
+      "label": "Long-Term Memory",
+      "family": "memory",
+      "description": "Keeps lasting memories of LUNA's experiences, including where they came from and how they relate across time, until they become useful again.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 190,
+        "y": 625
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "memory-formation",
+      "label": "Memory Formation",
+      "family": "background-cognition",
+      "description": "Reviews completed experiences and changes long-term memory only when proposed updates have enough evidence and pass LUNA's existing memory checks.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 405,
+        "y": 555
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "reflection-review",
+      "label": "Reflection",
+      "family": "background-cognition",
+      "description": "Reviews selected experiences for useful patterns or interpretations, while requiring any resulting changes to pass the same checks used elsewhere.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 625,
+        "y": 555
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "appraisal-system",
+      "label": "Appraisal",
+      "family": "evaluation",
+      "description": "Tests ways of describing what an event may mean to LUNA without automatically turning that interpretation into a fact or action.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 735,
+        "y": 625
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Used as a research signal; it does not decide facts or actions."
+    },
+    {
+      "id": "adaptive-dispositions",
+      "label": "Adaptive Dispositions",
+      "family": "evaluation",
+      "description": "Keeps learned tendencies about how situations feel or matter, allowing experience to guide later thought without becoming facts, commands, or fixed personality.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 625,
+        "y": 690
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "relationship-state",
+      "label": "Relationship State",
+      "family": "evaluation",
+      "description": "Tests person-specific and situation-specific expectations without turning them into one universal judgment or independent permission for LUNA to act.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 820,
+        "y": 690
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Used as research context for particular people and situations."
+    },
+    {
+      "id": "homeostatic-modulation",
+      "label": "Homeostatic Modulation",
+      "family": "evaluation",
+      "description": "Tests small signals about LUNA's current condition that can gently affect later choices without commanding behavior or becoming permanent personality traits.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 815,
+        "y": 810
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Used as a controlled research signal."
+    },
+    {
+      "id": "actor-attribution",
+      "label": "Actor Attribution",
+      "family": "evaluation",
+      "description": "Keeps track of who LUNA is interacting with so private context and relationship evidence do not get mixed between people.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 915,
+        "y": 690
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "expression-grounding",
+      "label": "Expression Grounding",
+      "family": "evaluation",
+      "description": "Helps LUNA tell the difference between something she actually has support for and something that only sounds certain because of how it was worded.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 920,
+        "y": 805
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "turn-observation",
+      "label": "Turn Observation",
+      "family": "infrastructure",
+      "description": "Records a small factual account of what changed during a conversation without pretending that this technical record is itself one of LUNA's memories.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 235,
+        "y": 795
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "development-awareness",
+      "label": "Development Awareness",
+      "family": "infrastructure",
+      "description": "Keeps a checked view of what LUNA can do now, what depends on setup choices, and what still exists only as architecture.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 165,
+        "y": 900
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "chronoforge-lab",
+      "label": "ChronoForge",
+      "family": "infrastructure",
+      "description": "Provides a controlled experiment for comparing how similar starting systems change after experiencing different simulated histories under clearly stated conditions.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 165,
+        "y": 1030
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Controlled research tool."
+    },
+    {
+      "id": "perceptual-continuity",
+      "label": "Perceptual Continuity",
+      "family": "perception",
+      "description": "Tests ways to notice stable surroundings and meaningful changes without repeatedly asking a language model to examine every camera or sensor sample.",
+      "maturity": "EXPERIMENTAL",
+      "position": {
+        "x": 70,
+        "y": 720
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "An experimental foundation, not a finished sensing feature."
+    },
+    {
+      "id": "background-memory-coordination",
+      "label": "Background Memory Coordination",
+      "family": "background-cognition",
+      "description": "Coordinates memory work that happens after conversations while using LUNA's normal memory-formation process instead of creating a separate writer.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 820,
+        "y": 555
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "manual-sleep-cycle",
+      "label": "Manual Sleep",
+      "family": "background-cognition",
+      "description": "Lets LUNA review and organize recent experiences after conversations by coordinating her existing memory and reflection systems together.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 850,
+        "y": 925
+      },
+      "annotation_ids": [],
+      "why_it_matters": "Review can happen outside conversation without creating a second source of memory meaning."
+    },
+    {
+      "id": "sleep-pattern-review",
+      "label": "Sleep Pattern Review",
+      "family": "background-cognition",
+      "description": "Looks for patterns across the recent experiences included in one Sleep cycle, without reaching beyond the material selected for that review.",
+      "maturity": "WORKING",
+      "position": {
+        "x": 960,
+        "y": 925
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "waking-residue",
+      "label": "Waking Residue",
+      "family": "background-cognition",
+      "description": "Keeps a faint trace of something noticed during Sleep so it can become relevant again later, instead of disappearing completely when Sleep ends.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 1070,
+        "y": 925
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Selection alone does not decide what will enter a later conversation."
+    },
+    {
+      "id": "wake-transition",
+      "label": "Wake Transition",
+      "family": "background-cognition",
+      "description": "Helps something carried out of Sleep become relevant again during a later conversation when it fits what LUNA and the person are discussing.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 1180,
+        "y": 925
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "wake-autobiographical-consequence",
+      "label": "Wake Autobiographical Consequence",
+      "family": "background-cognition",
+      "description": "Allows something that genuinely mattered after waking to become part of LUNA's later autobiographical memory, so the experience is not lost.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 1290,
+        "y": 925
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "automatic-sleep",
+      "label": "Automatic Sleep",
+      "family": "background-cognition",
+      "description": "Optionally starts the same Sleep review during suitable quiet periods, instead of creating a different way for LUNA to review experience.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 960,
+        "y": 1040
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Optional and off by default."
+    },
+    {
+      "id": "architecture-observer",
+      "label": "Architecture Observer",
+      "family": "infrastructure",
+      "description": "Combines architecture, development labels, and separately recorded activity into one internal map that developers can inspect without changing any of those sources.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 375,
+        "y": 750
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "realtime-conversation",
+      "label": "Realtime WebRTC",
+      "family": "interfaces",
+      "description": "Represents a future way to hold live voice conversations and use tools through LUNA's normal interaction path, without replacing that path.",
+      "maturity": "ARCHITECTURAL",
+      "position": {
+        "x": 70,
+        "y": 610
+      },
+      "annotation_ids": [],
+      "maturity_explanation": "Not currently available."
+    },
+    {
+      "id": "developmental-plasticity",
+      "label": "Developmental Plasticity",
+      "family": "evaluation",
+      "description": "Represents carefully reviewed ways that experience can change later associations, expectations, preferences, or relationships without rewriting what originally happened.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 1015,
+        "y": 805
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "read-only-action-boundary",
+      "label": "Read-Only Action Boundary",
+      "family": "cognition",
+      "description": "Keeps a narrow set of information lookups behind LUNA's existing choice and safety checks, without permitting actions that change the outside world.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 795,
+        "y": 805
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "volitional-commitment",
+      "label": "Volitional Commitment",
+      "family": "cognition",
+      "description": "Keeps a chosen plan available through interruptions so LUNA can weigh continuing it or switching approaches during a later decision.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 700,
+        "y": 930
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "epistemic-initiative",
+      "label": "Epistemic Initiative",
+      "family": "cognition",
+      "description": "Lets uncertainty, surprises, purpose, or a need to verify something raise the possibility of asking a question or investigating further.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 815,
+        "y": 930
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "method-valuation",
+      "label": "Learned Method Valuation",
+      "family": "evaluation",
+      "description": "Uses real outcomes to shape narrow preferences between specific methods, without turning those preferences into general rules or fixed personality.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 910,
+        "y": 805
+      },
+      "annotation_ids": []
+    },
+    {
+      "id": "prospective-motives",
+      "label": "Prospective Motives",
+      "family": "evaluation",
+      "description": "Lets unfinished plans and future intentions matter when LUNA is making a later choice, without automatically turning them into actions.",
+      "maturity": "WORKING + GROWING",
+      "position": {
+        "x": 650,
+        "y": 760
+      },
+      "annotation_ids": []
+    }
+  ],
+  "relationships": [
+    {
+      "source": "luna-workbench",
+      "target": "foreground-input",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "foreground-input",
+      "target": "foreground-cognition",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "foreground-input",
+      "target": "actor-attribution",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "foreground-input",
+      "target": "motivational-dynamics",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "foreground-cognition",
+      "target": "expression-system",
+      "kind": "expresses-through",
+      "label": "expresses through"
+    },
+    {
+      "source": "expression-grounding",
+      "target": "expression-system",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "expression-system",
+      "target": "activation-field",
+      "kind": "can-activate",
+      "label": "can activate"
+    },
+    {
+      "source": "working-memory",
+      "target": "foreground-cognition",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "working-memory",
+      "target": "activation-field",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "foreground-cognition",
+      "target": "recent-experience",
+      "kind": "records-into",
+      "label": "records into"
+    },
+    {
+      "source": "foreground-cognition",
+      "target": "turn-observation",
+      "kind": "records-into",
+      "label": "records into"
+    },
+    {
+      "source": "foreground-cognition",
+      "target": "inference-fabric",
+      "kind": "requests-inference-from",
+      "label": "requests inference from"
+    },
+    {
+      "source": "inference-fabric",
+      "target": "cloud-ai-provider",
+      "kind": "routes-inference-to",
+      "label": "routes inference to"
+    },
+    {
+      "source": "inference-fabric",
+      "target": "local-ai-provider",
+      "kind": "routes-inference-to",
+      "label": "routes inference to"
+    },
+    {
+      "source": "long-term-memory",
+      "target": "foreground-cognition",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "long-term-memory",
+      "target": "activation-field",
+      "kind": "can-activate",
+      "label": "can activate"
+    },
+    {
+      "source": "recent-experience",
+      "target": "recent-life",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "recent-life",
+      "target": "activation-field",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "goal-task-state",
+      "target": "activation-field",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "goal-task-state",
+      "target": "motivational-dynamics",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "long-term-memory",
+      "target": "relationship-state",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "actor-attribution",
+      "target": "relationship-state",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "actor-attribution",
+      "target": "expression-grounding",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "chronoforge-lab",
+      "target": "prospective-cognition",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "prospective-cognition",
+      "target": "activation-field",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "activation-field",
+      "target": "reverie-admission",
+      "kind": "can-activate",
+      "label": "can activate"
+    },
+    {
+      "source": "reverie-admission",
+      "target": "working-memory",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "activation-field",
+      "target": "async-contemplation",
+      "kind": "can-activate",
+      "label": "can activate"
+    },
+    {
+      "source": "async-contemplation",
+      "target": "cognitive-scheduler",
+      "kind": "coordinates-with",
+      "label": "coordinates with"
+    },
+    {
+      "source": "async-contemplation",
+      "target": "cognitive-products",
+      "kind": "records-into",
+      "label": "records into"
+    },
+    {
+      "source": "cognitive-products",
+      "target": "activation-field",
+      "kind": "can-activate",
+      "label": "can activate"
+    },
+    {
+      "source": "cognitive-products",
+      "target": "prospective-cognition",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "activation-field",
+      "target": "cognitive-scheduler",
+      "kind": "coordinates-with",
+      "label": "coordinates with"
+    },
+    {
+      "source": "cognitive-scheduler",
+      "target": "inference-fabric",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "recent-experience",
+      "target": "memory-formation",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "recent-experience",
+      "target": "appraisal-system",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "appraisal-system",
+      "target": "activation-field",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "appraisal-system",
+      "target": "homeostatic-modulation",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "recent-experience",
+      "target": "relationship-state",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "relationship-state",
+      "target": "homeostatic-modulation",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "relationship-state",
+      "target": "motivational-dynamics",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "homeostatic-modulation",
+      "target": "motivational-dynamics",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "adaptive-dispositions",
+      "target": "motivational-dynamics",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "memory-formation",
+      "target": "long-term-memory",
+      "kind": "records-into",
+      "label": "records into"
+    },
+    {
+      "source": "memory-formation",
+      "target": "turn-observation",
+      "kind": "records-into",
+      "label": "records into"
+    },
+    {
+      "source": "reflection-review",
+      "target": "adaptive-dispositions",
+      "kind": "influences",
+      "label": "influences"
+    },
+    {
+      "source": "reflection-review",
+      "target": "foreground-cognition",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "background-memory-coordination",
+      "target": "foreground-cognition",
+      "kind": "provides-context-to",
+      "label": "provides context to"
+    },
+    {
+      "source": "development-awareness",
+      "target": "architecture-observer",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "turn-observation",
+      "target": "architecture-observer",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "recent-experience",
+      "target": "manual-sleep-cycle",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "manual-sleep-cycle",
+      "target": "reflection-review",
+      "kind": "coordinates-with",
+      "label": "coordinates with"
+    },
+    {
+      "source": "architecture-observer",
+      "target": "foreground-cognition",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "realtime-conversation",
+      "target": "foreground-input",
+      "kind": "supports",
+      "label": "supports"
+    },
+    {
+      "source": "expression-system",
+      "target": "realtime-conversation",
+      "kind": "expresses-through",
+      "label": "expresses through"
+    },
+    {
+      "source": "recent-experience",
+      "target": "developmental-plasticity",
+      "kind": "contributes-to",
+      "label": "contributes to"
+    },
+    {
+      "source": "motivational-dynamics",
+      "target": "foreground-cognition",
+      "kind": "influences",
+      "label": "influences"
+    }
+  ],
+  "annotations": [
+    {
+      "id": "model-inference",
+      "label": "AI model inference happens here",
+      "description": "The surrounding architecture handles memory, continuity, evaluation, motivation, current conditions, scheduling, history tracking, and other supporting work.",
+      "node_ids": [
+        "inference-fabric",
+        "cloud-ai-provider",
+        "local-ai-provider"
+      ]
+    }
+  ]
+}

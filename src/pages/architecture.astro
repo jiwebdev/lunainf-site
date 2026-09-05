@@ -1,79 +1,57 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ArchitectureExplorer from '../components/ArchitectureExplorer.astro';
+import { publicArchitectureCounts } from '../lib/publicArchitecture';
 
-const systems = [
-  ['Memory & continuity', 'Autobiographical history, provenance, salience, relationships, and continuity are treated as persistent system state rather than a transcript pasted into the next prompt.'],
-  ['Cognitive activation', 'Relevant memories, goals, intentions, appraisals, and cognitive products compete for limited access to the foreground.'],
-  ['Associative cognition', 'A memory or completed thought can itself become a cue, allowing cognition to make other cognition more available without requiring a new external prompt.'],
-  ['Appraisal & homeostasis', 'Events can alter short- and middle-timescale operating conditions so later cognition occurs in a state shaped by what happened before.'],
-  ['Developmental plasticity', 'The architecture separates remembering an event from the slower structural changes that consequential experience may leave behind.'],
-  ['Prospective cognition', 'Expected events, unresolved threads, intentions, deadlines, and future opportunities can persist beyond the turn that created them.'],
-  ['Perception & world continuity', 'Continuous sensors are intended to update a persistent world model in which stable conditions become quiet and violated expectations become meaningful.'],
-  ['Volition & motivational dynamics', 'Requests, goals, preferences, commitments, consequences, and competing reasons can participate in action selection rather than collapsing directly into behavior.'],
-  ['Architectural self-model', 'LUNA is designed to distinguish what the project intends, what the current runtime can actually do, and what remains unresolved.'],
-  ['ChronoForge', 'Controlled timelines let researchers manipulate developmental conditions, then compare the histories that emerge: checkpoint, branch, live through consequences, compare, and return.']
-];
+const architectureCounts = publicArchitectureCounts();
 ---
+
 <BaseLayout
   title="Architecture — LUNA"
-  description="A public high-level map of LUNA: memory, cognitive activation, development, perception, motivation, continuity, prospective cognition, and ChronoForge."
+  description={`Explore LUNA's public architecture: ${architectureCounts.nodes} interacting subsystems around a focused AI model inference region, with reviewed maturity and plain-English descriptions.`}
 >
-  <section class="page-hero">
+  <section class="page-hero architecture-hero">
     <div class="shell">
-      <p class="eyebrow">PUBLIC ARCHITECTURE OVERVIEW</p>
-      <h1>Persistent cognition is a systems problem.</h1>
+      <p class="eyebrow">EXPLORE LUNA'S ARCHITECTURE</p>
+      <h1>LUNA is not one AI model.</h1>
       <p class="section-lede">
-        LUNA is not one model and not one memory database. It is an attempt to build interacting
-        cognitive infrastructure around inference so that history can remain causally relevant over time.
+        LUNA is an architecture of interacting systems built around model inference. Explore the
+        systems that handle memory, attention, evaluation, continuity, goals, development, and more.
       </p>
       <div class="status-note">
-        <strong>Capability boundary:</strong> this page describes the accepted research architecture at a public level.
-        Some foundations are operating today; other mechanisms are partial or still being built. A design document is never treated as proof of an active capability.
+        <strong>A current public capability map:</strong> every subsystem and maturity label below comes from a reviewed static export of the implemented architecture. It is a public explanation, not a live view into LUNA.
       </div>
     </div>
   </section>
 
-  <section class="section">
-    <div class="shell">
-      <p class="eyebrow">THE LONGITUDINAL LOOP</p>
-      <h2>From event to consequence to a different future.</h2>
-      <p class="section-lede">
-        The central idea is simple: a present event should be able to leave effects that alter how a later event is perceived, remembered, valued, or acted on.
-      </p>
-
-      <div class="architecture-map">
-        <div class="architecture-chain">
-          <div class="architecture-node"><strong>World / input</strong><span>User interaction, tools, internal cognition, and eventually continuous sensory events.</span></div>
-          <div class="architecture-node"><strong>Appraisal</strong><span>What changed? How relevant, expected, consequential, controllable, or self-related is it?</span></div>
-          <div class="architecture-node"><strong>Activation</strong><span>Which memories, intentions, questions, or cognitive products become near the surface?</span></div>
-          <div class="architecture-node"><strong>Choice / action</strong><span>Foreground reasoning, contemplation, planning, speech, tools, waiting, or other action.</span></div>
-          <div class="architecture-node"><strong>Consequence</strong><span>Outcome, feedback, changed world state, and evidence that can affect what happens next.</span></div>
-        </div>
-        <div class="architecture-rails">
-          <div class="architecture-rail"><strong>Continuity</strong>Persistent autobiographical state and provenance connect the loop across time.</div>
-          <div class="architecture-rail"><strong>Development</strong>Some consequences may alter slower structures instead of surviving only as recallable episodes.</div>
-          <div class="architecture-rail"><strong>Prospection</strong>Future events and unresolved commitments can remain active beyond the current interaction.</div>
-          <div class="architecture-rail"><strong>Compute discipline</strong>Lightweight state and scheduling stay cheap; expensive inference is invoked only when cognition justifies it.</div>
-        </div>
-      </div>
+  <section class="section architecture-explorer-section">
+    <div class="shell shell-wide">
+      <ArchitectureExplorer />
     </div>
   </section>
 
-  <section class="section" style="background:#eef3f8">
+  <section class="section architecture-reading-guide">
     <div class="shell">
-      <p class="eyebrow">MAJOR RESEARCH SYSTEMS</p>
-      <h2>The architecture is deliberately modular.</h2>
-      <p class="section-lede">
-        Each mechanism owns a different causal role. The goal is not to ask a language model to narrate these processes, but to give them persistent state and explicit architectural boundaries where possible.
-      </p>
-      <div class="card-grid">
-        {systems.map(([title, copy]) => (
-          <article class="system-card">
-            <div class="node"></div>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-          </article>
-        ))}
+      <p class="eyebrow">HOW TO READ THE MAP</p>
+      <h2>Start with the architecture. Use maturity as context.</h2>
+      <div class="map-reading-grid">
+        <article><span class="reading-icon family-icon" aria-hidden="true"></span><h3>Family color</h3><p>Color groups subsystems by the kind of work they do. It does not rank their quality or importance.</p></article>
+        <article><span class="reading-icon relationship-icon" aria-hidden="true"></span><h3>Relationships</h3><p>Lines show only the reviewed public connections. Select a subsystem to make its immediate neighborhood clearer.</p></article>
+        <article><span class="reading-icon maturity-icon" aria-hidden="true"></span><h3>Maturity</h3><p>The inspector and directory describe development scope without turning the map into a field of status warnings.</p></article>
+        <article><span class="reading-icon inference-icon" aria-hidden="true"></span><h3>AI inference</h3><p>The dashed region marks where model inference connects to LUNA. The rest of the map shows the surrounding architecture.</p></article>
+      </div>
+
+      <div class="maturity-guide" aria-labelledby="maturity-guide-heading">
+        <div class="maturity-guide__intro">
+          <p class="eyebrow">PUBLIC MATURITY</p>
+          <h3 id="maturity-guide-heading">These labels describe development scope, not quality.</h3>
+        </div>
+        <dl>
+          <div><dt>Working</dt><dd>Functioning today.</dd></div>
+          <div><dt>Working + Growing</dt><dd>Already works today and is still being expanded.</dd></div>
+          <div><dt>Experimental</dt><dd>A real implementation being used for controlled research or testing.</dd></div>
+          <div><dt>Architectural</dt><dd>Part of LUNA's architecture but not currently implemented.</dd></div>
+        </dl>
       </div>
     </div>
   </section>
@@ -93,7 +71,7 @@ const systems = [
       <div class="comparison-grid" style="margin-top:30px">
         <article class="comparison-card">
           <h3>Stack-side cognition</h3>
-          <p>Persistent memory, recent-life cueing, activation, bounded competition, and selected admission can shape what reaches inference. The Stack is therefore more than passive storage around a model.</p>
+          <p>Persistent memory, recent-life cueing, activation, limited competition, and selected admission can shape what reaches inference. The Stack is therefore more than passive storage around a model.</p>
         </article>
         <article class="comparison-card luna">
           <h3>Sleeve-side inference</h3>
@@ -102,7 +80,7 @@ const systems = [
       </div>
 
       <div class="status-note">
-        <strong>Current capability cutaway:</strong> persistent memory and the Recent-Life Horizon are active; the broader Cognitive Activation Field remains partial; the implemented Reverie workspace path can contribute zero or one eligible internally propagated memory to the foreground without a language-model call deciding admission.
+        <strong>Current capability cutaway:</strong> the Recent-Life Horizon is Working. Long-Term Memory, the Cognitive Activation Field, and Reverie are Working + Growing; the implemented Reverie path can contribute zero or one eligible internally surfaced memory to the foreground without a language-model call deciding admission.
       </div>
       <div class="page-actions">
         <a class="button button-primary" href="/research/progressive-recall">Read the Progressive Recall technical cutaway</a>
@@ -136,7 +114,7 @@ const systems = [
       <p class="eyebrow">STACK & SLEEVE</p>
       <h2>Continuity is intended to survive the model.</h2>
       <p>
-        LUNA uses a simple conceptual separation. The <strong>Stack</strong> is the persistent identity-and-continuity state: autobiographical history, durable dispositions, goals, relationships, intentions, provenance, and other longitudinal state. The <strong>Sleeve</strong> is the active computational substrate through which that state currently runs.
+        LUNA uses a simple conceptual separation. The <strong>Stack</strong> is the persistent identity-and-continuity state: autobiographical history, durable dispositions, goals, relationships, intentions, history tracking, and other longitudinal state. The <strong>Sleeve</strong> is the active computational system through which that state currently runs.
       </p>
       <p>
         The research objective is that changing provider, model, machine, or embodiment should not require recreating the persistent instance from a prompt. The inference model is therefore important, but it is not intended to be the whole identity of the system.
@@ -157,3 +135,37 @@ const systems = [
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .architecture-hero { padding-bottom: 74px; }
+  .architecture-explorer-section { padding-top: 74px; background: linear-gradient(160deg, #06162c, #040e1d); }
+  .shell-wide { width: min(calc(100% - 40px), 1520px); }
+  .architecture-reading-guide { background: #eef3f8; }
+  .map-reading-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 46px; }
+  .map-reading-grid article { padding: 25px; border: 1px solid #d5e0ec; border-radius: 16px; background: rgba(255,255,255,.8); }
+  .map-reading-grid h3 { margin: 17px 0 7px; font-size: 1.08rem; }
+  .map-reading-grid p { margin: 0; color: #6c7a8a; font-size: .92rem; }
+  .reading-icon { display: block; width: 42px; height: 30px; }
+  .family-icon { border: 2px solid #57d5ef; border-radius: 10px; background: rgba(87,213,239,.08); }
+  .relationship-icon { position: relative; border-top: 2px solid #6c8fb7; transform: translateY(15px); }
+  .relationship-icon::after { content: ""; position: absolute; top: -5px; right: 0; border: 4px solid transparent; border-left-color: #6c8fb7; }
+  .maturity-icon { width: auto; color: #1665f2; font-size: .72rem; font-weight: 800; letter-spacing: .08em; }
+  .maturity-icon::after { content: "WORKING + GROWING"; }
+  .inference-icon { border: 2px dashed #ff9b75; border-radius: 13px; background: rgba(255,155,117,.08); }
+  .maturity-guide { display: grid; grid-template-columns: .8fr 1.2fr; gap: 50px; margin-top: 58px; padding: 34px; color: #fff; border-radius: 20px; background: #07162b; }
+  .maturity-guide__intro h3 { margin: 0; font-size: 1.55rem; line-height: 1.25; }
+  .maturity-guide dl { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin: 0; }
+  .maturity-guide dl > div { border-left: 2px solid #2e6cb5; padding-left: 14px; }
+  .maturity-guide dt { color: #fff; font-weight: 750; }
+  .maturity-guide dd { margin: 4px 0 0; color: #aebfd2; font-size: .9rem; }
+  @media (max-width: 960px) {
+    .map-reading-grid { grid-template-columns: 1fr 1fr; }
+    .maturity-guide { grid-template-columns: 1fr; gap: 28px; }
+  }
+  @media (max-width: 620px) {
+    .shell-wide { width: min(calc(100% - 20px), 1520px); }
+    .map-reading-grid,
+    .maturity-guide dl { grid-template-columns: 1fr; }
+    .maturity-guide { padding: 26px 22px; }
+  }
+</style>

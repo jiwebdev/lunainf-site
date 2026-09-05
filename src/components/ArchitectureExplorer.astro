@@ -1,0 +1,548 @@
+---
+import {
+  publicArchitecture,
+  publicArchitectureCounts,
+  type PublicArchitectureNode,
+} from '../lib/publicArchitecture';
+
+const counts = publicArchitectureCounts();
+const familyById = new Map(publicArchitecture.families.map((family) => [family.id, family]));
+const nodeById = new Map(publicArchitecture.nodes.map((node) => [node.id, node]));
+const graphWidth = 1430;
+const graphHeight = 1150;
+const nodeWidth = 172;
+const nodeHeight = 58;
+
+const maturityLabels = {
+  WORKING: 'Working',
+  'WORKING + GROWING': 'Working + Growing',
+  EXPERIMENTAL: 'Experimental',
+  ARCHITECTURAL: 'Architectural',
+} as const;
+
+function wrapLabel(label: string): string[] {
+  const words = label.split(' ');
+  const lines: string[] = [];
+  for (const word of words) {
+    const current = lines.at(-1);
+    if (!current || (current.length + word.length + 1 > 23 && lines.length < 3)) {
+      lines.push(word);
+    } else {
+      lines[lines.length - 1] = `${current} ${word}`;
+    }
+  }
+  return lines;
+}
+
+const familyRegions = publicArchitecture.families.map((family) => {
+  const nodes = publicArchitecture.nodes.filter((node) => node.family === family.id);
+  const xs = nodes.map((node) => node.position.x);
+  const ys = nodes.map((node) => node.position.y);
+  const x = Math.max(12, Math.min(...xs) - nodeWidth / 2 - 30);
+  const y = Math.max(12, Math.min(...ys) - nodeHeight / 2 - 38);
+  const maxX = Math.min(graphWidth - 12, Math.max(...xs) + nodeWidth / 2 + 30);
+  const maxY = Math.min(graphHeight - 12, Math.max(...ys) + nodeHeight / 2 + 30);
+  return { ...family, x, y, width: maxX - x, height: maxY - y };
+});
+
+const annotationRegions = publicArchitecture.annotations.map((annotation) => {
+  const nodes = annotation.node_ids.map((nodeId) => nodeById.get(nodeId)!);
+  const xs = nodes.map((node) => node.position.x);
+  const ys = nodes.map((node) => node.position.y);
+  const x = Math.max(8, Math.min(...xs) - nodeWidth / 2 - 38);
+  const y = Math.max(8, Math.min(...ys) - nodeHeight / 2 - 48);
+  const maxX = Math.min(graphWidth - 8, Math.max(...xs) + nodeWidth / 2 + 38);
+  const maxY = Math.min(graphHeight - 8, Math.max(...ys) + nodeHeight / 2 + 40);
+  return { ...annotation, x, y, width: maxX - x, height: maxY - y };
+});
+
+const groupedNodes = publicArchitecture.families.map((family) => ({
+  family,
+  nodes: publicArchitecture.nodes.filter((node) => node.family === family.id),
+}));
+
+const clientNodes = publicArchitecture.nodes.map((node) => ({
+  ...node,
+  family_label: familyById.get(node.family)!.label,
+  maturity_label: maturityLabels[node.maturity],
+}));
+const clientJson = JSON.stringify(clientNodes).replaceAll('<', '\\u003c');
+---
+
+<section class="architecture-explorer" aria-labelledby="architecture-explorer-title">
+  <div class="architecture-explorer__header">
+    <div>
+      <p class="eyebrow">INTERACTIVE ARCHITECTURE EXPLORER</p>
+      <h2 id="architecture-explorer-title">One model region. A much larger architecture.</h2>
+    </div>
+    <p class="architecture-counts" aria-label={`${counts.nodes} subsystems, ${counts.relationships} relationships, ${counts.families} architectural families`}>
+      <strong>{counts.nodes}</strong> subsystems <span>·</span>
+      <strong>{counts.relationships}</strong> relationships <span>·</span>
+      <strong>{counts.families}</strong> architectural families
+    </p>
+  </div>
+
+  {publicArchitecture.annotations.map((annotation) => (
+    <aside class="inference-note" aria-label={annotation.label}>
+      <span class="inference-note__mark" aria-hidden="true"></span>
+      <div>
+        <strong>{annotation.label}</strong>
+        <p>{annotation.description}</p>
+      </div>
+    </aside>
+  ))}
+
+  <div class="architecture-controls" aria-label="Architecture Explorer controls">
+    <label class="architecture-search">
+      <span>Find a subsystem</span>
+      <input type="search" data-architecture-search placeholder="Search by name or description" autocomplete="off" />
+    </label>
+    <label class="architecture-family-select">
+      <span>Focus a family</span>
+      <select data-family-filter>
+        <option value="">All architectural families</option>
+        {publicArchitecture.families.map((family) => <option value={family.id}>{family.label}</option>)}
+      </select>
+    </label>
+    <div class="architecture-zoom" role="group" aria-label="Map zoom controls">
+      <button type="button" data-zoom="out" aria-label="Zoom out">−</button>
+      <button type="button" data-zoom="in" aria-label="Zoom in">+</button>
+      <button type="button" data-zoom="reset">Fit map</button>
+    </div>
+  </div>
+
+  <div class="architecture-workspace">
+    <div class="architecture-map-shell">
+      <svg
+        class="architecture-graph"
+        viewBox={`-30 0 ${graphWidth + 30} ${graphHeight}`}
+        role="img"
+        aria-labelledby="architecture-graph-title architecture-graph-description"
+        data-architecture-graph
+      >
+        <title id="architecture-graph-title">LUNA public architecture map</title>
+        <desc id="architecture-graph-description">An interactive map of public LUNA subsystems grouped by architectural family. Select a subsystem or use the searchable directory to inspect it.</desc>
+        <defs>
+          <marker id="architecture-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z"></path>
+          </marker>
+        </defs>
+        <g class="architecture-scene" data-architecture-scene>
+          <g class="family-regions" aria-hidden="true">
+            {familyRegions.map((family) => (
+              <g class="family-region" data-family-region={family.id} style={`--family-color:${family.color}`}>
+                <rect x={family.x} y={family.y} width={family.width} height={family.height} rx="28"></rect>
+                <text x={family.x + 15} y={family.y + 24}>{family.label}</text>
+              </g>
+            ))}
+          </g>
+
+          <g class="architecture-edges" aria-hidden="true">
+            {publicArchitecture.relationships.map((relationship) => {
+              const source = nodeById.get(relationship.source)!;
+              const target = nodeById.get(relationship.target)!;
+              return (
+                <line
+                  x1={source.position.x}
+                  y1={source.position.y}
+                  x2={target.position.x}
+                  y2={target.position.y}
+                  data-edge-source={relationship.source}
+                  data-edge-target={relationship.target}
+                  data-edge-label={relationship.label}
+                  marker-end="url(#architecture-arrow)"
+                ></line>
+              );
+            })}
+          </g>
+
+          <g class="annotation-regions" aria-hidden="true">
+            {annotationRegions.map((annotation) => (
+              <g class="annotation-region" data-annotation-id={annotation.id}>
+                <rect x={annotation.x} y={annotation.y} width={annotation.width} height={annotation.height} rx="30"></rect>
+                <text x={annotation.x + 18} y={annotation.y + 28}>{annotation.label}</text>
+              </g>
+            ))}
+          </g>
+
+          <g class="architecture-nodes">
+            {publicArchitecture.nodes.map((node) => {
+              const family = familyById.get(node.family)!;
+              const lines = wrapLabel(node.label);
+              return (
+                <g
+                  class="architecture-node"
+                  data-node-id={node.id}
+                  data-node-family={node.family}
+                  data-node-search={`${node.label} ${node.description}`.toLocaleLowerCase()}
+                  style={`--node-color:${family.color}`}
+                  transform={`translate(${node.position.x} ${node.position.y})`}
+                  role="button"
+                  tabindex="0"
+                  aria-label={`${node.label}. ${family.label}. ${maturityLabels[node.maturity]}.`}
+                >
+                  <rect x={-nodeWidth / 2} y={-nodeHeight / 2} width={nodeWidth} height={nodeHeight} rx="14"></rect>
+                  <circle cx={-nodeWidth / 2 + 14} cy={-nodeHeight / 2 + 14} r="4"></circle>
+                  <text text-anchor="middle" aria-hidden="true">
+                    {lines.map((line, index) => (
+                      <tspan x="0" y={(index - (lines.length - 1) / 2) * 14 + 1}>{line}</tspan>
+                    ))}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        </g>
+      </svg>
+      <p class="map-help">Drag or swipe to pan. Use the visible controls to zoom or fit the map.</p>
+    </div>
+
+    <aside class="architecture-inspector" aria-live="polite" aria-labelledby="inspector-heading">
+      <p class="inspector-kicker">SELECTED SUBSYSTEM</p>
+      <h3 id="inspector-heading">Choose a subsystem</h3>
+      <p data-inspector-intro>Select a node on the map or choose one from the searchable directory.</p>
+      <dl data-inspector-details hidden>
+        <div><dt>Architectural family</dt><dd data-inspector-family></dd></div>
+        <div><dt>Public maturity</dt><dd data-inspector-maturity></dd></div>
+      </dl>
+      <p data-inspector-description></p>
+      <div data-inspector-why-wrap hidden><h4>Why it matters</h4><p data-inspector-why></p></div>
+      <div data-inspector-example-wrap hidden><h4>Example</h4><p data-inspector-example></p></div>
+      <div data-inspector-maturity-note-wrap hidden><h4>About this maturity</h4><p data-inspector-maturity-note></p></div>
+    </aside>
+  </div>
+
+  <div class="subsystem-directory" aria-labelledby="subsystem-directory-heading">
+    <div class="subsystem-directory__heading">
+      <div>
+        <p class="eyebrow">SEARCHABLE DIRECTORY</p>
+        <h3 id="subsystem-directory-heading">Choose a subsystem by name</h3>
+      </div>
+      <p data-directory-status role="status">Showing all {counts.nodes} subsystems.</p>
+    </div>
+    <div class="subsystem-directory__families">
+      {groupedNodes.map(({ family, nodes }) => (
+        <section data-directory-family={family.id} style={`--family-color:${family.color}`}>
+          <h4>{family.label}</h4>
+          <div>
+            {nodes.map((node) => (
+              <button type="button" data-directory-node={node.id} data-node-search={`${node.label} ${node.description}`.toLocaleLowerCase()}>
+                <span>{node.label}</span>
+                <small>{maturityLabels[node.maturity]}</small>
+              </button>
+            ))}
+          </div>
+        </section>
+      ))}
+    </div>
+  </div>
+
+  <noscript>
+    <div class="architecture-fallback">
+      <h3>Architecture directory</h3>
+      <p>The interactive map needs JavaScript. Every public subsystem remains available below.</p>
+      {groupedNodes.map(({ family, nodes }) => (
+        <section>
+          <h4>{family.label}</h4>
+          <p>{family.description}</p>
+          {nodes.map((node: PublicArchitectureNode) => (
+            <article>
+              <h5>{node.label} <span>— {maturityLabels[node.maturity]}</span></h5>
+              <p>{node.description}</p>
+            </article>
+          ))}
+        </section>
+      ))}
+    </div>
+  </noscript>
+
+  <script is:inline type="application/json" id="public-architecture-node-data" set:html={clientJson}></script>
+</section>
+
+<script>
+  type ExplorerNode = {
+    id: string;
+    label: string;
+    family: string;
+    family_label: string;
+    description: string;
+    maturity_label: string;
+    why_it_matters?: string;
+    example?: string;
+    maturity_explanation?: string;
+  };
+
+  const root = document.querySelector<HTMLElement>('.architecture-explorer');
+  const nodeData = document.querySelector<HTMLScriptElement>('#public-architecture-node-data');
+
+  if (root && nodeData) {
+    const nodes = JSON.parse(nodeData.textContent ?? '[]') as ExplorerNode[];
+    const nodesById = new Map(nodes.map((node) => [node.id, node]));
+    const graph = root.querySelector<SVGSVGElement>('[data-architecture-graph]');
+    const scene = root.querySelector<SVGGElement>('[data-architecture-scene]');
+    const search = root.querySelector<HTMLInputElement>('[data-architecture-search]');
+    const familyFilter = root.querySelector<HTMLSelectElement>('[data-family-filter]');
+    const status = root.querySelector<HTMLElement>('[data-directory-status]');
+    const graphNodes = [...root.querySelectorAll<SVGGElement>('[data-node-id]')];
+    const directoryNodes = [...root.querySelectorAll<HTMLButtonElement>('[data-directory-node]')];
+    const edges = [...root.querySelectorAll<SVGLineElement>('[data-edge-source]')];
+    const regions = [...root.querySelectorAll<SVGGElement>('[data-family-region]')];
+    const directoryFamilies = [...root.querySelectorAll<HTMLElement>('[data-directory-family]')];
+    let selectedId = '';
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let drag: { pointerId: number; x: number; y: number } | null = null;
+
+    const inspectorHeading = root.querySelector<HTMLElement>('#inspector-heading');
+    const inspectorIntro = root.querySelector<HTMLElement>('[data-inspector-intro]');
+    const inspectorDetails = root.querySelector<HTMLElement>('[data-inspector-details]');
+    const inspectorFamily = root.querySelector<HTMLElement>('[data-inspector-family]');
+    const inspectorMaturity = root.querySelector<HTMLElement>('[data-inspector-maturity]');
+    const inspectorDescription = root.querySelector<HTMLElement>('[data-inspector-description]');
+
+    const setOptional = (name: string, value?: string) => {
+      const wrapper = root.querySelector<HTMLElement>(`[data-inspector-${name}-wrap]`);
+      const target = root.querySelector<HTMLElement>(`[data-inspector-${name}]`);
+      if (!wrapper || !target) return;
+      wrapper.hidden = !value;
+      target.textContent = value ?? '';
+    };
+
+    const updateTransform = () => {
+      scene?.setAttribute('transform', `translate(${translateX} ${translateY}) scale(${scale})`);
+    };
+
+    const updateView = () => {
+      const term = search?.value.trim().toLocaleLowerCase() ?? '';
+      const family = familyFilter?.value ?? '';
+      const selectedEdges = edges.filter((edge) =>
+        selectedId && (edge.dataset.edgeSource === selectedId || edge.dataset.edgeTarget === selectedId),
+      );
+      const neighborIds = new Set<string>([selectedId]);
+      for (const edge of selectedEdges) {
+        neighborIds.add(edge.dataset.edgeSource ?? '');
+        neighborIds.add(edge.dataset.edgeTarget ?? '');
+      }
+
+      let visibleCount = 0;
+      for (const nodeElement of graphNodes) {
+        const id = nodeElement.dataset.nodeId ?? '';
+        const matchesSearch = !term || (nodeElement.dataset.nodeSearch ?? '').includes(term);
+        const matchesFamily = !family || nodeElement.dataset.nodeFamily === family;
+        const matchesSelection = !selectedId || neighborIds.has(id);
+        nodeElement.classList.toggle('is-selected', id === selectedId);
+        nodeElement.classList.toggle('is-neighbor', Boolean(selectedId) && id !== selectedId && neighborIds.has(id));
+        nodeElement.classList.toggle('is-dimmed', !matchesSearch || !matchesFamily || !matchesSelection);
+      }
+      for (const edge of edges) {
+        const connected = !selectedId || selectedEdges.includes(edge);
+        edge.classList.toggle('is-active', Boolean(selectedId) && connected);
+        edge.classList.toggle('is-dimmed', Boolean(selectedId) && !connected);
+      }
+      for (const region of regions) {
+        region.classList.toggle('is-dimmed', Boolean(family) && region.dataset.familyRegion !== family);
+      }
+      for (const button of directoryNodes) {
+        const id = button.dataset.directoryNode ?? '';
+        const node = nodesById.get(id);
+        const matches = Boolean(node) && (!term || (button.dataset.nodeSearch ?? '').includes(term)) && (!family || node?.family === family);
+        button.hidden = !matches;
+        button.setAttribute('aria-current', id === selectedId ? 'true' : 'false');
+        if (matches) visibleCount += 1;
+      }
+      for (const group of directoryFamilies) {
+        group.hidden = ![...group.querySelectorAll<HTMLButtonElement>('[data-directory-node]')].some((button) => !button.hidden);
+      }
+      if (status) status.textContent = `Showing ${visibleCount} ${visibleCount === 1 ? 'subsystem' : 'subsystems'}.`;
+    };
+
+    const selectNode = (id: string, moveFocus = false) => {
+      const node = nodesById.get(id);
+      if (!node) return;
+      selectedId = id;
+      if (inspectorHeading) inspectorHeading.textContent = node.label;
+      if (inspectorIntro) inspectorIntro.hidden = true;
+      if (inspectorDetails) inspectorDetails.hidden = false;
+      if (inspectorFamily) inspectorFamily.textContent = node.family_label;
+      if (inspectorMaturity) inspectorMaturity.textContent = node.maturity_label;
+      if (inspectorDescription) inspectorDescription.textContent = node.description;
+      setOptional('why', node.why_it_matters);
+      setOptional('example', node.example);
+      setOptional('maturity-note', node.maturity_explanation);
+      updateView();
+      if (moveFocus) root.querySelector<HTMLElement>(`[data-directory-node="${id}"]`)?.focus();
+    };
+
+    for (const node of graphNodes) {
+      node.addEventListener('click', () => selectNode(node.dataset.nodeId ?? ''));
+      node.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectNode(node.dataset.nodeId ?? '');
+        }
+      });
+    }
+    for (const button of directoryNodes) {
+      button.addEventListener('click', () => selectNode(button.dataset.directoryNode ?? ''));
+    }
+    search?.addEventListener('input', updateView);
+    familyFilter?.addEventListener('change', updateView);
+
+    root.querySelector('[data-zoom="in"]')?.addEventListener('click', () => {
+      scale = Math.min(2.4, scale * 1.2);
+      updateTransform();
+    });
+    root.querySelector('[data-zoom="out"]')?.addEventListener('click', () => {
+      scale = Math.max(0.72, scale / 1.2);
+      updateTransform();
+    });
+    root.querySelector('[data-zoom="reset"]')?.addEventListener('click', () => {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      updateTransform();
+    });
+
+    graph?.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      scale = Math.max(0.72, Math.min(2.4, scale * (event.deltaY > 0 ? 0.92 : 1.08)));
+      updateTransform();
+    }, { passive: false });
+    graph?.addEventListener('pointerdown', (event) => {
+      if ((event.target as Element).closest('[data-node-id]')) return;
+      drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+      graph.setPointerCapture(event.pointerId);
+      graph.classList.add('is-panning');
+    });
+    graph?.addEventListener('pointermove', (event) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      const rect = graph.getBoundingClientRect();
+      translateX += (event.clientX - drag.x) * (1430 / rect.width);
+      translateY += (event.clientY - drag.y) * (1150 / rect.height);
+      drag = { pointerId: event.pointerId, x: event.clientX, y: event.clientY };
+      updateTransform();
+    });
+    const endPan = (event: PointerEvent) => {
+      if (!drag || drag.pointerId !== event.pointerId) return;
+      drag = null;
+      graph?.classList.remove('is-panning');
+    };
+    graph?.addEventListener('pointerup', endPan);
+    graph?.addEventListener('pointercancel', endPan);
+    if (window.matchMedia('(max-width: 620px)').matches) {
+      scale = 1.5;
+      translateX = 20;
+      translateY = 0;
+      updateTransform();
+    }
+    updateView();
+  }
+</script>
+
+<style>
+  .architecture-explorer { min-width: 0; overflow: hidden; color: #f7fbff; }
+  .architecture-explorer__header { display: flex; justify-content: space-between; gap: 40px; align-items: end; }
+  .architecture-explorer__header h2 { max-width: 820px; }
+  .architecture-counts { margin: 0; color: #9fb4cc; white-space: nowrap; }
+  .architecture-counts strong { color: #fff; font-size: 1.35rem; }
+  .architecture-counts span { margin: 0 6px; color: #4d6b8e; }
+  .inference-note { display: flex; gap: 14px; align-items: flex-start; max-width: 760px; margin: 34px 0 18px auto; padding: 17px 19px; border: 1px dashed rgba(255,155,117,.7); border-radius: 16px; background: rgba(255,155,117,.065); }
+  .inference-note__mark { flex: 0 0 13px; height: 13px; margin-top: 5px; border: 2px solid #ff9b75; border-radius: 50%; }
+  .inference-note strong { color: #fff; }
+  .inference-note p { margin: 4px 0 0; color: #aebfd2; font-size: .91rem; }
+  .architecture-controls { display: grid; grid-template-columns: minmax(250px, 1fr) minmax(220px, .7fr) auto; gap: 12px; align-items: end; margin-top: 20px; }
+  .architecture-controls label > span { display: block; margin-bottom: 7px; color: #adc0d5; font-size: .76rem; font-weight: 700; letter-spacing: .07em; text-transform: uppercase; }
+  .architecture-controls input,
+  .architecture-controls select { width: 100%; min-height: 46px; padding: 0 14px; color: #fff; border: 1px solid #365778; border-radius: 11px; background: #0a203e; font: inherit; }
+  .architecture-controls select option { color: #07162b; background: #fff; }
+  .architecture-zoom { display: flex; gap: 7px; }
+  .architecture-zoom button { min-width: 46px; min-height: 46px; padding: 0 14px; color: #e8f1fb; border: 1px solid #365778; border-radius: 11px; background: #0a203e; font: inherit; font-weight: 700; cursor: pointer; }
+  .architecture-zoom button:hover { border-color: #6fb1ff; background: #102d53; }
+  .architecture-workspace { display: grid; grid-template-columns: minmax(0, 1fr) 300px; min-width: 0; max-width: 100%; margin-top: 16px; border: 1px solid #27496e; border-radius: 22px; overflow: hidden; background: #061326; box-shadow: 0 26px 80px rgba(0,0,0,.22); }
+  .architecture-map-shell { min-width: 0; padding: 12px 12px 8px; background: radial-gradient(circle at 72% 24%, rgba(22,101,242,.12), transparent 33%), #051122; }
+  .architecture-graph { display: block; width: 100%; aspect-ratio: 1.24; min-height: 610px; border-radius: 14px; background-image: linear-gradient(rgba(107,155,211,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(107,155,211,.045) 1px, transparent 1px); background-size: 42px 42px; cursor: grab; touch-action: none; }
+  .architecture-graph.is-panning { cursor: grabbing; }
+  .architecture-scene { transform-origin: 0 0; }
+  .family-region { color: var(--family-color); transition: opacity .18s ease; }
+  .family-region rect { fill: currentColor; fill-opacity: .025; stroke: currentColor; stroke-opacity: .22; stroke-width: 1.5; }
+  .family-region text { fill: currentColor; font-size: 12px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; }
+  .architecture-edges line { stroke: #6c8fb7; stroke-width: 1.3; stroke-opacity: .37; transition: opacity .18s ease, stroke .18s ease, stroke-width .18s ease; }
+  .architecture-edges marker path { fill: #6c8fb7; }
+  .architecture-edges line.is-active { stroke: #8bc1ff; stroke-width: 2.6; stroke-opacity: .95; }
+  .architecture-edges line.is-dimmed { opacity: .08; }
+  .annotation-region rect { fill: #ff9b75; fill-opacity: .035; stroke: #ff9b75; stroke-width: 2; stroke-dasharray: 9 7; }
+  .annotation-region text { fill: #ffc3ac; font-size: 13px; font-weight: 700; letter-spacing: .5px; }
+  .architecture-node { color: var(--node-color); cursor: pointer; outline: none; transition: opacity .18s ease; }
+  .architecture-node rect { fill: #0a1e39; stroke: currentColor; stroke-width: 1.6; filter: drop-shadow(0 6px 8px rgba(0,0,0,.22)); transition: fill .18s ease, stroke-width .18s ease; }
+  .architecture-node circle { fill: currentColor; }
+  .architecture-node text { fill: #eef6ff; font-size: 11.5px; font-weight: 620; pointer-events: none; }
+  .architecture-node:hover rect,
+  .architecture-node:focus-visible rect { fill: #102c51; stroke-width: 3.4; }
+  .architecture-node.is-selected rect { fill: #14385f; stroke-width: 4; }
+  .architecture-node.is-neighbor rect { fill: #0e294b; stroke-width: 2.4; }
+  .architecture-node.is-dimmed,
+  .family-region.is-dimmed { opacity: .15; }
+  .map-help { margin: 8px 8px 0; color: #7892af; font-size: .78rem; }
+  .architecture-inspector { padding: 28px 24px; border-left: 1px solid #27496e; background: linear-gradient(180deg, #0a1e39, #07162b); }
+  .inspector-kicker { margin: 0 0 8px; color: #6fb1ff; font-size: .69rem; font-weight: 800; letter-spacing: .14em; }
+  .architecture-inspector h3 { margin: 0; color: #fff; font-size: 1.75rem; line-height: 1.1; }
+  .architecture-inspector > p { color: #aebfd2; }
+  .architecture-inspector dl { display: grid; gap: 12px; margin: 22px 0; }
+  .architecture-inspector dl > div { display: grid; gap: 2px; }
+  .architecture-inspector dt { color: #7892af; font-size: .72rem; text-transform: uppercase; letter-spacing: .08em; }
+  .architecture-inspector dd { margin: 0; color: #eef6ff; font-weight: 650; }
+  .architecture-inspector h4 { margin: 22px 0 5px; color: #fff; font-size: .8rem; letter-spacing: .06em; text-transform: uppercase; }
+  .architecture-inspector [hidden] { display: none; }
+  .architecture-inspector div p { margin: 0; color: #aebfd2; font-size: .91rem; }
+  .subsystem-directory { margin-top: 26px; padding: 26px; border: 1px solid #27496e; border-radius: 20px; background: rgba(5,17,34,.72); }
+  .subsystem-directory__heading { display: flex; justify-content: space-between; gap: 24px; align-items: end; }
+  .subsystem-directory__heading h3 { margin: 0; font-size: 1.45rem; }
+  .subsystem-directory__heading p:last-child { margin: 0; color: #8fa8c4; font-size: .88rem; }
+  .subsystem-directory__families { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; margin-top: 24px; }
+  .subsystem-directory__families section { min-width: 0; }
+  .subsystem-directory__families section[hidden] { display: none; }
+  .subsystem-directory__families h4 { margin: 0 0 8px; padding-bottom: 8px; color: var(--family-color); border-bottom: 1px solid color-mix(in srgb, var(--family-color) 45%, transparent); font-size: .82rem; letter-spacing: .06em; text-transform: uppercase; }
+  .subsystem-directory__families section > div { display: grid; gap: 5px; }
+  .subsystem-directory button { display: flex; justify-content: space-between; gap: 8px; width: 100%; padding: 9px 10px; color: #dfeaf6; text-align: left; border: 1px solid transparent; border-radius: 9px; background: transparent; cursor: pointer; }
+  .subsystem-directory button:hover,
+  .subsystem-directory button:focus-visible,
+  .subsystem-directory button[aria-current="true"] { border-color: var(--family-color); background: rgba(255,255,255,.055); outline: none; }
+  .subsystem-directory button[hidden] { display: none; }
+  .subsystem-directory small { color: #7892af; white-space: nowrap; }
+  .architecture-fallback { margin-top: 28px; padding: 28px; color: #17375f; background: #fff; border-radius: 18px; }
+  .architecture-fallback section { margin-top: 28px; }
+  .architecture-fallback article { padding: 12px 0; border-top: 1px solid #dbe3ec; }
+  .architecture-fallback h5 { margin: 0 0 4px; }
+  .architecture-fallback h5 span { color: #58708d; font-size: .78rem; }
+  .architecture-fallback p { margin: 0; }
+  @media (max-width: 1080px) {
+    .architecture-explorer__header { display: block; }
+    .architecture-counts { margin-top: 20px; white-space: normal; }
+    .subsystem-directory__families { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 840px) {
+    .architecture-controls { grid-template-columns: 1fr 1fr; }
+    .architecture-zoom { grid-column: 1 / -1; }
+    .architecture-workspace { grid-template-columns: 1fr; }
+    .architecture-graph { min-height: 520px; }
+    .architecture-inspector { border-top: 1px solid #27496e; border-left: 0; }
+  }
+  @media (max-width: 620px) {
+    .architecture-controls { grid-template-columns: 1fr; }
+    .architecture-zoom { grid-column: auto; }
+    .architecture-zoom button { flex: 1; }
+    .architecture-map-shell { margin: 0; padding: 7px; overflow: hidden; }
+    .architecture-graph { width: 100%; max-width: 100%; min-height: 620px; }
+    .subsystem-directory { padding: 20px 16px; }
+    .subsystem-directory__heading { display: block; }
+    .subsystem-directory__heading p:last-child { margin-top: 8px; }
+    .subsystem-directory__families { grid-template-columns: 1fr; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .architecture-node,
+    .architecture-node rect,
+    .architecture-edges line,
+    .family-region { transition: none; }
+  }
+</style>

@@ -6,11 +6,19 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "astro build",
-    "preview": "astro preview"
+    "check": "astro check && npm run verify:architecture",
+    "build": "astro build && npm run verify:dist",
+    "preview": "astro preview",
+    "verify:architecture": "tsx scripts/verify-public-architecture.ts",
+    "verify:dist": "node scripts/verify-dist.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.2.1",
     "astro": "^5.13.5"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.10",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3"
   }
 }
