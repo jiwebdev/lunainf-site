@@ -27,10 +27,22 @@ jobs:
           node-version: 20
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+
+      - name: Verify public architecture
+        run: npm run verify:architecture
+
+      - name: Check site
+        run: npm run check
 
       - name: Build
         run: npm run build
+
+      - name: Verify static boundary
+        run: npm run verify:static
+
+      - name: Check internal links
+        run: npm run verify:links
 
       - name: Setup Pages
         uses: actions/configure-pages@v5

@@ -1,0 +1,471 @@
+---
+import artifact from '../data/public-architecture.json';
+import {
+  validatePublicArchitecture,
+  visitorMaturityLabel,
+  type PublicArchitectureNode,
+} from '../lib/publicArchitecture';
+import '../styles/architecture-explorer.css';
+
+const architecture = validatePublicArchitecture(artifact);
+const familyById = new Map(architecture.families.map((family) => [family.id, family]));
+const nodeById = new Map(architecture.nodes.map((node) => [node.id, node]));
+const nodeWidth = 164;
+const nodeHeight = 66;
+
+function labelLines(label: string): string[] {
+  const words = label.split(' ');
+  const lines: string[] = [];
+  let line = '';
+  for (const word of words) {
+    const next = line ? `${line} ${word}` : word;
+    if (next.length > 21 && line) {
+      lines.push(line);
+      line = word;
+    } else {
+      line = next;
+    }
+  }
+  if (line) lines.push(line);
+  return lines.slice(0, 3);
+}
+
+function boundsForNodes(nodes: PublicArchitectureNode[], xPadding = 44, yPadding = 40) {
+  return {
+    x: Math.min(...nodes.map((node) => node.position.x)) - nodeWidth / 2 - xPadding,
+    y: Math.min(...nodes.map((node) => node.position.y)) - nodeHeight / 2 - yPadding,
+    width:
+      Math.max(...nodes.map((node) => node.position.x)) -
+      Math.min(...nodes.map((node) => node.position.x)) +
+      nodeWidth +
+      xPadding * 2,
+    height:
+      Math.max(...nodes.map((node) => node.position.y)) -
+      Math.min(...nodes.map((node) => node.position.y)) +
+      nodeHeight +
+      yPadding * 2,
+  };
+}
+
+const familyRegions = architecture.families.map((family) => ({
+  family,
+  bounds: boundsForNodes(
+    architecture.nodes.filter((node) => node.family === family.id),
+  ),
+}));
+const annotations = architecture.annotations.map((annotation) => ({
+  ...annotation,
+  bounds: boundsForNodes(
+    annotation.node_ids.map((nodeId) => nodeById.get(nodeId)!),
+    24,
+    26,
+  ),
+}));
+---
+
+<section class="architecture-explorer" data-architecture-explorer>
+  <div class="architecture-explorer__heading">
+    <div>
+      <p class="architecture-explorer__kicker">PUBLIC ARCHITECTURE</p>
+      <h2>Explore the systems around inference.</h2>
+    </div>
+    <p class="architecture-explorer__scale" aria-label="Architecture scale">
+      <strong>{architecture.nodes.length}</strong> subsystems
+      <span aria-hidden="true">·</span>
+      <strong>{architecture.relationships.length}</strong> relationships
+      <span aria-hidden="true">·</span>
+      <strong>{architecture.families.length}</strong> architectural families
+    </p>
+  </div>
+
+  <div class="architecture-explorer__controls" aria-label="Architecture explorer controls">
+    <label class="architecture-control architecture-control--search">
+      <span>Search subsystems</span>
+      <input type="search" data-architecture-search placeholder="Search memory, realtime, appraisal…" />
+    </label>
+    <label class="architecture-control">
+      <span>Focus a family</span>
+      <select data-architecture-family>
+        <option value="">All families</option>
+        {architecture.families.map((family) => (
+          <option value={family.id}>{family.label}</option>
+        ))}
+      </select>
+    </label>
+    <div class="architecture-zoom" aria-label="Map zoom controls">
+      <button type="button" data-architecture-zoom-out aria-label="Zoom out">−</button>
+      <button type="button" data-architecture-zoom-in aria-label="Zoom in">+</button>
+      <button type="button" data-architecture-fit>Fit map</button>
+    </div>
+  </div>
+
+  <output class="architecture-explorer__status" data-architecture-status aria-live="polite">
+    Showing all {architecture.nodes.length} subsystems. Select one to inspect its role.
+  </output>
+
+  {architecture.annotations.map((annotation) => (
+    <div class="architecture-explorer__annotation">
+      <strong>{annotation.label}</strong>
+      <span>{annotation.description}</span>
+    </div>
+  ))}
+
+  <div class="architecture-explorer__workspace">
+    <div class="architecture-map-shell">
+      <svg
+        class="architecture-graph"
+        data-architecture-graph
+        viewBox="-70 10 1460 1115"
+        role="img"
+        aria-labelledby="architecture-map-title architecture-map-description"
+      >
+        <title id="architecture-map-title">Interactive public map of LUNA's architecture</title>
+        <desc id="architecture-map-description">
+          {architecture.nodes.length} public subsystems grouped into {architecture.families.length}
+          architectural families. The inference providers occupy one highlighted region inside
+          the larger architecture.
+        </desc>
+        <defs>
+          <marker id="public-architecture-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+            <path d="M 0 0 L 8 4 L 0 8 z"></path>
+          </marker>
+          <filter id="public-architecture-glow" x="-30%" y="-30%" width="160%" height="160%">
+            <feGaussianBlur stdDeviation="5" result="blur"></feGaussianBlur>
+            <feMerge><feMergeNode in="blur"></feMergeNode><feMergeNode in="SourceGraphic"></feMergeNode></feMerge>
+          </filter>
+        </defs>
+
+        <g data-architecture-stage>
+          <g class="architecture-family-regions" aria-hidden="true">
+            {familyRegions.map(({ family, bounds }) => (
+              <g class="architecture-family-region" data-family-region={family.id}>
+                <rect
+                  x={bounds.x}
+                  y={bounds.y}
+                  width={bounds.width}
+                  height={bounds.height}
+                  rx="32"
+                  fill={`${family.color}08`}
+                  stroke={`${family.color}5c`}
+                ></rect>
+                <text x={bounds.x + 18} y={bounds.y + 25} fill={family.color}>{family.label}</text>
+              </g>
+            ))}
+          </g>
+
+          <g class="architecture-relationships" aria-hidden="true">
+            {architecture.relationships.map((relationship) => {
+              const source = nodeById.get(relationship.source)!;
+              const target = nodeById.get(relationship.target)!;
+              return (
+                <line
+                  data-architecture-edge
+                  data-source={relationship.source}
+                  data-target={relationship.target}
+                  data-label={relationship.label}
+                  x1={source.position.x}
+                  y1={source.position.y}
+                  x2={target.position.x}
+                  y2={target.position.y}
+                  marker-end="url(#public-architecture-arrow)"
+                ><title>{source.label} {relationship.label.toLocaleLowerCase()} {target.label}</title></line>
+              );
+            })}
+          </g>
+
+          <g class="architecture-annotations" aria-hidden="true">
+            {annotations.map((annotation) => (
+              <g class="architecture-inference-region">
+                <rect
+                  x={annotation.bounds.x}
+                  y={annotation.bounds.y}
+                  width={annotation.bounds.width}
+                  height={annotation.bounds.height}
+                  rx="28"
+                ></rect>
+                <text x={annotation.bounds.x + 18} y={annotation.bounds.y + 24}>{annotation.label}</text>
+              </g>
+            ))}
+          </g>
+
+          <g class="architecture-nodes">
+            {architecture.nodes.map((node) => {
+              const family = familyById.get(node.family)!;
+              const lines = labelLines(node.label);
+              const firstY = node.position.y - ((lines.length - 1) * 7);
+              return (
+                <g
+                  class="architecture-graph-node"
+                  data-architecture-node={node.id}
+                  data-family={node.family}
+                  data-search={`${node.label} ${node.description} ${family.label}`.toLocaleLowerCase()}
+                  role="button"
+                  tabindex="0"
+                  aria-label={`${node.label}, ${family.label}, ${visitorMaturityLabel(node.maturity)}`}
+                  transform={`translate(${node.position.x - nodeWidth / 2} ${node.position.y - nodeHeight / 2})`}
+                >
+                  <rect width={nodeWidth} height={nodeHeight} rx="13" fill={`${family.color}20`} stroke={family.color}></rect>
+                  <circle cx="14" cy="14" r="4" fill={family.color}></circle>
+                  <text x={nodeWidth / 2} y={firstY - node.position.y + nodeHeight / 2} text-anchor="middle">
+                    {lines.map((line, index) => (
+                      <tspan x={nodeWidth / 2} dy={index === 0 ? 0 : 14}>{line}</tspan>
+                    ))}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
+        </g>
+      </svg>
+      <p class="architecture-map-shell__hint">Drag to pan. Use the visible controls or a wheel/trackpad to zoom.</p>
+    </div>
+
+    <aside class="architecture-inspector" aria-live="polite" aria-labelledby="architecture-inspector-title">
+      <p class="architecture-inspector__eyebrow">SUBSYSTEM DETAILS</p>
+      <h3 id="architecture-inspector-title" data-inspector-title>Select a subsystem</h3>
+      <p data-inspector-description>
+        Choose a node on the map or from the searchable directory. Direct connections will
+        remain emphasized while unrelated systems fade into the background.
+      </p>
+      <dl class="architecture-inspector__facts" data-inspector-facts hidden>
+        <div><dt>Architectural family</dt><dd data-inspector-family></dd></div>
+        <div><dt>Public maturity</dt><dd data-inspector-maturity></dd></div>
+      </dl>
+      <div class="architecture-inspector__optional" data-inspector-why-row hidden>
+        <h4>Why it matters</h4><p data-inspector-why></p>
+      </div>
+      <div class="architecture-inspector__optional" data-inspector-example-row hidden>
+        <h4>Example</h4><p data-inspector-example></p>
+      </div>
+      <div class="architecture-inspector__optional" data-inspector-maturity-row hidden>
+        <h4>Maturity explanation</h4><p data-inspector-maturity-explanation></p>
+      </div>
+      <div class="architecture-inspector__connections" data-inspector-connections hidden>
+        <h4>Direct public relationships</h4>
+        <ul data-inspector-connection-list></ul>
+      </div>
+    </aside>
+  </div>
+
+  <div class="architecture-directory" aria-labelledby="architecture-directory-title">
+    <div>
+      <p class="architecture-explorer__kicker">ACCESSIBLE DIRECTORY</p>
+      <h3 id="architecture-directory-title">Choose a subsystem by name.</h3>
+    </div>
+    <div class="architecture-directory__list" data-architecture-list>
+      {architecture.nodes.map((node) => {
+        const family = familyById.get(node.family)!;
+        return (
+          <button
+            type="button"
+            data-list-node={node.id}
+            data-family={node.family}
+            data-search={`${node.label} ${node.description} ${family.label}`.toLocaleLowerCase()}
+            data-label={node.label}
+            data-family-label={family.label}
+            data-maturity={visitorMaturityLabel(node.maturity)}
+            data-description={node.description}
+            data-why={node.why_it_matters ?? ''}
+            data-example={node.example ?? ''}
+            data-maturity-explanation={node.maturity_explanation ?? ''}
+          >
+            <span class="architecture-directory__dot" style={`--family-color:${family.color}`}></span>
+            <span><strong>{node.label}</strong><small>{family.label} · {visitorMaturityLabel(node.maturity)}</small></span>
+          </button>
+        );
+      })}
+    </div>
+  </div>
+
+  <noscript>
+    <div class="architecture-fallback">
+      <h3>Public subsystem directory</h3>
+      <p>The interactive controls require JavaScript. Every subsystem remains available below.</p>
+      {architecture.families.map((family) => (
+        <section>
+          <h4>{family.label}</h4>
+          {architecture.nodes.filter((node) => node.family === family.id).map((node) => (
+            <article>
+              <h5>{node.label} · {visitorMaturityLabel(node.maturity)}</h5>
+              <p>{node.description}</p>
+            </article>
+          ))}
+        </section>
+      ))}
+    </div>
+  </noscript>
+</section>
+
+<script is:inline>
+  (() => {
+    const root = document.querySelector('[data-architecture-explorer]');
+    if (!root) return;
+    const svg = root.querySelector('[data-architecture-graph]');
+    const stage = root.querySelector('[data-architecture-stage]');
+    const search = root.querySelector('[data-architecture-search]');
+    const familySelect = root.querySelector('[data-architecture-family]');
+    const status = root.querySelector('[data-architecture-status]');
+    const graphNodes = [...root.querySelectorAll('[data-architecture-node]')];
+    const listNodes = [...root.querySelectorAll('[data-list-node]')];
+    const edges = [...root.querySelectorAll('[data-architecture-edge]')];
+    const regionNodes = [...root.querySelectorAll('[data-family-region]')];
+    const listById = new Map(listNodes.map((node) => [node.dataset.listNode, node]));
+    const graphById = new Map(graphNodes.map((node) => [node.dataset.architectureNode, node]));
+    let selected = '';
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+    let drag = null;
+
+    const inspector = {
+      title: root.querySelector('[data-inspector-title]'),
+      description: root.querySelector('[data-inspector-description]'),
+      facts: root.querySelector('[data-inspector-facts]'),
+      family: root.querySelector('[data-inspector-family]'),
+      maturity: root.querySelector('[data-inspector-maturity]'),
+      whyRow: root.querySelector('[data-inspector-why-row]'),
+      why: root.querySelector('[data-inspector-why]'),
+      exampleRow: root.querySelector('[data-inspector-example-row]'),
+      example: root.querySelector('[data-inspector-example]'),
+      maturityRow: root.querySelector('[data-inspector-maturity-row]'),
+      maturityExplanation: root.querySelector('[data-inspector-maturity-explanation]'),
+      connections: root.querySelector('[data-inspector-connections]'),
+      connectionList: root.querySelector('[data-inspector-connection-list]'),
+    };
+
+    const setTransform = () => {
+      stage.setAttribute('transform', `translate(${translateX} ${translateY}) scale(${scale})`);
+    };
+    const resetView = () => {
+      scale = 1;
+      translateX = 0;
+      translateY = 0;
+      setTransform();
+      status.textContent = selected ? `Fit map. ${listById.get(selected).dataset.label} remains selected.` : 'Map fitted to all subsystems.';
+    };
+    const zoom = (factor) => {
+      const next = Math.min(3.2, Math.max(0.72, scale * factor));
+      if (next === scale) return;
+      const centerX = 660;
+      const centerY = 565;
+      translateX = centerX - ((centerX - translateX) * next) / scale;
+      translateY = centerY - ((centerY - translateY) * next) / scale;
+      scale = next;
+      setTransform();
+      status.textContent = `Map zoom ${Math.round(scale * 100)} percent.`;
+    };
+
+    const optional = (row, target, value) => {
+      row.hidden = !value;
+      target.textContent = value || '';
+    };
+
+    const applyFilters = () => {
+      const term = search.value.trim().toLocaleLowerCase();
+      const family = familySelect.value;
+      let matches = 0;
+      for (const item of listNodes) {
+        const match = (!term || item.dataset.search.includes(term)) && (!family || item.dataset.family === family);
+        item.hidden = !match;
+        if (match) matches += 1;
+      }
+      for (const node of graphNodes) {
+        const match = (!term || node.dataset.search.includes(term)) && (!family || node.dataset.family === family);
+        node.classList.toggle('is-filtered', !match);
+      }
+      for (const region of regionNodes) {
+        region.classList.toggle('is-focused', Boolean(family && region.dataset.familyRegion === family));
+        region.classList.toggle('is-filtered', Boolean(family && region.dataset.familyRegion !== family));
+      }
+      status.textContent = `${matches} subsystem${matches === 1 ? '' : 's'} match the current search and family focus.`;
+    };
+
+    const selectNode = (nodeId, announce = true) => {
+      const data = listById.get(nodeId);
+      if (!data) return;
+      selected = nodeId;
+      const connected = new Set([nodeId]);
+      const connectionRows = [];
+      for (const edge of edges) {
+        const touches = edge.dataset.source === nodeId || edge.dataset.target === nodeId;
+        edge.classList.toggle('is-connected', touches);
+        edge.classList.toggle('is-dimmed', !touches);
+        if (!touches) continue;
+        const neighborId = edge.dataset.source === nodeId ? edge.dataset.target : edge.dataset.source;
+        connected.add(neighborId);
+        const neighbor = listById.get(neighborId);
+        const direction = edge.dataset.source === nodeId ? edge.dataset.label : `Receives: ${edge.dataset.label}`;
+        connectionRows.push(`${direction} — ${neighbor.dataset.label}`);
+      }
+      for (const node of graphNodes) {
+        const id = node.dataset.architectureNode;
+        node.classList.toggle('is-selected', id === nodeId);
+        node.classList.toggle('is-neighbor', id !== nodeId && connected.has(id));
+        node.classList.toggle('is-unrelated', !connected.has(id));
+      }
+      for (const item of listNodes) item.classList.toggle('is-selected', item.dataset.listNode === nodeId);
+
+      inspector.title.textContent = data.dataset.label;
+      inspector.description.textContent = data.dataset.description;
+      inspector.facts.hidden = false;
+      inspector.family.textContent = data.dataset.familyLabel;
+      inspector.maturity.textContent = data.dataset.maturity;
+      optional(inspector.whyRow, inspector.why, data.dataset.why);
+      optional(inspector.exampleRow, inspector.example, data.dataset.example);
+      optional(inspector.maturityRow, inspector.maturityExplanation, data.dataset.maturityExplanation);
+      inspector.connectionList.replaceChildren(...connectionRows.map((copy) => {
+        const item = document.createElement('li');
+        item.textContent = copy;
+        return item;
+      }));
+      inspector.connections.hidden = connectionRows.length === 0;
+      if (announce) status.textContent = `${data.dataset.label} selected. ${connectionRows.length} direct public relationships emphasized.`;
+    };
+
+    for (const node of graphNodes) {
+      node.addEventListener('click', () => selectNode(node.dataset.architectureNode));
+      node.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          selectNode(node.dataset.architectureNode);
+        }
+      });
+    }
+    for (const item of listNodes) {
+      item.addEventListener('click', () => {
+        selectNode(item.dataset.listNode);
+        graphById.get(item.dataset.listNode)?.focus();
+      });
+    }
+    search.addEventListener('input', applyFilters);
+    familySelect.addEventListener('change', applyFilters);
+    root.querySelector('[data-architecture-zoom-in]').addEventListener('click', () => zoom(1.22));
+    root.querySelector('[data-architecture-zoom-out]').addEventListener('click', () => zoom(1 / 1.22));
+    root.querySelector('[data-architecture-fit]').addEventListener('click', resetView);
+    svg.addEventListener('wheel', (event) => {
+      event.preventDefault();
+      zoom(event.deltaY < 0 ? 1.12 : 1 / 1.12);
+    }, { passive: false });
+    svg.addEventListener('pointerdown', (event) => {
+      if (event.target.closest('[data-architecture-node]')) return;
+      drag = { x: event.clientX, y: event.clientY, tx: translateX, ty: translateY };
+      svg.setPointerCapture(event.pointerId);
+      svg.classList.add('is-panning');
+    });
+    svg.addEventListener('pointermove', (event) => {
+      if (!drag) return;
+      const ratio = 1460 / svg.getBoundingClientRect().width;
+      translateX = drag.tx + (event.clientX - drag.x) * ratio;
+      translateY = drag.ty + (event.clientY - drag.y) * ratio;
+      setTransform();
+    });
+    const stopPan = (event) => {
+      if (!drag) return;
+      drag = null;
+      svg.releasePointerCapture?.(event.pointerId);
+      svg.classList.remove('is-panning');
+    };
+    svg.addEventListener('pointerup', stopPan);
+    svg.addEventListener('pointercancel', stopPan);
+  })();
+</script>

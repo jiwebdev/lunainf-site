@@ -1,0 +1,125 @@
+---
+import artifact from '../data/public-architecture.json';
+import { validatePublicArchitecture } from '../lib/publicArchitecture';
+
+const architecture = validatePublicArchitecture(artifact);
+const familyById = new Map(architecture.families.map((family) => [family.id, family]));
+const nodeById = new Map(architecture.nodes.map((node) => [node.id, node]));
+const inferenceNodes = new Set(
+  architecture.annotations.find((annotation) => annotation.id === 'model-inference')?.node_ids ?? [],
+);
+---
+
+<div class="architecture-preview">
+  <div class="architecture-preview__map" aria-hidden="true">
+    <svg viewBox="0 0 1360 1110">
+      <g class="architecture-preview__edges">
+        {architecture.relationships.map((relationship) => {
+          const source = nodeById.get(relationship.source)!;
+          const target = nodeById.get(relationship.target)!;
+          return <line x1={source.position.x} y1={source.position.y} x2={target.position.x} y2={target.position.y}></line>;
+        })}
+      </g>
+      <g>
+        {architecture.nodes.map((node) => {
+          const family = familyById.get(node.family)!;
+          return (
+            <circle
+              cx={node.position.x}
+              cy={node.position.y}
+              r={inferenceNodes.has(node.id) ? 13 : 9}
+              fill={family.color}
+              class:list={{ 'architecture-preview__inference-node': inferenceNodes.has(node.id) }}
+            ></circle>
+          );
+        })}
+      </g>
+    </svg>
+    <span class="architecture-preview__annotation">AI model inference is one region</span>
+  </div>
+  <div class="architecture-preview__copy">
+    <p class="eyebrow">INTERACTIVE ARCHITECTURE EXPLORER</p>
+    <h2>LUNA is not one AI model.</h2>
+    <p>
+      See how memory, cognition, evaluation, perception, interfaces, inference, and supporting
+      infrastructure fit together around the model boundary.
+    </p>
+    <dl class="architecture-preview__metrics">
+      <div><dt>{architecture.nodes.length}</dt><dd>subsystems</dd></div>
+      <div><dt>{architecture.relationships.length}</dt><dd>public relationships</dd></div>
+      <div><dt>{architecture.families.length}</dt><dd>architectural families</dd></div>
+    </dl>
+    <a class="button button-primary" href="/architecture">Explore LUNA's Architecture</a>
+  </div>
+</div>
+
+<style>
+  .architecture-preview {
+    display: grid;
+    grid-template-columns: 1.1fr .9fr;
+    min-height: 480px;
+    overflow: hidden;
+    color: white;
+    background: linear-gradient(145deg, #041020, #071b36 58%, #08142a);
+    border: 1px solid rgba(112,170,235,.24);
+    border-radius: 24px;
+    box-shadow: 0 28px 72px rgba(5,17,34,.16);
+  }
+  .architecture-preview__map {
+    position: relative;
+    min-height: 480px;
+    overflow: hidden;
+    background-image:
+      linear-gradient(rgba(120,170,230,.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(120,170,230,.06) 1px, transparent 1px);
+    background-size: 36px 36px;
+  }
+  .architecture-preview__map svg {
+    position: absolute;
+    inset: -8% -2% -12% -8%;
+    width: 116%;
+    height: 122%;
+  }
+  .architecture-preview__edges line { stroke: #64809f; stroke-width: 2; opacity: .26; }
+  .architecture-preview__map circle { filter: drop-shadow(0 0 8px rgba(82,151,225,.45)); }
+  .architecture-preview__inference-node { stroke: #fff2e9; stroke-width: 5; }
+  .architecture-preview__annotation {
+    position: absolute;
+    right: 24px;
+    top: 28px;
+    padding: 8px 11px;
+    color: #ffd0bd;
+    border: 1px dashed rgba(255,174,143,.72);
+    border-radius: 8px;
+    background: rgba(5,17,34,.78);
+    font-size: .72rem;
+    font-weight: 750;
+  }
+  .architecture-preview__copy { align-self: center; padding: 52px clamp(28px, 5vw, 64px); }
+  .architecture-preview__copy h2 {
+    margin: 0;
+    color: white;
+    font-size: clamp(2.35rem, 4.5vw, 4.2rem);
+    line-height: 1;
+    letter-spacing: -.045em;
+  }
+  .architecture-preview__copy > p:not(.eyebrow) { color: #b8c8db; font-size: 1.05rem; }
+  .architecture-preview__metrics {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 30px 0;
+  }
+  .architecture-preview__metrics div { min-width: 0; }
+  .architecture-preview__metrics dt { color: white; font-size: 1.8rem; font-weight: 650; }
+  .architecture-preview__metrics dd { margin: 2px 0 0; color: #8fa6bf; font-size: .68rem; line-height: 1.25; }
+  @media (max-width: 850px) {
+    .architecture-preview { grid-template-columns: 1fr; }
+    .architecture-preview__map { min-height: 350px; }
+  }
+  @media (max-width: 520px) {
+    .architecture-preview__map { min-height: 285px; }
+    .architecture-preview__metrics { grid-template-columns: 1fr; }
+    .architecture-preview__metrics div { display: flex; align-items: baseline; gap: 9px; }
+  }
+</style>

@@ -1,14 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-
-const systems = [
-  ['Memory & continuity', 'Persistent autobiographical history and provenance are treated as part of the system, not merely text placed in a prompt.'],
-  ['Associative cognition', 'LUNA explores cognition in which active memories and newly formed cognitive products can make other relevant material available.'],
-  ['Development', 'The research distinguishes remembering an experience from being structurally changed by it over time.'],
-  ['Perception', 'The architecture is designed for persistent environmental models in which stable input can become computationally quiet.'],
-  ['Motivation & choice', 'Requests, goals, expectations, preferences, and commitments can become reasons that participate in action selection rather than direct triggers.'],
-  ['ChronoForge', 'Controlled longitudinal simulated environments are designed to study development, branching developmental trajectories, resulting histories, and comparative AI behavior.']
-];
+import ArchitecturePreview from '../components/ArchitecturePreview.astro';
 ---
 <BaseLayout>
   <section class="hero">
@@ -20,8 +12,8 @@ const systems = [
           <span>Longitudinal Unified Narrative Architecture</span>
         </h1>
         <p class="hero-thesis">
-          Cognitive infrastructure for artificial systems that develop through memory,
-          experience, continuity, and time.
+          Cognitive infrastructure for studying how artificial systems can be shaped by
+          memory, experience, continuity, and time.
         </p>
         <div class="hero-actions">
           <a class="button button-primary" href="/luna">Understand LUNA</a>
@@ -62,32 +54,7 @@ const systems = [
 
   <section class="section" style="background:#eef3f8">
     <div class="shell">
-      <p class="eyebrow">ARCHITECTURE FOR PERSISTENT COGNITION</p>
-      <h2>Not another agent loop.</h2>
-      <p class="section-lede">
-        LUNA surrounds interchangeable inference models with longitudinal cognitive
-        infrastructure. The research is about how multiple systems interact across time,
-        not how to make one prompt imitate a persistent mind.
-      </p>
-
-      <div class="card-grid">
-        {systems.map(([title, copy]) => (
-          <article class="system-card">
-            <div class="node"></div>
-            <h3>{title}</h3>
-            <p>{copy}</p>
-          </article>
-        ))}
-      </div>
-
-      <div class="status-strip">
-        <strong>Capability boundary</strong>
-        <span>LUNA is under active development. Some foundations operate today; other systems shown here are accepted research architecture being built and tested progressively. Plans are not presented as capabilities.</span>
-      </div>
-
-      <div class="page-actions">
-        <a class="button button-primary" href="/architecture">See the public architecture map</a>
-      </div>
+      <ArchitecturePreview />
     </div>
   </section>
 
@@ -158,9 +125,9 @@ const systems = [
         <p class="eyebrow">CHRONOFORGE</p>
         <h2>Experience as infrastructure.</h2>
         <p class="section-lede">
-          ChronoForge is LUNA's architecture for controlled longitudinal simulated
-          experience: persistent worlds, consequences, branching timelines, checkpoints,
-          development, comparison, and return.
+          ChronoForge is an Experimental research system. A working controlled harness supports
+          selected simulation, branching, time, participant, and re-entry research; the broader
+          vision of longitudinal simulated experience remains under development.
         </p>
         <p class="section-lede" style="font-size:1rem">
           The research question is not whether an AI can read six months of data.
