@@ -2,6 +2,7 @@ import artifact from '../src/data/public-architecture.json';
 import { validatePublicArchitecture } from '../src/lib/publicArchitecture';
 import assert from 'node:assert/strict';
 import { projectOverview, representatives } from '../src/lib/architectureOverview';
+import { familyPorts, presentationRoutes, routeOverview } from '../src/lib/architectureOverviewRoutes';
 
 const architecture = validatePublicArchitecture(artifact);
 
@@ -67,3 +68,26 @@ for (const invalid of ['missing-node', 'foreground-input', 'working-memory']) {
 const noEdges = projectOverview({ ...artifact, relationships: [] });
 assert.equal(noEdges.bundles.length, 0, 'no curated or invented connections');
 console.log('Overview representatives, counts, directions, annotation and canonical-only bundles verified.');
+
+const routed = routeOverview();
+assert.equal(routed.length, 14);
+assert.equal(routed.reduce((sum, bundle) => sum + bundle.count, 0), 35);
+assert.deepEqual(routed.map(({ path, ...bundle }) => bundle), overview.bundles,
+  'routing must not alter topology, direction counts or derived width');
+assert.deepEqual(routed, routeOverview(), 'routes must be deterministic');
+for (const mutation of [
+  (routes: typeof presentationRoutes) => { delete routes['cognition:memory']; },
+  (routes: typeof presentationRoutes) => { routes['inference:memory'] = routes['cognition:memory']; },
+  (routes: typeof presentationRoutes) => { routes['cognition:missing'] = routes['cognition:memory']; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].from = 'missing'; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = []; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[0, 0], [NaN, 0], [410, 355]]]; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[0, 0], [1, 1], [2, 2]]]; },
+]) {
+  const routes = structuredClone(presentationRoutes);
+  mutation(routes);
+  assert.throws(() => routeOverview(overview, routes));
+}
+assert.throws(() => routeOverview(overview, presentationRoutes, { ...familyPorts, missing: { port: [0, 0] } }));
+assert.throws(() => routeOverview(overview, presentationRoutes, { ...familyPorts, memory: {} }));
+console.log('All 14 routes cover exactly 35 cross-family relationships; missing, invented and unusable routes rejected.');

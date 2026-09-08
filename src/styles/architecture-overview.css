@@ -2,20 +2,27 @@
 .architecture-overview h2 { margin-bottom: 14px; }
 .overview-intro, .overview-ribbon-key { color: #506379; max-width: 760px; }
 .overview-brain { display: block; width: 100%; height: auto; overflow: visible; }
-.overview-lobes g { cursor: pointer; transition: opacity .18s; }
+.overview-lobes g { cursor: pointer; transition: opacity .18s, filter .18s; }
 .overview-lobes path { stroke-width: 3; }
-.overview-lobes g.is-active path, .overview-lobes g:focus-visible path { stroke: #17334f; stroke-width: 6; }
+.overview-lobes g.is-active { filter: saturate(1.22); }
+.overview-lobes g.is-connected { filter: saturate(1.08); }
 .overview-lobes g:focus-visible { outline: none; }
-.overview-lobes .is-muted { opacity: .35; }
-.overview-ribbons { pointer-events: none; }
-.overview-ribbons g { opacity: .42; transition: opacity .18s; }
-.overview-ribbons path { fill: none; stroke: #5596c9; stroke-linecap: round; }
-.overview-ribbons .ribbon-halo { stroke: #f5fbff; opacity: .8; }
-.overview-ribbons .ribbon-thread { stroke: white; opacity: .8; }
-.overview-ribbons .is-active { opacity: .95; }
-.overview-ribbons .is-muted { opacity: .045; }
+.overview-lobes .is-muted { opacity: .5; }
+.overview-ribbons, .overview-borders, .overview-focus { pointer-events: none; }
+.overview-ribbons g { opacity: .035; transition: opacity .18s; }
+.overview-ribbons path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.overview-ribbons .ribbon-halo { stroke: #7ab4df; opacity: .22; }
+.overview-ribbons .ribbon-core { stroke: #408dc2; }
+.overview-ribbons .ribbon-strand { stroke: #e5f7ff; }
+.overview-ribbons .is-active { opacity: .92; }
+.overview-ribbons .is-muted { opacity: .012; }
+.overview-borders path { fill: none; stroke: var(--family-color); stroke-width: 2; opacity: 0; transition: opacity .18s; }
+.overview-borders .is-active { opacity: 1; stroke-width: 4; filter: drop-shadow(0 0 3px var(--family-color)); }
+.overview-borders .is-connected { opacity: .65; stroke-width: 2; }
+.overview-focus path { fill: none; stroke: #254b6b; stroke-width: 2; stroke-dasharray: 5 5; opacity: 0; }
+.overview-focus .is-visible { opacity: 1; }
 .overview-labels { pointer-events: none; }
-.overview-labels .is-muted { opacity: .4; }
+.overview-labels .is-muted { opacity: .55; }
 .overview-lobe-copy { padding: 6px; }
 .overview-lobe-copy h3 { margin: 0 0 9px; font-size: 24px; line-height: 1.1; letter-spacing: -.03em; }
 .overview-lobe-copy h3 span { font-size: 17px; }
@@ -39,10 +46,10 @@
 @media (max-width: 700px) {
   .overview-labels { display: none; }
   .overview-mobile-number { display: block; font-size: 62px; font-weight: 750; fill: #152a42; paint-order: stroke; stroke: #fff; stroke-width: 5px; }
-  .overview-ribbons { opacity: .65; }
+  .overview-ribbons { opacity: .85; }
   .overview-family-controls { display: grid; grid-template-columns: 1fr 1fr; }
   .overview-family-controls button { text-align: left; padding: 9px; font-size: 14px; }
   .overview-family-controls button:last-child { grid-column: 1 / -1; }
   .overview-details article { padding: 18px; }
 }
-@media (prefers-reduced-motion: reduce) { .overview-lobes g, .overview-ribbons g { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .overview-lobes g, .overview-ribbons g, .overview-borders path { transition: none; } }

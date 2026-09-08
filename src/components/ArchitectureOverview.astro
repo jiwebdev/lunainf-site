@@ -1,5 +1,6 @@
 ---
 import { overview } from '../lib/architectureOverview';
+import { routedBundles } from '../lib/architectureOverviewRoutes';
 import '../styles/architecture-overview.css';
 
 // Organic region geometry and text placement are presentation, never architecture data.
@@ -13,10 +14,6 @@ const layout: Record<string, { path: string; x: number; y: number; cx: number; c
   perception: { path: 'M885 465 L1070 475 Q1030 615 1155 705 Q1150 820 1040 835 Q965 925 860 885 L810 635 Q890 590 885 465Z', x: 880, y: 630, cx: 975, cy: 595 },
   inference: { path: 'M1235 350 Q1325 340 1350 430 Q1410 485 1370 570 Q1400 690 1290 735 Q1210 760 1165 710 Q1050 625 1085 480Z', x: 1140, y: 460, cx: 1190, cy: 570 },
 };
-const ribbonPath = (source: string, target: string) => {
-  const a = layout[source], b = layout[target];
-  return `M${a.cx} ${a.cy} C${(a.cx + b.cx) / 2} ${a.cy}, ${(a.cx + b.cx) / 2} ${b.cy}, ${b.cx} ${b.cy}`;
-};
 ---
 <section class="architecture-overview" data-overview aria-labelledby="overview-title">
   <p class="eyebrow">SEE THE SYSTEM</p>
@@ -29,17 +26,24 @@ const ribbonPath = (source: string, target: string) => {
       {overview.families.map(f => <radialGradient id={`lobe-${f.id}`}><stop offset="0" stop-color={f.color} stop-opacity=".24"/><stop offset="1" stop-color={f.color} stop-opacity=".58"/></radialGradient>)}
     </defs>
     <g class="overview-lobes">
-      {overview.families.map((family, index) => <g data-overview-region={family.id} role="button" tabindex="0" aria-pressed="false" aria-label={`${family.label}: ${family.count} subsystems`} aria-controls={`overview-detail-${family.id}`}>
+      {overview.families.map((family) => <g data-overview-region={family.id} role="button" tabindex="0" aria-pressed="false" aria-label={`${family.label}: ${family.count} subsystems`} aria-controls={`overview-detail-${family.id}`}>
         <path d={layout[family.id].path} fill={`url(#lobe-${family.id})`} stroke={family.color}/>
-        <text class="overview-mobile-number" x={layout[family.id].cx} y={layout[family.id].cy} text-anchor="middle">{index + 1}</text>
       </g>)}
     </g>
     <g class="overview-ribbons" aria-hidden="true">
-      {overview.bundles.map(bundle => <g data-bundle-source={bundle.source} data-bundle-target={bundle.target}>
-        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width={bundle.width + 5} class="ribbon-halo"/>
-        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width={bundle.width}/>
-        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width="1" class="ribbon-thread"/>
+      {routedBundles.map(bundle => <g data-bundle-source={bundle.source} data-bundle-target={bundle.target}>
+        <path d={bundle.path} stroke-width={bundle.width + 8} class="ribbon-halo"/>
+        <path d={bundle.path} stroke-width={bundle.width} class="ribbon-core"/>
+        {/* Alternating nested strokes form five parallel highlights, following every bend. */}
+        <path d={bundle.path} stroke-width={bundle.width * .76} class="ribbon-strand"/>
+        <path d={bundle.path} stroke-width={bundle.width * .58} class="ribbon-core"/>
+        <path d={bundle.path} stroke-width={bundle.width * .36} class="ribbon-strand"/>
+        <path d={bundle.path} stroke-width={bundle.width * .18} class="ribbon-core"/>
+        <path d={bundle.path} stroke-width=".65" class="ribbon-strand"/>
       </g>)}
+    </g>
+    <g class="overview-borders" aria-hidden="true">
+      {overview.families.map(family => <path data-overview-border={family.id} d={layout[family.id].path} style={`--family-color:${family.color}`} />)}
     </g>
     <g class="overview-labels" aria-hidden="true">
       {overview.families.map((family, index) => <foreignObject x={layout[family.id].x} y={layout[family.id].y} data-overview-label={family.id} width={family.id === 'inference' ? 205 : family.id === 'perception' ? 225 : family.id === 'cognition' ? 340 : family.id === 'background-cognition' ? 310 : 285} height="260">
@@ -51,6 +55,12 @@ const ribbonPath = (source: string, target: string) => {
           {family.omitted > 0 && <small>+ {family.omitted} more systems</small>}
         </div>
       </foreignObject>)}
+    </g>
+    <g class="overview-focus" aria-hidden="true">
+      {overview.families.map((family, index) => <g>
+        <text class="overview-mobile-number" x={layout[family.id].cx} y={layout[family.id].cy} text-anchor="middle">{index + 1}</text>
+        <path data-overview-focus={family.id} d={layout[family.id].path}/>
+      </g>)}
     </g>
   </svg>
   <p class="overview-ribbon-key">Ribbon thickness reflects the number of public relationships between families. Select a family to reveal direction counts.</p>
@@ -91,8 +101,17 @@ const ribbonPath = (source: string, target: string) => {
       regions.forEach(region => {
         const key = region.dataset.overviewRegion!;
         region.classList.toggle('is-active', key === id);
+        region.classList.toggle('is-connected', key !== id && connected.has(key));
         region.classList.toggle('is-muted', !!id && !connected.has(key));
         region.setAttribute('aria-pressed', String(key === selected));
+      });
+      root!.querySelectorAll<SVGElement>('[data-overview-border]').forEach(border => {
+        const key = border.dataset.overviewBorder!;
+        border.classList.toggle('is-active', key === id);
+        border.classList.toggle('is-connected', key !== id && connected.has(key));
+      });
+      root!.querySelectorAll<SVGElement>('[data-overview-focus]').forEach(ring => {
+        ring.classList.toggle('is-visible', regions.some(region => region.dataset.overviewRegion === ring.dataset.overviewFocus && region.matches(':focus-visible')));
       });
       root!.querySelectorAll<SVGElement>('[data-overview-label]').forEach(label => label.classList.toggle('is-muted', !!id && !connected.has(label.dataset.overviewLabel!)));
       choices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.overviewChoice === selected)));
