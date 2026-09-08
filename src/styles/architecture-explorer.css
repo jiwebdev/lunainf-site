@@ -158,7 +158,7 @@
   text-align: center;
 }
 
-.architecture-family-region { transition: opacity .18s ease; }
+.architecture-family-region { opacity: .35; transition: opacity .18s ease; }
 .architecture-family-region text {
   font-size: 12px;
   font-weight: 750;
@@ -166,12 +166,13 @@
   text-transform: uppercase;
 }
 .architecture-family-region.is-filtered { opacity: .11; }
+.architecture-family-region.is-focused { opacity: 1; }
 .architecture-family-region.is-focused rect { stroke-width: 2.6; fill-opacity: .8; }
 
 .architecture-relationships line {
   stroke: #7189a7;
   stroke-width: 1.25;
-  opacity: .32;
+  opacity: .045;
   transition: opacity .16s ease, stroke .16s ease, stroke-width .16s ease;
 }
 .architecture-relationships marker path { fill: #7189a7; }
@@ -180,7 +181,7 @@
   stroke-width: 2.35;
   opacity: .95;
 }
-.architecture-relationships line.is-dimmed { opacity: .07; }
+.architecture-relationships line.is-dimmed { opacity: .025; }
 
 .architecture-inference-region rect {
   fill: rgba(255, 155, 117, .035);

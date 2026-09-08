@@ -67,7 +67,7 @@ const annotations = architecture.annotations.map((annotation) => ({
   <div class="architecture-explorer__heading">
     <div>
       <p class="architecture-explorer__kicker">PUBLIC ARCHITECTURE</p>
-      <h2>Explore the systems around inference.</h2>
+      <h2>Explore the full architecture.</h2>
     </div>
     <p class="architecture-explorer__scale" aria-label="Architecture scale">
       <strong>{architecture.nodes.length}</strong> subsystems
@@ -183,7 +183,7 @@ const annotations = architecture.annotations.map((annotation) => ({
                   height={annotation.bounds.height}
                   rx="28"
                 ></rect>
-                <text x={annotation.bounds.x + 18} y={annotation.bounds.y + 24}>{annotation.label}</text>
+                <title>{annotation.label}</title>
               </g>
             ))}
           </g>

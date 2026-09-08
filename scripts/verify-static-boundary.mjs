@@ -2,6 +2,8 @@ import { readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 
 const roots = [
+  'src/components/ArchitectureOverview.astro',
+  'src/lib/architectureOverview.ts',
   'src/components/ArchitectureExplorer.astro',
   'src/components/ArchitecturePreview.astro',
   'src/data/public-architecture.json',

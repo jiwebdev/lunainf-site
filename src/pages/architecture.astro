@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ArchitectureExplorer from '../components/ArchitectureExplorer.astro';
+import ArchitectureOverview from '../components/ArchitectureOverview.astro';
+import { overview } from '../lib/architectureOverview';
 ---
 
 <BaseLayout
@@ -23,7 +25,14 @@ import ArchitectureExplorer from '../components/ArchitectureExplorer.astro';
     </div>
   </section>
 
-  <section class="section architecture-explorer-section">
+  <section class="section" style="padding-block:0">
+    <div class="shell shell--architecture">
+      <ArchitectureOverview />
+      <p class="section-lede">This overview groups LUNA's public architecture into {overview.families.length} major families. The full explorer below contains every reviewed public subsystem and relationship.</p>
+    </div>
+  </section>
+
+  <section id="full-architecture" class="section architecture-explorer-section">
     <div class="shell shell--architecture">
       <ArchitectureExplorer />
     </div>

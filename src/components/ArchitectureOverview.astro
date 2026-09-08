@@ -1,0 +1,122 @@
+---
+import { overview } from '../lib/architectureOverview';
+import '../styles/architecture-overview.css';
+
+// Organic region geometry and text placement are presentation, never architecture data.
+const layout: Record<string, { path: string; x: number; y: number; cx: number; cy: number }> = {
+  memory: { path: 'M60 460 Q15 355 85 270 Q85 180 190 160 Q260 65 395 100 L430 335 Q380 405 395 505 L75 550 Q45 520 60 460Z', x: 125, y: 215, cx: 300, cy: 390 },
+  'background-cognition': { path: 'M400 100 Q475 30 590 65 Q690 15 815 85 L785 335 Q670 300 570 330 Q490 300 435 335Z', x: 470, y: 120, cx: 600, cy: 300 },
+  evaluation: { path: 'M820 85 Q925 55 1000 125 Q1110 115 1150 225 Q1220 245 1230 340 L1080 460 L875 455 Q865 375 790 335Z', x: 885, y: 185, cx: 940, cy: 375 },
+  cognition: { path: 'M435 345 Q495 305 570 340 Q680 315 785 345 Q880 375 880 465 Q905 560 810 620 Q700 650 600 625 Q465 660 415 570 Q370 460 435 345Z', x: 450, y: 380, cx: 655, cy: 490 },
+  infrastructure: { path: 'M75 560 L395 515 Q395 595 490 640 L405 870 Q310 905 230 850 Q130 840 120 760 Q40 715 75 560Z', x: 140, y: 595, cx: 335, cy: 635 },
+  interfaces: { path: 'M500 650 Q555 640 600 638 Q695 665 800 638 L850 885 Q785 965 660 925 Q535 975 415 880Z', x: 495, y: 705, cx: 650, cy: 735 },
+  perception: { path: 'M885 465 L1070 475 Q1030 615 1155 705 Q1150 820 1040 835 Q965 925 860 885 L810 635 Q890 590 885 465Z', x: 880, y: 630, cx: 975, cy: 595 },
+  inference: { path: 'M1235 350 Q1325 340 1350 430 Q1410 485 1370 570 Q1400 690 1290 735 Q1210 760 1165 710 Q1050 625 1085 480Z', x: 1140, y: 460, cx: 1190, cy: 570 },
+};
+const ribbonPath = (source: string, target: string) => {
+  const a = layout[source], b = layout[target];
+  return `M${a.cx} ${a.cy} C${(a.cx + b.cx) / 2} ${a.cy}, ${(a.cx + b.cx) / 2} ${b.cy}, ${b.cx} ${b.cy}`;
+};
+---
+<section class="architecture-overview" data-overview aria-labelledby="overview-title">
+  <p class="eyebrow">SEE THE SYSTEM</p>
+  <h2 id="overview-title">Architecture overview</h2>
+  <p class="overview-intro">Select a region to see how it connects to the surrounding architecture.</p>
+  <svg class="overview-brain" viewBox="0 0 1430 980" role="group" aria-labelledby="overview-svg-title overview-svg-desc">
+    <title id="overview-svg-title">LUNA's interacting architectural families</title>
+    <desc id="overview-svg-desc">Cognition sits near the center. Model providers occupy the bounded Inference region at the right. Ribbons represent public connections; thicker ribbons contain more subsystem relationships. Family details are available below.</desc>
+    <defs>
+      {overview.families.map(f => <radialGradient id={`lobe-${f.id}`}><stop offset="0" stop-color={f.color} stop-opacity=".24"/><stop offset="1" stop-color={f.color} stop-opacity=".58"/></radialGradient>)}
+    </defs>
+    <g class="overview-lobes">
+      {overview.families.map((family, index) => <g data-overview-region={family.id} role="button" tabindex="0" aria-pressed="false" aria-label={`${family.label}: ${family.count} subsystems`} aria-controls={`overview-detail-${family.id}`}>
+        <path d={layout[family.id].path} fill={`url(#lobe-${family.id})`} stroke={family.color}/>
+        <text class="overview-mobile-number" x={layout[family.id].cx} y={layout[family.id].cy} text-anchor="middle">{index + 1}</text>
+      </g>)}
+    </g>
+    <g class="overview-ribbons" aria-hidden="true">
+      {overview.bundles.map(bundle => <g data-bundle-source={bundle.source} data-bundle-target={bundle.target}>
+        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width={bundle.width + 5} class="ribbon-halo"/>
+        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width={bundle.width}/>
+        <path d={ribbonPath(bundle.source, bundle.target)} stroke-width="1" class="ribbon-thread"/>
+      </g>)}
+    </g>
+    <g class="overview-labels" aria-hidden="true">
+      {overview.families.map((family, index) => <foreignObject x={layout[family.id].x} y={layout[family.id].y} data-overview-label={family.id} width={family.id === 'inference' ? 205 : family.id === 'perception' ? 225 : family.id === 'cognition' ? 340 : family.id === 'background-cognition' ? 310 : 285} height="260">
+        <div class="overview-lobe-copy">
+          <h3><span>{index + 1}</span> {family.label}</h3>
+          <p>{family.description}</p>
+          {family.id === 'inference' && <p><strong>{overview.annotation.label}</strong></p>}
+          <ul>{family.representatives.map(node => <li>{node.label}</li>)}</ul>
+          {family.omitted > 0 && <small>+ {family.omitted} more systems</small>}
+        </div>
+      </foreignObject>)}
+    </g>
+  </svg>
+  <p class="overview-ribbon-key">Ribbon thickness reflects the number of public relationships between families. Select a family to reveal direction counts.</p>
+  <div class="overview-family-controls" aria-label="Choose an architectural family">
+    {overview.families.map((family, index) => <button type="button" data-overview-choice={family.id} aria-pressed="false" aria-controls={`overview-detail-${family.id}`} style={`--family-color:${family.color}`}><span>{index + 1}</span>{family.label}</button>)}
+    <button type="button" data-overview-reset>Show all connections</button>
+  </div>
+  <div class="overview-details" aria-live="polite" aria-atomic="true">
+    {overview.families.map(family => <article id={`overview-detail-${family.id}`} data-overview-detail={family.id}>
+      <h3>{family.label}</h3>
+      <p>{family.description}</p>
+      <p><strong>{family.count} subsystems</strong> · {family.incoming} incoming / {family.outgoing} outgoing cross-family relationships</p>
+      <p>{family.representatives.map(node => node.label).join(' · ')}{family.omitted ? ` · + ${family.omitted} more systems in the full explorer` : ''}</p>
+      <a href="#full-architecture" data-overview-explore={family.id}>Explore these systems <span aria-hidden="true">→</span></a>
+    </article>)}
+  </div>
+  <aside class="overview-inference-note">
+    <strong>{overview.annotation.label}</strong>
+    <p>{overview.annotation.description}</p>
+    <p>{overview.annotation.node_ids.map(id => overview.families.flatMap(f => f.representatives).find(n => n.id === id)?.label).join(' · ')}</p>
+  </aside>
+</section>
+<script>
+  const root = document.querySelector<HTMLElement>('[data-overview]');
+  if (root) {
+    const regions = [...root.querySelectorAll<SVGGElement>('[data-overview-region]')];
+    const choices = [...root.querySelectorAll<HTMLButtonElement>('[data-overview-choice]')];
+    const bundles = [...root.querySelectorAll<SVGGElement>('[data-bundle-source]')];
+    let selected = '';
+    function display(id: string) {
+      const connected = new Set([id]);
+      bundles.forEach(bundle => {
+        const touches = bundle.dataset.bundleSource === id || bundle.dataset.bundleTarget === id;
+        if (touches) { connected.add(bundle.dataset.bundleSource!); connected.add(bundle.dataset.bundleTarget!); }
+        bundle.classList.toggle('is-active', touches);
+        bundle.classList.toggle('is-muted', !!id && !touches);
+      });
+      regions.forEach(region => {
+        const key = region.dataset.overviewRegion!;
+        region.classList.toggle('is-active', key === id);
+        region.classList.toggle('is-muted', !!id && !connected.has(key));
+        region.setAttribute('aria-pressed', String(key === selected));
+      });
+      root!.querySelectorAll<SVGElement>('[data-overview-label]').forEach(label => label.classList.toggle('is-muted', !!id && !connected.has(label.dataset.overviewLabel!)));
+      choices.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.overviewChoice === selected)));
+      root!.querySelectorAll<HTMLElement>('[data-overview-detail]').forEach(detail => { detail.hidden = detail.dataset.overviewDetail !== (id || 'cognition'); });
+    }
+    regions.forEach(region => {
+      const id = region.dataset.overviewRegion!;
+      region.addEventListener('pointerenter', event => { if (event.pointerType === 'mouse') display(id); });
+      region.addEventListener('pointerleave', () => display(selected));
+      region.addEventListener('focus', () => display(id));
+      region.addEventListener('blur', () => display(selected));
+      region.addEventListener('click', () => { selected = id; display(id); });
+      region.addEventListener('keydown', event => {
+        if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); selected = id; display(id); }
+        if (event.key === 'Escape') { selected = ''; display(''); }
+      });
+    });
+    choices.forEach(button => button.addEventListener('click', () => { selected = button.dataset.overviewChoice!; display(selected); }));
+    root.querySelector('[data-overview-reset]')!.addEventListener('click', () => { selected = ''; display(''); });
+    root.querySelectorAll<HTMLAnchorElement>('[data-overview-explore]').forEach(link => link.addEventListener('click', () => {
+      const search = document.querySelector<HTMLInputElement>('[data-architecture-search]');
+      const family = document.querySelector<HTMLSelectElement>('[data-architecture-family]');
+      if (search && family) { search.value = ''; family.value = link.dataset.overviewExplore!; family.dispatchEvent(new Event('change')); family.focus({ preventScroll: true }); }
+    }));
+    display('');
+  }
+</script>
