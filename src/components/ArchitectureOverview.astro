@@ -32,14 +32,8 @@ const layout: Record<string, { path: string; x: number; y: number; cx: number; c
     </g>
     <g class="overview-ribbons" aria-hidden="true">
       {routedBundles.map(bundle => <g data-bundle-source={bundle.source} data-bundle-target={bundle.target}>
-        <path d={bundle.path} stroke-width={bundle.width + 8} class="ribbon-halo"/>
-        <path d={bundle.path} stroke-width={bundle.width} class="ribbon-core"/>
-        {/* Alternating nested strokes form five parallel highlights, following every bend. */}
-        <path d={bundle.path} stroke-width={bundle.width * .76} class="ribbon-strand"/>
-        <path d={bundle.path} stroke-width={bundle.width * .58} class="ribbon-core"/>
-        <path d={bundle.path} stroke-width={bundle.width * .36} class="ribbon-strand"/>
-        <path d={bundle.path} stroke-width={bundle.width * .18} class="ribbon-core"/>
-        <path d={bundle.path} stroke-width=".65" class="ribbon-strand"/>
+        <path d={bundle.path} stroke-width={bundle.width} class="ribbon-band"/>
+        {bundle.chevrons.map(chevron => <path class="ribbon-chevron" data-direction={chevron.direction} d="M-2.5 -2.5 L0 0 L-2.5 2.5" transform={`translate(${chevron.x} ${chevron.y}) rotate(${chevron.angle})`}/>)}
       </g>)}
     </g>
     <g class="overview-borders" aria-hidden="true">
@@ -66,7 +60,7 @@ const layout: Record<string, { path: string; x: number; y: number; cx: number; c
   <p class="overview-ribbon-key">Ribbon thickness reflects the number of public relationships between families. Select a family to reveal direction counts.</p>
   <div class="overview-family-controls" aria-label="Choose an architectural family">
     {overview.families.map((family, index) => <button type="button" data-overview-choice={family.id} aria-pressed="false" aria-controls={`overview-detail-${family.id}`} style={`--family-color:${family.color}`}><span>{index + 1}</span>{family.label}</button>)}
-    <button type="button" data-overview-reset>Show all connections</button>
+    <button type="button" data-overview-reset>Clear selection</button>
   </div>
   <div class="overview-details" aria-live="polite" aria-atomic="true">
     {overview.families.map(family => <article id={`overview-detail-${family.id}`} data-overview-detail={family.id}>
