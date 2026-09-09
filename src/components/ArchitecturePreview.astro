@@ -36,6 +36,7 @@ const inferenceNodes = new Set(
       </g>
     </svg>
     <span class="architecture-preview__annotation">AI model inference is one region</span>
+    <img class="architecture-preview__minimap" src="/assets/minimap.png" alt="" width="1712" height="1152" loading="lazy" decoding="async" />
   </div>
   <div class="architecture-preview__copy">
     <p class="eyebrow">INTERACTIVE ARCHITECTURE EXPLORER</p>
@@ -81,6 +82,13 @@ const inferenceNodes = new Set(
     height: 122%;
   }
   .architecture-preview__edges line { stroke: #64809f; stroke-width: 2; opacity: .26; }
+  .architecture-preview__minimap {
+    position: absolute;
+    inset: 70px 24px 24px;
+    width: calc(100% - 48px);
+    height: calc(100% - 94px);
+    object-fit: contain;
+  }
   .architecture-preview__map circle { filter: drop-shadow(0 0 8px rgba(82,151,225,.45)); }
   .architecture-preview__inference-node { stroke: #fff2e9; stroke-width: 5; }
   .architecture-preview__annotation {
