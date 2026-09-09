@@ -713,6 +713,18 @@
       "label": "routes inference to"
     },
     {
+      "source": "cloud-ai-provider",
+      "target": "inference-fabric",
+      "kind": "returns-inference-to",
+      "label": "returns inference to"
+    },
+    {
+      "source": "local-ai-provider",
+      "target": "inference-fabric",
+      "kind": "returns-inference-to",
+      "label": "returns inference to"
+    },
+    {
       "source": "long-term-memory",
       "target": "foreground-cognition",
       "kind": "provides-context-to",

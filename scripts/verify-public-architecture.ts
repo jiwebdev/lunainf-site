@@ -71,8 +71,8 @@ console.log('Overview representatives, counts, directions, annotation and canoni
 
 const routed = routeOverview();
 assert.equal(routed.length, 14);
-assert.equal(routed.reduce((sum, bundle) => sum + bundle.count, 0), 35);
-assert.deepEqual(routed.map(({ path, chevrons, ...bundle }) => bundle), overview.bundles,
+assert.equal(routed.reduce((sum, bundle) => sum + bundle.count, 0), 37);
+assert.deepEqual(routed.map(({ path, arrow, ...bundle }) => bundle), overview.bundles,
   'routing must not alter topology, direction counts or derived width');
 assert.deepEqual(routed, routeOverview(), 'routes must be deterministic');
 for (const mutation of [
@@ -81,9 +81,9 @@ for (const mutation of [
   (routes: typeof presentationRoutes) => { routes['cognition:missing'] = routes['cognition:memory']; },
   (routes: typeof presentationRoutes) => { routes['cognition:memory'].from = 'missing'; },
   (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = []; },
-  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[0, 0], [NaN, 0], [382, 455]]]; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[0, 0], [NaN, 0], [300, 390]]]; },
   (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[0, 0], [1, 1], [2, 2]]]; },
-  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[600, 600], [200, 200], [382, 455]]]; },
+  (routes: typeof presentationRoutes) => { routes['cognition:memory'].curves = [[[600, 600], [200, 200], [300, 390]]]; },
 ]) {
   const routes = structuredClone(presentationRoutes);
   mutation(routes);
@@ -91,12 +91,15 @@ for (const mutation of [
 }
 assert.throws(() => routeOverview(overview, presentationRoutes, { ...familyPorts, missing: { port: [0, 0] } }));
 assert.throws(() => routeOverview(overview, presentationRoutes, { ...familyPorts, memory: {} }));
-console.log('All 14 routes cover exactly 35 cross-family relationships; missing, invented and unusable routes rejected.');
+console.log('All 14 routes cover exactly 37 cross-family relationships; missing, invented and unusable routes rejected.');
 
 for (const bundle of routed) {
-  assert.deepEqual(bundle.chevrons.map(c => c.direction), [
-    ...(bundle.forward ? ['forward'] : []), ...(bundle.reverse ? ['reverse'] : []),
-  ]);
-  for (const chevron of bundle.chevrons) assert([chevron.x, chevron.y, chevron.angle].every(Number.isFinite));
+  assert.equal(bundle.arrow.headStart, bundle.reverse > 0);
+  assert.equal(bundle.arrow.headEnd, bundle.forward > 0);
+  assert.equal(bundle.arrow.width, bundle.width * 1.65);
+  assert(!/NaN|Infinity/.test(bundle.arrow.path));
+  assert(bundle.arrow.path.endsWith(' Z'));
+  const reverseOnly = bundle.reverse > 0 && bundle.forward === 0;
+  assert.equal(bundle.arrow.originFamily, reverseOnly ? bundle.target : bundle.source);
 }
-console.log('Directional chevrons match canonical incoming/outgoing directions.');
+console.log('Filled arrowheads, width and source fades match canonical directions.');

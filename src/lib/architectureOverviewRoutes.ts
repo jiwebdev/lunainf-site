@@ -4,46 +4,74 @@ type Point = readonly [number, number];
 type Curve = readonly [Point, Point, Point];
 type Route = { from: string; to: string; curves: readonly Curve[] };
 
-// Layout only. Ports sit in the boundary/unused-space bands of the existing lobes.
-// A route never creates a connection: rendering iterates the canonical bundles below.
+// Original region-center anchors, before the boundary-routing changes.
+// These coordinates are presentation only; bundles supply the canonical connections.
 export const familyPorts: Record<string, Record<string, Point>> = {
-  memory: { upperSeam: [395, 335], rightSeam: [382, 455], crown: [415, 330] },
-  cognition: {
-    crown: [650, 350], upperRight: [810, 365], right: [885, 480],
-    lowerLeft: [430, 610], base: [610, 625], left: [411, 485], lowerRight: [850, 585],
-  },
-  'background-cognition': {
-    base: [620, 320], rightSeam: [792, 270], lowerLeft: [438, 305], leftSeam: [435, 305],
-  },
-  evaluation: {
-    upperLeft: [815, 335], left: [855, 410], lowerLeft: [875, 435],
-    crownSeam: [835, 360], base: [970, 460],
-  },
-  infrastructure: { upperLeft: [395, 540], upperRight: [478, 655] },
-  interfaces: { crown: [650, 670], right: [825, 775], lowerRight: [815, 830] },
-  perception: { upperLeft: [870, 620], top: [1010, 500], lowerLeft: [870, 845] },
-  inference: { upperLeft: [1100, 455] },
+  memory: { center: [300, 390] },
+  'background-cognition': { center: [600, 300] },
+  evaluation: { center: [940, 375] },
+  cognition: { center: [655, 490] },
+  infrastructure: { center: [335, 635] },
+  interfaces: { center: [650, 735] },
+  perception: { center: [975, 595] },
+  inference: { center: [1190, 570] },
 };
 
-// Pair-to-port assignments and Bezier handles are presentation metadata, not topology.
-// Keys use the projection's canonical sorted pair order. Final curve endpoints are
-// checked against named ports so inconsistent endpoint edits fail validation.
-export const presentationRoutes: Record<string, Route> = {
-  'background-cognition:cognition': { from: 'base', to: 'crown', curves: [[[630, 327], [640, 343], [650, 350]]] },
-  'background-cognition:evaluation': { from: 'rightSeam', to: 'upperLeft', curves: [[[798, 290], [807, 315], [815, 335]]] },
-  'background-cognition:infrastructure': { from: 'lowerLeft', to: 'upperLeft', curves: [[[420, 385], [400, 470], [395, 540]]] },
-  'background-cognition:memory': { from: 'leftSeam', to: 'upperSeam', curves: [[[420, 315], [410, 325], [395, 335]]] },
-  'cognition:evaluation': { from: 'upperRight', to: 'left', curves: [[[826, 377], [843, 390], [855, 410]]] },
-  'cognition:inference': { from: 'right', to: 'upperLeft', curves: [[[960, 455], [1030, 450], [1100, 455]]] },
-  'cognition:infrastructure': { from: 'lowerLeft', to: 'upperRight', curves: [[[444, 624], [460, 638], [478, 655]]] },
-  'cognition:interfaces': { from: 'base', to: 'crown', curves: [[[620, 640], [640, 655], [650, 670]]] },
-  'cognition:memory': { from: 'left', to: 'rightSeam', curves: [[[403, 470], [394, 456], [382, 455]]] },
-  'cognition:perception': { from: 'lowerRight', to: 'upperLeft', curves: [[[858, 596], [866, 608], [870, 620]]] },
-  'evaluation:interfaces': { from: 'lowerLeft', to: 'right', curves: [[[870, 535], [835, 665], [825, 775]]] },
-  'evaluation:memory': { from: 'crownSeam', to: 'crown', curves: [[[780, 300], [575, 305], [415, 330]]] },
-  'evaluation:perception': { from: 'base', to: 'top', curves: [[[985, 470], [1000, 480], [1010, 500]]] },
-  'interfaces:perception': { from: 'lowerRight', to: 'lowerLeft', curves: [[[835, 835], [855, 842], [870, 845]]] },
-};
+// Restore the original center-to-center Bezier paths, retaining the filled arrows.
+export const presentationRoutes: Record<string, Route> = Object.fromEntries(
+  overview.bundles.map(({ source, target }) => {
+    const start = familyPorts[source].center, end = familyPorts[target].center;
+    const middleX = (start[0] + end[0]) / 2;
+    return [`${source}:${target}`, {
+      from: 'center', to: 'center',
+      curves: [[[middleX, start[1]], [middleX, end[1]], end]],
+    } satisfies Route];
+  }),
+);
+
+// Sample the smooth centerline, then offset its sides into one filled silhouette.
+// Arrowheads finish exactly at the ports; they never protrude beyond the route ends.
+function filledArrow(start: Point, curves: readonly Curve[], width: number, headStart: boolean, headEnd: boolean) {
+  const samples: { point: Point; distance: number }[] = [{ point: start, distance: 0 }];
+  let origin = start;
+  for (const [a, b, end] of curves) {
+    for (let step = 1; step <= 64; step++) {
+      const t = step / 64, u = 1 - t;
+      const point: Point = [0, 1].map(axis => u ** 3 * origin[axis] + 3 * u ** 2 * t * a[axis] + 3 * u * t ** 2 * b[axis] + t ** 3 * end[axis]) as [number, number];
+      const previous = samples.at(-1)!;
+      const stepLength = Math.hypot(point[0] - previous.point[0], point[1] - previous.point[1]);
+      if (stepLength > 0) samples.push({ point, distance: previous.distance + stepLength });
+    }
+    origin = end;
+  }
+  const length = samples.at(-1)!.distance;
+  if (!length) throw new Error('Arrow route has no length');
+  const at = (distance: number, offset = 0): Point => {
+    distance = Math.min(length, Math.max(0, distance));
+    const index = Math.max(1, samples.findIndex(sample => sample.distance >= distance));
+    const a = samples[index - 1], b = samples[index];
+    const segment = b.distance - a.distance;
+    const t = segment ? (distance - a.distance) / segment : 0;
+    const dx = b.point[0] - a.point[0], dy = b.point[1] - a.point[1];
+    return [a.point[0] + t * dx - offset * dy / segment, a.point[1] + t * dy + offset * dx / segment];
+  };
+  const headLength = Math.min(width * 1.65, length * .24);
+  const from = headStart ? headLength : 0, to = headEnd ? length - headLength : length;
+  const left: Point[] = [], right: Point[] = [];
+  for (let step = 0; step <= 64; step++) {
+    const distance = from + (to - from) * step / 64;
+    const taper = headStart && headEnd ? 1 : Math.min(1, (headEnd ? distance : length - distance) / length * 3 + .08);
+    left.push(at(distance, width / 2 * taper));
+    right.push(at(distance, -width / 2 * taper));
+  }
+  const outline = [...left,
+    ...(headEnd ? [at(to, width), at(length), at(to, -width)] : []),
+    ...right.reverse(),
+    ...(headStart ? [at(from, -width), at(0), at(from, width)] : []),
+  ];
+  const path = outline.map((point, index) => `${index ? 'L' : 'M'}${point.map(value => value.toFixed(2)).join(' ')}`).join(' ') + ' Z';
+  return { path, width };
+}
 
 export function routeOverview(
   projection = overview,
@@ -81,23 +109,14 @@ export function routeOverview(
     if (!monotonic) throw new Error(`Overview route doubles back: ${key}`);
     const path = `M${start.join(' ')} ` + route.curves.map(([a, b, target]) =>
       `C${a.join(' ')} ${b.join(' ')} ${target.join(' ')}`).join(' ');
-    // One small chevron for each direction that exists in the canonical bundle.
-    const chevron = (fraction: number, reverse: boolean) => {
-      const scaled = fraction * route.curves.length;
-      const index = Math.min(Math.floor(scaled), route.curves.length - 1);
-      const t = scaled - index, u = 1 - t;
-      const origin = index ? route.curves[index - 1][2] : start;
-      const [a, b, target] = route.curves[index];
-      const position = (axis: 0 | 1) => u ** 3 * origin[axis] + 3 * u ** 2 * t * a[axis] + 3 * u * t ** 2 * b[axis] + t ** 3 * target[axis];
-      const tangent = (axis: 0 | 1) => 3 * u ** 2 * (a[axis] - origin[axis]) + 6 * u * t * (b[axis] - a[axis]) + 3 * t ** 2 * (target[axis] - b[axis]);
-      return { x: position(0), y: position(1), angle: Math.atan2(tangent(1), tangent(0)) * 180 / Math.PI + (reverse ? 180 : 0), direction: reverse ? 'reverse' : 'forward' };
-    };
-    const bidirectional = bundle.forward > 0 && bundle.reverse > 0;
-    const chevrons = [
-      ...(bundle.forward ? [chevron(bidirectional ? .35 : .5, false)] : []),
-      ...(bundle.reverse ? [chevron(bidirectional ? .65 : .5, true)] : []),
-    ];
-    return { ...bundle, path, chevrons };
+    const headStart = bundle.reverse > 0, headEnd = bundle.forward > 0;
+    const arrow = filledArrow(start, route.curves, bundle.width * 1.65, headStart, headEnd);
+    return { ...bundle, path, arrow: { ...arrow, headStart, headEnd,
+      gradientStart: headStart && !headEnd ? end : start,
+      gradientEnd: headStart && !headEnd ? start : end,
+      originFamily: headStart && !headEnd ? bundle.target : bundle.source,
+    } };
+
   });
 }
 

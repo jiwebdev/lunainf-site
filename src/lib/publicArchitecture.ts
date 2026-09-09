@@ -14,6 +14,7 @@ export const PUBLIC_ARCHITECTURE_RELATIONSHIP_KINDS = [
   'provides-context-to',
   'records-into',
   'requests-inference-from',
+  'returns-inference-to',
   'routes-inference-to',
   'supports',
 ] as const;

@@ -1,6 +1,11 @@
 .architecture-overview { color: #152a42; padding-block: 40px; }
 .architecture-overview h2 { margin-bottom: 14px; }
-.overview-intro, .overview-ribbon-key { color: #506379; max-width: 760px; }
+.overview-intro { color: #506379; max-width: 760px; }
+.overview-workspace { display: grid; grid-template-columns: 280px minmax(0, 1fr); gap: 24px; align-items: start; }
+.overview-sidebar, .overview-map { min-width: 0; }
+.overview-sidebar .overview-family-controls { flex-direction: column; flex-wrap: nowrap; gap: 5px; margin: 0 0 16px; }
+.overview-sidebar .overview-family-controls button { text-align: left; padding: 6px 12px; }
+.overview-sidebar .overview-details article { padding: 16px; font-size: 14px; }
 .overview-brain { display: block; width: 100%; height: auto; overflow: visible; }
 .overview-lobes g { cursor: pointer; transition: opacity .18s, filter .18s; }
 .overview-lobes path { stroke-width: 3; }
@@ -10,10 +15,8 @@
 .overview-lobes .is-muted { opacity: .5; }
 .overview-ribbons, .overview-borders, .overview-focus { pointer-events: none; }
 .overview-ribbons g { opacity: 0; transition: opacity .18s; }
-.overview-ribbons path { fill: none; stroke-linecap: round; stroke-linejoin: round; }
-.overview-ribbons .ribbon-band { stroke: #528cb4; }
-.overview-ribbons .ribbon-chevron { stroke: #fff; stroke-width: 1.1; }
-.overview-ribbons .is-active { opacity: .85; }
+.overview-ribbons .ribbon-arrow { stroke: none; }
+.overview-ribbons .is-active { opacity: .6; }
 .overview-ribbons .is-muted { opacity: 0; }
 .overview-borders path { fill: none; stroke: var(--family-color); stroke-width: 2; opacity: 0; transition: opacity .18s; }
 .overview-borders .is-active { opacity: 1; stroke-width: 3.5; }
@@ -40,9 +43,12 @@
 .overview-details h3 { margin: 0; }
 .overview-details p { margin: 10px 0; }
 .overview-details a { display: inline-block; padding-block: 10px; font-weight: 700; }
-.overview-inference-note { border-left: 3px solid #ff9b75; padding: 12px 24px; margin-top: 24px; max-width: 950px; }
-.overview-inference-note p { margin: 7px 0; }
 @media (max-width: 700px) {
+  .overview-workspace { grid-template-columns: 1fr; gap: 16px; }
+  .overview-sidebar { display: contents; }
+  .overview-sidebar .overview-family-controls { order: 0; margin: 0; }
+  .overview-map { order: 1; }
+  .overview-sidebar .overview-details { order: 2; }
   .overview-labels { display: none; }
   .overview-mobile-number { display: block; font-size: 62px; font-weight: 750; fill: #152a42; paint-order: stroke; stroke: #fff; stroke-width: 5px; }
   .overview-ribbons { opacity: .85; }

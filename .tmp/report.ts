@@ -1,0 +1,50 @@
+﻿import { overview } from '../src/lib/architectureOverview.ts';
+import {writeFileSync} from 'node:fs';
+const names=new Map(overview.families.map(f=>[f.id,f.label]));
+const text=`# Architecture overview review
+
+The architecture page now presents an organic family overview above the preserved full explorer. Both use public-architecture.json, which is unchanged.
+
+## Representatives and counts
+
+| Family | Canonical count | Overview representatives | Additional systems |
+| --- | ---: | --- | ---: |
+${overview.families.map(f=>`| ${f.label} | ${f.count} | ${f.representatives.map(n=>n.label).join('; ')} | ${f.omitted} |`).join('\n')}
+
+Inference Fabric belongs to Cognition in the canonical artifact. The canonical inference annotation spans it and both providers; the overview preserves that membership and displays the approved annotation inside the provider region and below the diagram.
+
+## Derived corridors
+
+Directions in this table are from the first family to the second and back. Only cross-family public relationships contribute; same-family edges remain in the full explorer.
+
+| First family | Second family | Forward | Reverse | Total |
+| --- | --- | ---: | ---: | ---: |
+${overview.bundles.map(b=>`| ${names.get(b.source)} | ${names.get(b.target)} | ${b.forward} | ${b.reverse} | ${b.count} |`).join('\n')}
+
+There are ${overview.bundles.length} corridors containing ${overview.bundles.reduce((n,b)=>n+b.count,0)} relationships. Ribbon width in SVG units is 3 + 3 * sqrt(count), with a five-unit wider pale halo and a one-unit highlight. All corridors are derived, with no authored connectivity.
+
+## Interaction and accessibility
+
+Hover or keyboard focus previews a region, its connected families, every touching corridor, and details. Click, tap, Enter or Space selects persistently. Escape on a region or Show all connections clears selection. Unrelated regions, labels and ribbons fade. Details contain canonical copy, representatives, total and omitted counts, and incoming/outgoing cross-family counts.
+
+Explore these systems clears the explorer search, sets its existing family control, dispatches its normal change event, focuses that control, and follows the full-architecture anchor. Without JavaScript the anchor works and all eight family details and all 46 fallback subsystem entries remain available.
+
+At widths up to 700px, numbered lobes pair with readable family buttons and details instead of shrinking the desktop descriptions. Focus has a visible outline or region stroke; numbers and text supplement color; transitions respect reduced motion.
+
+## Full explorer changes
+
+Default relationship opacity is reduced from .32 to .045; unrelated selected-state edges use .025. Family regions use .35 opacity at rest, restoring full opacity on family focus. The inference boundary remains dashed; its duplicate map label is removed to avoid covering nodes, with the existing full annotation retained above the map. All 46 nodes, 57 relationships, search, directory, inspector and selection logic remain.
+
+## Validation
+
+- npm ci: passed after stopping the site's dev process that held a Windows Rollup file lock. Existing audit advisories remain outside this change: one low and two high.
+- Canonical and overview validation: passed, including invalid representative, wrong family and duplicate rejection, deterministic bundle order, directions, counts and no-edge fixtures.
+- Astro check: zero errors, warnings or hints.
+- Static build: 15 pages; static boundary: 22 files; internal links: 298 passed.
+- Desktop 1440px and touch-enabled 390px Chrome smoke: eight regions, selection, connected/muted corridors, details, family handoff, full explorer direct edges, search and no horizontal page overflow passed. Mobile inspector remains below the map.
+- Keyboard focus, Space, Escape, desktop hover and no-JavaScript overview/full directories passed.
+- Screenshots visually reviewed at desktop and 390px. Browser tooling reused an existing Puppeteer/Chrome installation without adding dependencies.
+
+Human review should assess the lobe composition, ribbon prominence and numbered mobile treatment. Automated smoke does not substitute for assistive-technology or physical-device review. No merge or manual deployment is part of this delivery.
+`;
+writeFileSync('docs/architecture-overview-review.md',text);
