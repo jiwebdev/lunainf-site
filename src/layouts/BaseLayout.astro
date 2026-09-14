@@ -9,12 +9,19 @@ interface Props {
 
 const {
   title = 'LUNA — Brain Architecture for AI Systems',
-  description = 'LUNA is a longitudinal cognitive architecture exploring what happens when artificial intelligence is given persistent memory, developmental experience, continuity, and time.'
+  description = 'LUNA Core is running experimental software: a longitudinal cognitive architecture for persistent memory, developmental experience, continuity, and time. Its implementation is private and its research is public.'
 } = Astro.props;
 
 const path = Astro.url.pathname;
 const canonical = new URL(path, Astro.site ?? Astro.url).toString();
 const socialImage = new URL('/assets/luna-icon-reverse.webp', Astro.site ?? Astro.url).toString();
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'LUNA — Longitudinal Unified Narrative Architecture',
+  url: new URL('/', Astro.site ?? Astro.url).toString(),
+  description: 'LUNA Core is implemented, running experimental software—not solely a proposed architecture or white paper. Its source implementation is private; its architecture, research, and selected evidence are public.',
+};
 const nav = [
   { href: '/luna', label: 'What is LUNA?' },
   { href: '/architecture', label: 'Architecture' },
@@ -43,6 +50,7 @@ const nav = [
     <meta name="twitter:image" content={socialImage} />
     <link rel="icon" type="image/webp" href="/assets/luna-icon-reverse.webp" />
     <link rel="canonical" href={canonical} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <title>{title}</title>
   </head>
   <body>

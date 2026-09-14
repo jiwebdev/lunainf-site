@@ -15,6 +15,9 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
           Cognitive infrastructure for studying how artificial systems can be shaped by
           memory, experience, continuity, and time.
         </p>
+        <p class="runtime-posture">
+          <strong>Running experimental software.</strong> Private implementation. Public research.
+        </p>
         <div class="hero-actions">
           <a class="button button-primary" href="/luna">Understand LUNA</a>
           <a class="button button-secondary" href="/whitepaper">Read the white paper</a>
@@ -187,3 +190,21 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
     </div>
   </section>
 </BaseLayout>
+
+<style>
+  .runtime-posture {
+    width: fit-content;
+    margin: 24px 0 0;
+    padding: 11px 16px;
+    color: #c7d8eb;
+    background: rgba(255, 255, 255, .07);
+    border: 1px solid rgba(255, 255, 255, .16);
+    border-radius: 999px;
+    font-size: .92rem;
+    line-height: 1.35;
+  }
+  .runtime-posture strong { color: white; }
+  @media (max-width: 560px) {
+    .runtime-posture { width: auto; border-radius: 14px; }
+  }
+</style>

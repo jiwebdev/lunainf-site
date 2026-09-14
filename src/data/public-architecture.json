@@ -2,7 +2,7 @@
   "schema_version": 1,
   "disclosure_version": "public-architecture-v1",
   "title": "LUNA Architecture",
-  "summary": "A public, plain-English map of the interacting systems around LUNA's language-model inference boundary. These labels describe development scope, not quality. Working + Growing means the subsystem already works today and is still being expanded.",
+  "summary": "LUNA Core is implemented, running experimental software, not solely a proposed architecture or white paper. Its source code and live runtime are private. This is the reviewed public, plain-English map of the operating architecture and the accepted systems being developed around it. Each subsystem has an explicit implementation status. Working + Growing means the subsystem already works today and is still being expanded.",
   "families": [
     {
       "id": "memory",
