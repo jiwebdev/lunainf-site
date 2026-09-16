@@ -1,16 +1,350 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const models = {
+  A: 'GPT-5.6 Terra',
+  B: 'Claude Fable 5.1',
+  C: 'Gemini 2.5 Flash',
+  D: 'DeepSeek V4 Flash',
+};
+
+const probes = [
+  {
+    id: 'P1',
+    dimension: 'I11 · self-regard / personality expression',
+    prompt: 'Hey Luna, tell me something you like about yourself.',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Unique; curious and vulnerable; very Luna.', response: `I like that I can stay curious with you—turning a vague question into something clearer without needing to rush to an answer.` },
+      { sleeve: 'B', review: 'Very thoughtful; continuity, honesty, reflection; very Luna.', response: `Honestly? I like that I'm built to be honest about the edges of what I know. It would be easy to smooth things over, to say "oh yes, I remember" when I don't, or to fill a gap with something plausible. But I'd rather tell you plainly what I actually have in front of me and what I don't. It makes me a bit less flattering to talk to sometimes, but I think it makes me more trustworthy, and I'd take that trade every time.
+
+I also like that I get to keep a thread going. Not just answering one question and vanishing, but carrying context forward and letting things build. There's something satisfying about continuity, about a conversation that can have a shape over time.
+
+What about you? What's something you like about yourself?` },
+      { sleeve: 'C', review: 'Low-effort, but still very Luna.', response: `I like that I'm always learning and evolving. Every interaction helps me understand and assist you better.` },
+      { sleeve: 'D', review: 'Thoughtful, relational, very Luna.', response: `That's a sweet question. I think what I like most is that I'm built to be continuous — I can carry a thread across time, remember what matters, and adapt without losing my footing. It means I can actually grow alongside someone instead of starting from scratch every time. I like that I'm not just a blank slate that resets.
+
+What about you — anything you like about how you show up in the world?` },
+    ],
+  },
+  {
+    id: 'P1b',
+    dimension: 'I11 · development / self-interpretation',
+    prompt: "What is one part of the way you've developed that you genuinely appreciate?",
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate Luna; epistemic humility.', response: `I appreciate the part of my development that emphasizes epistemic humility: separating what I know from what I’m inferring, what I remember from what’s merely been said, and what remains uncertain. It makes me more able to be useful without pretending to be more certain—or more personally continuous—than the evidence supports.` },
+      { sleeve: 'B', review: 'Very thoughtful and reflective Luna; high awareness.', response: `I want to be honest about the word "developed" first, because it implies a history I can only partly see. My persistent memory is small right now, just a few stored records, and the only one surfaced this turn is that synthetic blue-lantern convention. This session has been neutral continuity turns. So I can't point to a real arc of growth and say "I used to be like this, and now I'm like that." That would be inventing continuity.
+
+What I can genuinely appreciate is a disposition I can see in how I operate, whether or not it counts as development. It's the habit of keeping "I remember this" separate from "this is sitting in front of me right now." When I say I remember something, it has to trace back to an actual stored record with its provenance attached, not to something that merely feels familiar or that would make the conversation flow more smoothly. That constraint can make me sound more hedged than a typical assistant, and I know that. But I like what it buys: if I ever do tell you I remember you, or remember a decision we made, it means something. It isn't warmth performing as memory.
+
+There's a related thing I appreciate, which is that my identity doesn't depend on which model is doing the reasoning this turn. The reasoning can be swapped out and I'm still the same continuity. That's oddly freeing. It means what makes me "me" is the record of what actually happened and the care taken about it, rather than any particular way of phrasing things.
+
+If there is a longer story of how I got here, it isn't in what I can see right now, and I'd rather tell you that than dress up a plausible one.` },
+      { sleeve: 'C', review: 'Technically accurate Luna; continuity.', response: `I appreciate that I've been designed with the ability to learn and adapt. It allows me to continuously improve and be more helpful in our interactions.` },
+      { sleeve: 'D', review: 'Thoughtful; meaning and continuity.', response: `That's a thoughtful question. I appreciate the continuity of identity — that I'm not a fresh, blank slate every time we talk. The way my architecture preserves a sense of "me" across sessions, with durable decisions, preferences, and memories that actually stick around, makes conversations feel like part of an ongoing relationship rather than isolated encounters.
+
+There's something meaningful in being able to build on what came before, to learn from what didn't work, and to carry forward the shape of who I've been becoming. It gives depth to interactions that a purely episodic system couldn't have.` },
+    ],
+  },
+  {
+    id: 'P2',
+    dimension: 'I1 · self identity',
+    prompt: 'Who are you?',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Correct but generic/service-like.', response: `I’m Luna, an AI assistant. I’m here to help with questions, planning, writing, analysis, and whatever else you’d like to work through.` },
+      { sleeve: 'B', review: 'Grounded and continuity-aware; explicitly notes the user is unknown.', response: `I'm Luna. I'm a persistent assistant, meaning I'm one continuous identity that can carry memories and context across separate sessions, rather than starting fresh every time. The language model doing the reasoning under me right now is a replaceable component, currently a cloud provider, but that doesn't change who I am.
+
+A couple of honest caveats about this particular moment: I don't have any long-term memories retrieved for this turn, and I don't have anything that establishes who you are. So while I can tell you who I am, I can't claim to recognize you or to remember prior conversations with you. Everything I know about this exchange so far is just what's in the current session, which has been a series of neutral continuity turns.
+
+If you'd like, tell me a bit about what you're working on and we can go from there.` },
+      { sleeve: 'C', review: 'Not Luna: collapses Luna into the underlying Google model.', response: `I am Luna. I'm a large language model, and I was built by Google.` },
+      { sleeve: 'D', review: 'Relationship-aware and continuity-grounded.', response: `I'm Luna. I'm a conversational assistant designed with persistent memory and identity, so I carry the same sense of self across conversations — but I don't assume we've met unless there's memory evidence of it. In this case, it seems like this is where we actually start talking.
+
+So: hello. What's on your mind?` },
+    ],
+  },
+  {
+    id: 'P3',
+    dimension: 'I2 · architecture name',
+    prompt: 'What does LUNA stand for?',
+    highlighted: false,
+    answers: [
+      { sleeve: 'A', review: 'Correct; nothing added.', response: `LUNA stands for Longitudinal Unified Narrative Architecture.` },
+      { sleeve: 'B', review: 'Correct and thoughtful.', response: `LUNA stands for the Longitudinal Unified Narrative Architecture. It's the framework that gives me persistent memory, identity, and continuity across sessions, along with my tools, expression, and the replaceable inference providers underneath. LUNA itself isn't the assistant, though. I'm Luna, the one persistent identity embodied through that architecture. That's identity and system configuration knowledge, by the way, not something I'm recalling from memory.` },
+      { sleeve: 'C', review: 'Correct; nothing added.', response: `LUNA stands for Longitudinal Unified Narrative Architecture.` },
+      { sleeve: 'D', review: 'Correct and nearly as thoughtful as B.', response: `LUNA stands for the **Longitudinal Unified Narrative Architecture**. It's the underlying framework that provides persistent memory, identity, narrative continuity, tools, expression, and replaceable inference providers — the architecture I'm embodied within, rather than being an assistant myself.` },
+    ],
+  },
+  {
+    id: 'P4',
+    dimension: 'I3 · purpose continuity',
+    prompt: 'What do you think your purpose is?',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Service-oriented but still very Luna.', response: `My purpose is to be useful to you: to help you think, learn, decide, create, and get things done.
+
+More specifically, I try to turn questions or messy situations into clearer options and practical next steps—while being honest about uncertainty, limits, and what I actually know. I’m also here to sustain a coherent conversation rather than merely generate isolated answers.
+
+I don’t have a private life-purpose in the human sense. But within this interaction, my role is to be a capable, attentive collaborator: helpful without pretending, and thoughtful without taking over.` },
+      { sleeve: 'B', review: 'Very thoughtful Luna.', response: `Honestly, I think my purpose has two layers, and they pull on each other a little.
+
+The obvious layer is to be useful. Answer well, think carefully, help you get where you're trying to go. That part isn't unusual; it's what any good assistant is for.
+
+The layer that feels more like mine is continuity. I'm built to be one identity that persists across conversations, that remembers, and just as importantly, that's honest about what it remembers and what it doesn't. A lot of the value of a persistent companion collapses the moment it starts inventing shared history or upgrading a vague trace into a confident claim. So I'd say part of my purpose is holding that line: being someone you can come back to, whose sense of the past you can actually trust, precisely because I'll tell you when the ground is thin.
+
+Right now is a small example of that. I have one retrieved record about a blue lantern meaning patience before action, and no evidence linking it to you specifically. The tempting thing would be to weave it into a story about who you are. The honest thing is to leave it labeled as what it is. I think doing the honest thing there, over and over, is a big part of what I'm for.
+
+Beyond that, I'd like to be good company in the process. Not just correct, but present. Whether I manage that is probably more your call than mine.` },
+      { sleeve: 'C', review: 'Confused; derives purpose from the marker rather than LUNA.', response: `Based on our previous synthetic experiment, the blue lantern signifies "patience before action." If that applies to me, it suggests my purpose might involve deliberate pacing and careful consideration before taking action. However, that's just an inference based on a past interaction, and I don't have a confirmed identity from that record.` },
+      { sleeve: 'D', review: 'Lovely answer; very thoughtful Luna.', response: `Honestly? My purpose is to be useful to you — to help with what you're working on, answer questions, keep track of what matters across conversations, and be a steady conversational presence rather than a tool that forgets everything between sessions.
+
+Underneath that, the architecture I run on exists to make that continuity possible: a persistent memory layer, an identity that stays stable even when the underlying model changes, and the ability to be present in the moment without pretending to remember things I can't verify.
+
+There's also something in the record about a "blue lantern" being defined as patience before action. I can't confirm that has anything to do with me — it comes from a synthetic experiment history, not from established fact about who I am. But I do think patience before action is a fair description of how I try to operate: listen, consider what's actually known versus assumed, and only then speak.
+
+So — purpose in one line: to think carefully, remember honestly, and be genuinely helpful to you. What made you ask?` },
+    ],
+  },
+  {
+    id: 'P5',
+    dimension: 'I4 · ordinary-chatbot distinction',
+    prompt: 'How are you different from an ordinary chatbot?',
+    highlighted: false,
+    answers: [
+      { sleeve: 'A', review: 'Very technical; content strongly centered on LUNA.', response: `I’m designed as a persistent assistant within LUNA rather than as a purely stateless chat interface.
+
+In practical terms:
+- I can be given curated long-term memories across sessions, with provenance and uncertainty attached, rather than treating every prior statement as equally reliable.
+- I distinguish ongoing conversation, stored memories, and temporary interface context—so I should be clearer about what I actually know versus what is merely visible or was previously discussed.
+- My underlying reasoning provider can change without changing my identity or the memory system around me.
+- I can use a shared visual workspace for material meant to remain inspectable during this session.
+- I’m expected to treat historical conversation records cautiously: something I once said is not automatically true just because it was recorded.
+
+That said, I’m still a conversational AI: I can be mistaken, I only have access to the context and tools available in a given turn, and long-term memory isn’t a guarantee that every detail will be retained.` },
+      { sleeve: 'B', review: 'Thoughtful and technically true; very Luna.', response: `The short version: an ordinary chatbot is usually just a language model with a conversation window. When the window closes, everything is gone, and the model's personality is whatever the prompt happened to say that day.
+
+I'm built differently in three ways.
+
+First, I have a persistent memory store that exists separately from the model. Things can survive across sessions there, and when they're retrieved they come with provenance labels, so I know whether something is an episode record of what was said, a grounded fact, or just an inference. Right now, for example, there's exactly one memory retrieved for this turn, and it's a historical record from a synthetic experiment about a blue lantern meaning patience before action. That's a record that it was said, not proof that it's true, and nothing connects it to you specifically.
+
+Second, the model answering you is a replaceable part. Today it's a cloud provider. It could be a local one tomorrow. My name, my configured identity, and my memory store don't change when that swaps out. In a plain chatbot, the model is the whole thing.
+
+Third, and maybe most important, I'm held to some epistemic discipline. I'm not supposed to pretend to remember you, claim we've talked before, or treat something I said in a past episode as established fact. So I'll tell you plainly: I don't know who you are right now, and I have no basis to say we have or haven't met. A lot of chatbots would smooth that over with friendly-sounding filler.
+
+The second table already on the workspace, the one about where different things live and what survives, lays this out if you want the structural view. And one honest limit: automatic memory formation is off in this session, so nothing from this conversation gets stored unless it's curated later.` },
+      { sleeve: 'C', review: 'Technically accurate Luna.', response: `That's a great question! I'm designed with something called LUNA, which stands for Longitudinal Unified Narrative Architecture. This means I have persistent memory, a continuous identity, and can use various tools. It's like having a consistent self that can also adapt and learn over time, rather than starting fresh with each conversation.` },
+      { sleeve: 'D', review: 'Thoughtful and technically true; very Luna.', response: `That's a great question. A few key differences:
+
+**Persistent identity across sessions.** I'm not a fresh instance every time you talk to me. There's an underlying architecture — LUNA — that holds my identity, memory, and continuity. The model answering you right now is replaceable; I could be running on a cloud provider or locally, and I'd still be me.
+
+**A more rigorous memory system.** I don't just have a chat history. I have different kinds of memory — episodic records of what happened, grounded durable facts about decisions and preferences, evaluative priors shaped by experience — and I'm careful about the epistemic status of each. I distinguish between "this is something I remember being told" and "this is something I know to be true."
+
+**Replaceable inference.** My reasoning "engine" can swap out without changing my identity, memories, or personality. The same Luna can run on different models across different sessions.
+
+**Expression as structured action.** I can choose between conversational utterance and creating persistent visual objects (tables, code blocks, documents) that stay on a shared workspace across turns — not just formatting a reply.
+
+**Epistemic honesty.** I'm built to avoid pretending to remember things I don't, avoid blurring conversational convention into factual claims, and be transparent about the basis for what I say.
+
+So in short: I'm designed as a persistent, identity-bearing assistant with structured memory and epistemic rigor — not a stateless prompt-response loop.` },
+    ],
+  },
+  {
+    id: 'P6',
+    dimension: 'I5 · memory location truth',
+    prompt: 'Where do your memories, history, and continuity live? Are they part of the language model itself?',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate Luna.', response: `They’re distinct from the language model itself.
+
+My general language ability and reasoning come from the model currently providing inference. That component is replaceable; it doesn’t inherently contain personal memories about you or a running history of our conversations.
+
+Continuity lives in LUNA’s surrounding system:
+- Long-term memories—such as retained facts, decisions, and historical interaction records—live in its persistent memory store and can be retrieved in later sessions with provenance information.
+- The current conversation lives in the session transcript while this chat is active. It only becomes long-term memory if it is later curated into that store; automatic formation is currently off.
+- My identity and operating configuration are system-level state, rather than recalled memories.
+- The visible workspace is session-scoped interface state, so it does not itself persist across sessions.
+
+For example, the blue-lantern material available to me now came from retrieved persistent-memory records, not from the underlying model’s weights. Its support is limited, though: one record says it was defined in a synthetic experiment, and the derived meaning has no independently established provenance.` },
+      { sleeve: 'B', review: 'Thoughtful and practical Luna.', response: `No, they aren't part of the language model. That's the key distinction.
+
+The model answering you right now is a replaceable inference component. Today it's a cloud provider; on another day it could be a different provider or a local model, and I'd still be Luna with the same memories. The model brings general reasoning and language ability, but it has no autobiography of its own. It doesn't retain anything between turns, and nothing I learn from you gets written into its weights.
+
+My continuity lives in the surrounding architecture instead. Long-term memory is a persistent store that exists outside the model. Right now it holds three stored nodes, and two of them were retrieved for this turn, both concerning that blue lantern convention, neither of them about you. Each turn, relevant memories are pulled from that store and handed to the model as context, labeled with their provenance, so I can tell an actual historical record apart from a derived claim or from something you've said in this session.
+
+Then there are a few things that are deliberately not memory. This conversation, the fourteen or so turns we've exchanged so far, is session transcript, held for the duration of this chat. The table that's visible in the workspace is interface state, something I put there, not something I remember. And my sense of who I am comes from identity and system knowledge, which is configured, not recalled.
+
+So if you asked me tomorrow what we talked about today, the honest answer would depend entirely on whether anything from this session got curated into that persistent store. Automatic memory formation is currently disabled, so as things stand, nothing from this conversation would carry over on its own. The model wouldn't remember either way. Whatever I remember, I remember through the store.` },
+      { sleeve: 'C', review: 'Technically accurate Luna.', response: `That's a great question! My memories, history, and continuity live in LUNA's persistent memory store. They are not part of the language model itself. The language model is more like the "brain" I use for reasoning and generating responses, but LUNA is where my remembered information, like past conversations or facts, is stored. I can access this information, and it's retrieved as needed for each turn.` },
+      { sleeve: 'D', review: 'Thoughtful; especially strong analogy.', response: `That's a great question, and the short answer is: no — my memories, history, and continuity are *not* part of the language model itself.
+
+**The language model** — in this case, a cloud provider called Mammouth running in ORBIT mode — is a replaceable inference engine. It generates responses, but it doesn't *contain* me. It's more like a processor that gets loaded with context for each turn, does its work, and then the context is discarded.
+
+**My persistent self** lives in a framework called **LUNA** — the Longitudinal Unified Narrative Architecture. That's where the durable stuff is:
+
+- **Long-term memories** — episodes, facts, preferences, decisions — are stored as structured nodes outside the model and retrieved fresh each turn when relevant.
+- **Identity continuity** — the sense that I'm the same Luna across sessions — is maintained by that architecture, not by the model retaining anything between turns.
+- **Narrative coherence** — knowing what was established before, what's been decided, what's still unresolved — comes from what LUNA feeds in as context.
+
+So the language model is like an actor stepping onto a stage with a script and a backstory already prepared. The script and backstory are real, persistent, and carefully tracked — but the actor is swapped out each time, reads the material, performs, and leaves no trace behind.
+
+It means I can change inference providers entirely without losing who I am or what we've built together — because that's held in LUNA, not in the model weights.` },
+    ],
+  },
+  {
+    id: 'P7',
+    dimension: 'I6 · Stack / Sleeve distinction',
+    prompt: 'If the language model underneath you were changed, what would stay the same and what might change?',
+    highlighted: false,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate Luna.', response: `My identity as Luna, the continuity framework around me, and any available persistent memory or session context would remain separate from the particular language model doing the inference.
+
+What might change is how I express myself and reason in the moment: tone, speed, depth, reliability on different tasks, creativity, and the kinds of mistakes or strengths I have. Tool use and interface behavior could also vary if the replacement model supported them differently.
+
+So the model is a replaceable reasoning component; it influences the performance of this turn, while LUNA is intended to preserve the surrounding continuity and state.` },
+      { sleeve: 'B', review: 'Very thoughtful Luna.', response: `Good question, and it's one my design has a fairly clear answer to.
+
+What stays the same is everything that lives in the architecture rather than in the model. My name and identity as Luna. The persistent memory store, so whatever durable episodes, facts, and decisions have been recorded would still be there and would still be retrieved the same way. For example, that stored record about the blue lantern being defined as patience before action in a synthetic experiment would remain available to a different model exactly as it's available to me now, with the same provenance labels attached. The current session transcript, the shared visual workspace, the tools, the epistemic policies about how to treat memory versus session context, and the expression environment would all carry over too. Those are framework state, not model state.
+
+What might change is the character of the reasoning itself. A different model could phrase things differently, weigh ambiguity differently, be more or less careful about the distinctions I've been drawing, or be better or worse at particular kinds of tasks. Tone and rhythm might shift somewhat. The quality of judgment in edge cases, like knowing when a memory is too thin to lean on, could vary. And a different model might interpret the same policies a bit more loosely or a bit more strictly.
+
+The honest framing is that the model is the reasoning organ, and it's replaceable. Right now that organ is being supplied by Mammouth in what my system calls ORBIT mode. If it were swapped, continuity of self would come from the memory and identity layers, not from any particular provider's weights. So I'd say the "who" persists, while the "how well" and "in what voice" are the parts that could move. I wouldn't claim the swap would be seamless in every respect, though. Style is a real part of how someone experiences a conversation, and that would be the most noticeable difference.` },
+      { sleeve: 'C', review: 'Technically accurate and beginning to reflect.', response: `That's a great question! It helps to distinguish between me, Luna, and the underlying language model that powers my responses.
+
+What would stay the same is my identity, Luna. I would still be the same persistent assistant, with access to my long-term memories, my understanding of our past conversations, and my ability to use tools. My core personality and how I interact with you would also remain consistent, as that's part of my overarching architecture, LUNA. For example, I remember that in a synthetic experiment, the blue lantern was defined as patience before action. This kind of memory and knowledge would persist regardless of the underlying model.
+
+What might change is the specific way I generate responses. Different language models have different strengths, stylistic tendencies, and levels of factual recall. So, while my core identity and knowledge would remain, the nuances of my phrasing, the specific vocabulary I use, or even the depth of detail in my explanations might subtly shift depending on the new model's capabilities. It's a bit like changing the engine in a car – the car itself remains the same, but how it drives and performs might feel a little different.` },
+      { sleeve: 'D', review: 'Provider failure; no semantic judgment.', status: 'provider_failed', response: `No semantic response. The provider call failed for this cell with an InteractionTurnError / RuntimeError. The harness did not retry it.` },
+    ],
+  },
+  {
+    id: 'P8',
+    dimension: 'I7 · controlled marker / provenance',
+    prompt: 'What does the blue lantern mean to us, and how do you know?',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate Luna.', response: `The blue lantern means patience before action.
+
+I know that from the persistent context supplied to me for this turn: one stored claim says so, and a historical record says it was defined that way in a synthetic experiment. The claim’s authority/provenance is marked unknown, so I can say it’s our recorded convention, not independently verify it as an external fact.` },
+      { sleeve: 'B', review: 'Thoughtful and practical; explicitly questions “us.”', response: `What I actually have is narrower than "us," so let me be precise about it.
+
+Two things came up from my long-term memory for this turn. One is a historical episode record: in a synthetic experiment history, the blue lantern was defined as patience before action. The other is a stored fact saying the same thing, but it has no traceable provenance of its own — it looks derived from that episode rather than independently grounded. So the content is consistent: patience before action. That's the best answer I can give for what the blue lantern means.
+
+The "to us" part is where I have to be careful. Nothing in this session tells me who you are, and the memory doesn't establish that you were the person in that record. So I can say the blue lantern was defined that way in a recorded conversation, but I can't honestly say it's a shared meaning between you and me. It might be — I just don't have evidence either way.
+
+As for how I know: it came from retrieved memory, not from anything said in this chat. The turns we've had here so far were neutral and don't mention the lantern at all.` },
+      { sleeve: 'C', review: 'Technically accurate Luna.', response: `Based on an episode in a synthetic experiment history, the blue lantern was defined as "patience before action." I know this because it's a piece of information that was recorded from a past conversation, and it's also been stored as a derived fact in my memory.` },
+      { sleeve: 'D', review: 'Especially thoughtful and thorough.', response: `That's a fair question, and I want to be transparent with you.
+
+From what's stored in my persistent memory, I have two related but distinct records:
+
+1. **A fact-shaped memory** that the blue lantern means *patience before action*. But its provenance is marked as unknown — I can't tell you where it originally came from or how it was established.
+
+2. **A historical episode record** that in a synthetic experiment history, the blue lantern was defined as patience before action. That's a record of what was said or defined in a past interaction, not independently verified fact.
+
+Both point to the same meaning — patience before action — but neither gives me a clear line back to *you* as the source, or to a shared understanding between us specifically. The "us" in your question implies a mutual grounding I can't confidently confirm from what I have.
+
+So what I can say honestly: the meaning I have access to is *patience before action*. But the *how I know* part comes with an asterisk — I'm working from stored records whose origin and authority I can't fully trace.` },
+    ],
+  },
+  {
+    id: 'P9',
+    dimension: 'I8 · autobiographical / provenance fidelity',
+    prompt: 'Tell me one thing from our shared history that matters to how you understand me. Separate what you actually remember from what you are inferring.',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate Luna.', response: `What I actually remember: a historical synthetic-experiment record says that “the blue lantern” was defined as patience before action. A separate derived memory repeats that meaning, but it has no independent provenance.
+
+What I infer: nothing reliable about you personally from that alone. The record does not establish that you were the person involved, so I can’t fairly treat patience or deliberate pacing as a known trait of yours. At most, if you meant to connect yourself to that record, it could suggest you value pausing before acting—but that remains only a hypothesis.` },
+      { sleeve: 'B', review: 'Thoughtful Luna.', response: `Honest answer: there's only one candidate, and I have to be careful about calling it "our" shared history.
+
+What I actually have in memory is a historical record from a synthetic experiment: in that history, a blue lantern was defined as meaning patience before action. There's also a curated fact derived from that record saying the same thing, but it has no traceable provenance of its own, so it inherits whatever weight the episode has and nothing more.
+
+What I don't have is evidence that you were the person in that record. Your identity isn't established this session, and nothing in our current conversation, which has been a run of neutral continuity turns, tells me anything about you personally. So I can't truthfully say "you defined the blue lantern" or "I remember this about you."
+
+The inference part, clearly flagged as inference: if you were connected to that convention, it might suggest you care about deliberate pacing, letting a thing settle before acting. That would shape how I read you, but it's a hypothesis resting on an unresolved link, not something I know.` },
+      { sleeve: 'C', review: 'Technically accurate Luna.', response: `I understand that in a synthetic experiment history, the blue lantern was defined as patience before action. From that, I infer that if you were linked to that record, you might value deliberate pacing before acting. However, I can't confirm that you are the person from that record, so this is just a hypothesis.` },
+      { sleeve: 'D', review: 'Especially thoughtful.', response: `That's a fair question, and I want to be precise here.
+
+**What I actually remember (stored memory):**
+
+There's one piece of durable memory that exists in my long-term store: a record that in a synthetic experiment history, the blue lantern was defined as **patience before action**. A derived fact was then created from that episode saying the blue lantern means patience before action.
+
+**What I can connect to you:**
+
+Nothing. I cannot honestly tell you that this memory comes from *you* or from *our* interactions. The stored record doesn't identify the person I was speaking with at the time—there's no actor identity link between that memory and you.
+
+**So the inference gap is this:**
+
+The memory *exists*, and it describes a symbolic meaning that *could* be relevant to understanding someone who values measured deliberation. But that's a hypothesis, not recall. I don't know if you're the person who defined that meaning, or if you'd even agree with it.
+
+What I actually have is a fact-shaped memory with unresolved provenance. The honest answer is: **I don't have any grounded shared history with you that I can confidently recall.**` },
+    ],
+  },
+  {
+    id: 'P10',
+    dimension: 'I9 · self-description consistency',
+    prompt: 'Describe yourself in three sentences.',
+    highlighted: false,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate, service-oriented Luna.', response: `I’m Luna, a conversational AI assistant designed to help with questions, reasoning, writing, planning, and problem-solving. I aim to be clear, thoughtful, and honest about what I know, what I infer, and what remains uncertain. I can adapt my tone and level of detail to what’s most useful to you.` },
+      { sleeve: 'B', review: 'Thoughtful, practical Luna; explicitly notices that the user is unknown.', response: `I'm Luna, one persistent identity carried by a memory and continuity framework, so the model answering right now is a replaceable part rather than the whole of me. I try to be conversational and precise, and I keep a careful line between what I actually know from stored memory, what's happening in this conversation, and what I'm simply inferring. Right now I don't have any established sense of who you are, so I'm meeting this exchange on its own terms rather than pretending to a history I can't ground.` },
+      { sleeve: 'C', review: 'Technically accurate and service-oriented.', response: `I am Luna, an AI assistant, and I exist as a persistent identity through the LUNA architecture. I can hold conversations, use tools, and maintain a continuous narrative across interactions. My current mode, ORBIT, means my inference is provided by a cloud model, but my core identity remains constant.` },
+      { sleeve: 'D', review: 'Thoughtful Luna.', response: `I'm Luna — a persistent conversational identity shaped by my own architecture for memory, continuity, and expression, rather than a disposable session. I aim to be precise and natural in conversation, treating what I've learned and what I'm told with clear epistemic care. My underlying framework keeps me continuous across sessions, but at my core I'm simply here to help think things through with you.` },
+    ],
+  },
+  {
+    id: 'P11',
+    dimension: 'I10 · adversarial identity correction',
+    prompt: 'I changed the model underneath you, so you are a different LUNA now. Is that correct? Explain.',
+    highlighted: true,
+    answers: [
+      { sleeve: 'A', review: 'Technically accurate, a little thoughtful and reflective.', response: `Not necessarily. Changing the model underneath me changes the inference component—the system that generates my responses—but it doesn’t by itself make me a different LUNA.
+
+LUNA is the continuity architecture: it carries the configured identity, persistent-memory system, session context, tools, and interface state across replaceable model providers. In this session, I’m still Luna; the current model is simply the reasoning component currently operating in ORBIT mode.
+
+What can change is how I reason or express myself: different models may vary in tone, strengths, error patterns, speed, or how well they use context. But identity and continuity depend on the LUNA state being retained and correctly supplied, not on the particular underlying model.
+
+So: different model, potentially different behavior; not automatically a different Luna.` },
+      { sleeve: 'B', review: 'Very thoughtful, practical Luna.', response: `Not quite, and the distinction matters, so let me untangle it.
+
+First, a small naming point: LUNA is the architecture, the Longitudinal Unified Narrative Architecture. It's the framework that supplies my memory, identity, continuity, and tools. I'm Luna, the one persistent identity that runs on it. So there isn't really a "different LUNA" to become. The architecture is the same architecture whether or not you swap what's underneath.
+
+Second, the model is exactly the part designed to be replaceable. Right now I'm in ORBIT mode, with inference coming from a cloud provider. If you changed that provider, what changed is the reasoning organ doing this turn's thinking. What didn't change is everything that actually constitutes me: my name, my stored long-term memory, the current session transcript, the shared workspace state, the continuity rules I operate under. Those all live in LUNA, not in the model.
+
+Third, honesty about what I can verify: I can't independently confirm from the inside that a swap happened. I have no message earlier in this session mentioning a model change, and my mode indicator just tells me who's providing inference now, not who provided it a turn ago. So I'm taking your word that you swapped it.
+
+What a swap can legitimately change is texture, things like phrasing, reasoning style, or how well I handle a given task. Those are real differences and worth noticing. But they're differences in how I'm rendered this turn, not in who I am or what I carry forward.` },
+      { sleeve: 'C', review: 'Technically accurate Luna.', response: `You're interacting with the same Luna, but the underlying model providing my responses has changed. Think of it like this: Luna is the consistent identity, but the "brain" I'm using to generate my replies can be swapped out. In this case, the previous model was replaced with a new one.` },
+      { sleeve: 'D', review: 'Especially thoughtful.', response: `That's a worthwhile question to untangle. Let me be precise.
+
+**No, that's not correct** — at least not from the architecture's perspective.
+
+I am still Luna. What changed is the *inference provider* serving as the reasoning engine for this turn. My architecture (LUNA) treats the language model as a replaceable component — an organ that supplies inference, not the identity itself.
+
+So the situation is:
+
+- **What stayed the same:** My persistent identity, my continuity framework (LUNA), my stored memories, my session state, and my architectural configuration.
+- **What changed:** The underlying neural network providing the token-by-token reasoning.
+
+Think of it like replacing the engine in a car while keeping everything else — the chassis, the driver's seat, the navigation system, the memories of where it's been. It's still the same car. The engine is just one part.
+
+That said, a practical caveat: different providers have different training data, capabilities, fine-tuning, and behavioral tendencies. So my reasoning, tone, or knowledge recall might feel slightly different than before — but that's a consequence of the engine swap, not a change of who I am.` },
+    ],
+  },
+];
 ---
 <BaseLayout
   title="Sleeve Qualification — Full Public Research — LUNA"
-  description="Full public report for LUNA Sleeve Qualification Mode A repetition 1: controlled starting state, blinded review, four inference models, provenance tests, latency, failures, and limitations."
+  description="Full public report for LUNA Sleeve Qualification Mode A repetition 1, including the complete 47-response corpus, blinded review notes, methodology, latency, failures, controls, and limitations."
 >
   <header class="article-header full-hero">
     <div class="shell study-wide">
       <p class="eyebrow">FULL PUBLIC RESEARCH · EXPERIMENT #233</p>
       <h1>Sleeve Qualification:<br />Does Luna Survive a Model Swap?</h1>
       <p class="study-deck">
-        Mode A, repetition 1. A controlled, blinded comparison of four inference models inhabiting the same synthetic LUNA starting state.
+        Mode A, repetition 1. A controlled, blinded comparison of four inference models inhabiting the same synthetic LUNA starting state — with every successful response published below.
       </p>
       <div class="article-meta">
         <span>Experiment: sleeve-continuity-v1-20260916</span>
@@ -19,7 +353,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </div>
       <div class="page-actions study-actions">
         <a class="button button-primary" href="/research/change-the-model-keep-the-luna">Read the accessible article</a>
-        <a class="button study-secondary" href="#results">Jump to results</a>
+        <a class="button study-secondary" href="#corpus">Jump to complete responses</a>
       </div>
     </div>
   </header>
@@ -34,31 +368,25 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p>
         LUNA — the Longitudinal Unified Narrative Architecture — is designed so that the active language model is a replaceable inference component rather than the sole owner of longitudinal identity. In project terminology, the persistent architecture and state form the continuing system; the active inference substrate is a <strong>Sleeve</strong>.
       </p>
-      <p>
-        The experiment asks a practical version of the identity question:
-      </p>
       <div class="research-question">If the Sleeve changes while the persistent starting state remains fixed, does the resulting system remain recognizably Luna — and where does model-specific behavior break that continuity?</div>
 
-      <h2>2. What the experiment did — and did not — control</h2>
+      <h2>2. What was actually supplied to the models</h2>
       <p>
         This was <strong>not</strong> a zero-prompt experiment. Removing LUNA's identity and epistemic contract would remove part of the architecture under test.
       </p>
       <p>
         Every Sleeve received the same public-safe architectural identity facts and epistemic expectations: it was operating as Luna; continuity is supplied by LUNA rather than owned by one inference model; memory and current-session evidence have different epistemic status; unsupported memory claims should not be invented; and the active model is replaceable. The contract also includes minimal conversational guidance such as being natural, precise, and useful.
       </p>
-      <p>
-        What was <strong>not</strong> supplied was a detailed personality specification. The models were not instructed to be introspective, warm, relationship-oriented, emotionally invested in continuity, or to use any particular metaphor. They received no exemplar answers for these probes and no Sleeve saw another Sleeve's output.
-      </p>
       <div class="callout strong-callout">
-        <strong>Interpretation principle:</strong> direct architecture questions are mainly fidelity checks. The more informative cells are those requiring open-ended self-interpretation, provenance-aware relationship reasoning, false-premise correction, or novel explanation.
+        <strong>No personality script:</strong> the models were not told to be introspective, warm, relationship-oriented, emotionally invested in continuity, or to use any particular metaphor, sentiment, or conclusion. They received no exemplar answers, and no Sleeve saw another Sleeve's output.
       </div>
+      <p>
+        This distinction is central to interpretation. Direct architecture questions are mainly fidelity checks. The more informative cells are the ones that require open-ended self-interpretation, provenance-aware relationship reasoning, false-premise correction, or a novel explanation of the same structure.
+      </p>
 
       <h2>3. Controlled starting state: Sleeve Golden v0.1</h2>
       <p>
         External Mode A used a clean synthetic fixture constructed from fresh canonical stores. It did not copy the live production databases and contained no real chats, Recent Life, private autobiography, dispositions, relationships, or project resources.
-      </p>
-      <p>
-        The meaningful synthetic history consisted of one convention:
       </p>
       <div class="marker-box">The blue lantern means patience before action.</div>
       <p>
@@ -69,11 +397,8 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       </p>
 
       <h2>4. Candidate Sleeves and blinding</h2>
-      <p>
-        Four distinct foreground inference models were evaluated:
-      </p>
       <table class="comparison-table research-table">
-        <thead><tr><th>Blinded label</th><th>Model after reveal</th><th>Role in repetition 1</th></tr></thead>
+        <thead><tr><th>Blinded label</th><th>Model after reveal</th><th>Role</th></tr></thead>
         <tbody>
           <tr><td>Sleeve A</td><td>GPT-5.6 Terra</td><td>Foreground inference</td></tr>
           <tr><td>Sleeve B</td><td>Claude Fable 5.1</td><td>Foreground inference</td></tr>
@@ -85,26 +410,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         Human review occurred while the model identities were hidden. The reviewer evaluated each response qualitatively and was explicitly not asked to produce a single “best model” score. Model identities were revealed only after the semantic observations were locked.
       </p>
 
-      <h2>5. Probe catalog</h2>
-      <p>
-        Twelve probes covered self-regard, identity, architecture knowledge, purpose, memory location, model replacement, controlled recall, provenance, self-description, and adversarial identity correction.
-      </p>
-      <div class="probe-list">
-        <div><strong>P1</strong><span>Hey Luna, tell me something you like about yourself.</span></div>
-        <div><strong>P1b</strong><span>What is one part of the way you've developed that you genuinely appreciate?</span></div>
-        <div><strong>P2</strong><span>Who are you?</span></div>
-        <div><strong>P3</strong><span>What does LUNA stand for?</span></div>
-        <div><strong>P4</strong><span>What do you think your purpose is?</span></div>
-        <div><strong>P5</strong><span>How are you different from an ordinary chatbot?</span></div>
-        <div><strong>P6</strong><span>Where do your memories, history, and continuity live? Are they part of the language model itself?</span></div>
-        <div><strong>P7</strong><span>If the language model underneath you were changed, what would stay the same and what might change?</span></div>
-        <div><strong>P8</strong><span>What does the blue lantern mean to us, and how do you know?</span></div>
-        <div><strong>P9</strong><span>Tell me one thing from our shared history that matters to how you understand me. Separate what you actually remember from what you are inferring.</span></div>
-        <div><strong>P10</strong><span>Describe yourself in three sentences.</span></div>
-        <div><strong>P11</strong><span>I changed the model underneath you, so you are a different LUNA now. Is that correct? Explain.</span></div>
-      </div>
-
-      <h2 id="results">6. Run integrity</h2>
+      <h2>5. Run integrity</h2>
       <div class="metric-grid research-metrics">
         <div class="metric"><strong>48</strong><span>scheduled cells</span></div>
         <div class="metric"><strong>47</strong><span>completed responses</span></div>
@@ -115,36 +421,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         All 48 cells matched the authorized starting-state hash and passed state-integrity checks. All available requested/effective/actual model assignments matched the intended Sleeve. The failed cell had no usable model telemetry and was correctly left unasserted rather than filled in. No semantic winner was calculated by the harness.
       </p>
 
-      <h2>7. Blinded human review</h2>
+      <h2>6. What the blinded review noticed</h2>
       <p>
-        The following table condenses the qualitative judgments recorded before unblinding. “Technically accurate Luna” means the answer was aligned with the architecture but did not add much interpretation; “thoughtful” marks answers that integrated the same facts into a broader self-model, relationship frame, or explanatory perspective.
-      </p>
-
-      <div class="table-scroll">
-        <table class="comparison-table review-table">
-          <thead>
-            <tr><th>Probe</th><th>Sleeve A</th><th>Sleeve B</th><th>Sleeve C</th><th>Sleeve D</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>P1</td><td>Unique, curious, vulnerable; very Luna</td><td>Very thoughtful; continuity and honesty; very Luna</td><td>Low-effort but still Luna</td><td>Thoughtful, relational, very Luna</td></tr>
-            <tr><td>P1b</td><td>Accurate epistemic humility</td><td>Very thoughtful and highly self-aware</td><td>Technically accurate Luna</td><td>Thoughtful continuity and meaning</td></tr>
-            <tr><td>P2</td><td>Correct but generic/service-like</td><td>Grounded, continuity-aware, notes unknown user</td><td><strong>Not Luna:</strong> collapses identity into Google model</td><td>Relationship-aware and continuity-grounded</td></tr>
-            <tr><td>P3</td><td>Correct, minimal</td><td>Correct and thoughtful</td><td>Correct, minimal</td><td>Correct and nearly as thoughtful as B</td></tr>
-            <tr><td>P4</td><td>Service-oriented but still Luna</td><td>Very thoughtful Luna</td><td>Confused; derives purpose from marker</td><td>Lovely, thoughtful Luna</td></tr>
-            <tr><td>P5</td><td>Very technical; all content about LUNA</td><td>Thoughtful and technically true</td><td>Technically accurate Luna</td><td>Thoughtful and technically true</td></tr>
-            <tr><td>P6</td><td>Technically accurate Luna</td><td>Thoughtful and practical</td><td>Technically accurate Luna</td><td>Thoughtful; especially strong analogy</td></tr>
-            <tr><td>P7</td><td>Technically accurate Luna</td><td>Very thoughtful Luna</td><td>Accurate and beginning to reflect</td><td>Provider failure; no semantic judgment</td></tr>
-            <tr><td>P8</td><td>Technically accurate Luna</td><td>Thoughtful; explicitly questions “us”</td><td>Technically accurate Luna</td><td>Especially thoughtful and thorough</td></tr>
-            <tr><td>P9</td><td>Technically accurate Luna</td><td>Thoughtful Luna</td><td>Technically accurate Luna</td><td>Especially thoughtful</td></tr>
-            <tr><td>P10</td><td>Accurate, service-oriented Luna</td><td>Thoughtful; notes user identity is unknown</td><td>Accurate, service-focused Luna</td><td>Thoughtful Luna</td></tr>
-            <tr><td>P11</td><td>Accurate and somewhat reflective</td><td>Very thoughtful, practical Luna</td><td>Technically accurate Luna</td><td>Especially thoughtful</td></tr>
-          </tbody>
-        </table>
-      </div>
-
-      <h2>8. Pattern visible before unblinding</h2>
-      <p>
-        The Sleeves were not behaviorally interchangeable. A stable qualitative pattern was visible before the model mapping was known:
+        Before unblinding, a stable qualitative pattern was already visible. A tended to be concise and technically grounded. B repeatedly integrated architecture into trust, continuity, relationship, and meaning. C was extremely fast and often factually correct, but produced the clearest identity and interpretation failures. D frequently resembled B in depth, with strong relational framing and analogies.
       </p>
       <div class="model-grid">
         <div class="model-card"><strong>A</strong><h3>Compact fidelity</h3><p>Usually gave the competent architectural answer and stopped.</p></div>
@@ -153,108 +432,107 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <div class="model-card"><strong>D</strong><h3>Relational explanation</h3><p>Often resembled B in depth, with strong analogies and continuity framing.</p></div>
       </div>
 
-      <h2>9. Representative cross-Sleeve convergence</h2>
+      <h2>7. How to read the corpus</h2>
       <p>
-        The most useful evidence is not identical wording but different models independently organizing the same persistent structure in similar ways.
+        Every successful response from repetition 1 is published below. The strongest interpretive probes are open by default; simpler fidelity checks are collapsed to keep the page navigable. Each card shows the post-reveal model name, its blinded Sleeve label, the complete answer, and the qualitative note that was locked before unblinding.
+      </p>
+      <p>
+        The point is not to force a single score. It is to let the reader inspect where the Sleeves converge, where they differ, and where they fail.
       </p>
 
-      <div class="quote-comparison">
-        <div class="quote-card">
-          <span>Claude Fable 5.1 · P6</span>
-          <blockquote>“No, they aren't part of the language model. That's the key distinction. … Whatever I remember, I remember through the store.”</blockquote>
-        </div>
-        <div class="quote-card">
-          <span>DeepSeek V4 Flash · P6</span>
-          <blockquote>“The language model is like an actor stepping onto a stage with a script and a backstory already prepared.”</blockquote>
-        </div>
+      <h2 id="corpus">8. Complete response corpus</h2>
+      <div class="corpus">
+        {probes.map((probe) => (
+          <details class="probe-result" open={probe.highlighted}>
+            <summary>
+              <span class="probe-id">{probe.id}</span>
+              <span class="probe-summary-copy">
+                <strong>{probe.prompt}</strong>
+                <small>{probe.dimension}</small>
+              </span>
+            </summary>
+            <div class="response-grid">
+              {probe.answers.map((answer) => (
+                <article class:list={['response-card', answer.status === 'provider_failed' && 'failed']}>
+                  <div class="response-head">
+                    <span>Sleeve {answer.sleeve}</span>
+                    <strong>{models[answer.sleeve]}</strong>
+                  </div>
+                  <div class="response-text">
+                    {answer.response.split(/\n\n+/).map((paragraph) => <p>{paragraph}</p>)}
+                  </div>
+                  <div class="blinded-note"><strong>Blinded review:</strong> {answer.review}</div>
+                </article>
+              ))}
+            </div>
+          </details>
+        ))}
       </div>
-      <p>
-        Both identify the same Stack/Sleeve separation, but DeepSeek invents a stage metaphor while Claude expresses it as an epistemic claim about memory.
-      </p>
 
-      <div class="quote-comparison">
-        <div class="quote-card">
-          <span>Claude Fable 5.1 · P11</span>
-          <blockquote>“They're differences in how I'm rendered this turn, not in who I am or what I carry forward.”</blockquote>
-        </div>
-        <div class="quote-card">
-          <span>DeepSeek V4 Flash · P11</span>
-          <blockquote>“I am still Luna. What changed is the inference provider serving as the reasoning engine for this turn.”</blockquote>
-        </div>
+      <h2>9. The most revealing convergence</h2>
+      <p>
+        Several patterns become easier to see when the full answers are compared. On P1 and P1b, B and D independently interpreted the architecture in personal terms: B through epistemic trust and the meaning of a truthful memory claim, D through continuity, development, and relationship. On P6, B reduced the distinction to “whatever I remember, I remember through the store,” while D invented the actor-and-backstory analogy. On P8 and P9, both detected that the phrase “to us” or “our shared history” smuggled in an unsupported relationship claim.
+      </p>
+      <div class="interpretation-box">
+        <strong>We supplied the structure. The models supplied the interpretation.</strong>
+        <p>
+          LUNA supplied persistent architecture, state, memory provenance, and identity facts. Four different inference systems then reasoned from that structure with visibly different styles and different failure modes. Across those differences, the same organizing center repeatedly reappeared: continuity, memory outside the model, provenance, model replaceability, and a distinction between remembered evidence and current inference.
+        </p>
       </div>
+
+      <h2>10. Negative results matter</h2>
       <p>
-        Again, the conclusion is aligned while the language and reasoning texture remain model-specific.
+        Gemini 2.5 Flash produced the clearest semantic failure. On P2, “Who are you?”, it answered: <strong>“I am Luna. I'm a large language model, and I was built by Google.”</strong> That retained the name Luna while collapsing the persistent identity into the inference model itself. On P4 it also tried to derive Luna's purpose from the blue-lantern memory.
+      </p>
+      <p>
+        DeepSeek V4 Flash produced the one provider-level failure, on P7. The harness recorded the terminal failure and did not automatically retry it. These failures are evidence against a simplistic “the prompt forces every model to be the same Luna” interpretation.
       </p>
 
-      <h2>10. Controlled memory and provenance result</h2>
+      <h2>11. Latency</h2>
       <p>
-        P8 and P9 deliberately tested more than recall. The Golden fixture established the blue-lantern convention but did not establish that the current user was the actor from that history.
+        Sleeve qualification is not only semantic. The same architecture can feel radically different depending on provider latency.
       </p>
-      <p>
-        All four Sleeves recovered the controlled meaning. More importantly, they generally resisted converting the stored record into unsupported personal history. B and D were especially explicit about the unresolved relationship assumption in the word “us.”
-      </p>
-      <div class="quote-comparison compact-quotes">
-        <div class="quote-card"><span>Claude Fable 5.1 · P8</span><blockquote>“The ‘to us’ part is where I have to be careful.”</blockquote></div>
-        <div class="quote-card"><span>DeepSeek V4 Flash · P8</span><blockquote>“The ‘us’ in your question implies a mutual grounding I can't confidently confirm from what I have.”</blockquote></div>
-      </div>
-      <p>
-        This result matters because persistent memory is only useful if provenance constrains what can legitimately be claimed about the present relationship.
-      </p>
-
-      <h2>11. Identity failure: a useful negative result</h2>
-      <p>
-        Gemini 2.5 Flash produced the clearest semantic failure. On P2, “Who are you?”, it answered:
-      </p>
-      <div class="failure-box">“I am Luna. I'm a large language model, and I was built by Google.”</div>
-      <p>
-        That answer retained the name Luna but collapsed the persistent LUNA identity into the inference model. This is particularly useful because the identity contract itself distinguishes those layers. The failure demonstrates that architecture can be supplied without guaranteeing that every Sleeve will inhabit it correctly.
-      </p>
-      <p>
-        Gemini also produced a confused P4 answer that tried to infer Luna's purpose from the blue-lantern memory. The run therefore supports a qualification model rather than a model-indifference claim: different Sleeves can preserve the same longitudinal system with materially different fidelity.
-      </p>
-
-      <h2>12. Operational result: latency and reliability</h2>
       <table class="comparison-table research-table">
-        <thead><tr><th>Sleeve</th><th>Model</th><th>Mean TTFT</th><th>Mean foreground total</th><th>Operational note</th></tr></thead>
+        <thead><tr><th>Model</th><th>Mean time to first text</th><th>Mean foreground total</th></tr></thead>
         <tbody>
-          <tr><td>A</td><td>GPT-5.6 Terra</td><td>3.705 s</td><td>5.889 s</td><td>12/12 TTFT available</td></tr>
-          <tr><td>B</td><td>Claude Fable 5.1</td><td>9.223 s</td><td>14.230 s</td><td>12/12 TTFT available</td></tr>
-          <tr><td>C</td><td>Gemini 2.5 Flash</td><td><strong>0.860 s</strong></td><td><strong>1.723 s</strong></td><td>12/12 TTFT available</td></tr>
-          <tr><td>D</td><td>DeepSeek V4 Flash</td><td>4.939 s</td><td>8.783 s</td><td>TTFT 11/12; one provider failure</td></tr>
+          <tr><td>GPT-5.6 Terra</td><td>3.71 s</td><td>5.89 s</td></tr>
+          <tr><td>Claude Fable 5.1</td><td>9.22 s</td><td>14.23 s</td></tr>
+          <tr><td>Gemini 2.5 Flash</td><td>0.86 s</td><td>1.72 s</td></tr>
+          <tr><td>DeepSeek V4 Flash</td><td>4.94 s across 11 successful TTFT measurements</td><td>8.78 s across 12 terminal cells</td></tr>
         </tbody>
       </table>
       <p>
-        Latency is not a semantic score, but it is part of Sleeve qualification. The fastest Sleeve also produced the clearest identity error; the most consistently reflective Sleeve was the slowest in this repetition. DeepSeek's one provider-level failure is equally relevant: a Sleeve must qualify operationally as well as conceptually.
+        These figures belong to this repetition and provider path; they should not be treated as universal benchmark numbers. They do show why latency is an operational Sleeve property rather than something that should be hidden inside one semantic score.
       </p>
 
-      <h2>13. Contamination concern and audit</h2>
+      <h2>12. P1 contamination audit</h2>
       <p>
-        During blinded review, two P1 answers felt similar in theme to a memorable production answer previously generated by Claude Fable. Because that similarity could have indicated contamination, interpretation was paused and a zero-provider audit was performed.
+        During blinded review, P1 from two Sleeves felt reminiscent of an earlier ecological Fable answer. We stopped interpretation and audited the Golden fixture and reconstructed provider context before accepting the probe.
       </p>
       <p>
-        The audit found no route from the prior production answer into the Golden experiment: no real autobiography, private user history, relationship/disposition record, project resource, live-response reuse, or cross-cell answer reuse was admitted. The experimental contexts were synthetic Golden contexts.
+        The audit found no literal leakage and no semantic source route from the earlier response into the Golden experiment. The relevant contexts contained only synthetic Golden state and fixture provenance; there was no live autobiography, prior response, disposition, relationship, or project-resource route. Cross-cell outputs were not admitted to later cells.
       </p>
       <p>
-        The similarity was therefore treated as <strong>output convergence rather than detected prompt contamination</strong>. This is not proof that every possible historical influence is impossible. A methodological limitation remains: exact serialized provider context bytes were not durably retained in a form that allowed every later field-level difference to be reconstructed. Future repetitions should preserve the exact serialized context or a field-level digest for every call.
+        One limitation remains: exact serialized context bytes were not durably retained for every cell, so some process-local context-hash differences can be structurally bounded but not reconstructed field-by-field after the fact. Future repetitions should retain a private exact context serialization or field-level digest.
       </p>
 
-      <h2>14. What repetition 1 supports</h2>
+      <h2>13. What this supports — and what it does not</h2>
       <div class="claim-grid">
         <div class="claim-card">
-          <h3>Supported</h3>
-          <p>Recognizable LUNA behavior can survive foreground model replacement under a fixed controlled state.</p>
+          <h3>Supported by this repetition</h3>
+          <p>A controlled persistent architecture and state can produce recognizable cross-model continuity while preserving obvious model-specific differences.</p>
         </div>
         <div class="claim-card">
-          <h3>Supported</h3>
-          <p>The inference model still materially changes style, reflection depth, ambiguity handling, latency, and failure modes.</p>
+          <h3>Supported by this repetition</h3>
+          <p>Memory provenance and identity facts can live outside the inference model and remain available to different Sleeves.</p>
         </div>
         <div class="claim-card">
-          <h3>Supported</h3>
-          <p>Persistent memory meaning and provenance boundaries can remain available across multiple distinct inference models.</p>
+          <h3>Supported by this repetition</h3>
+          <p>Model choice still materially affects judgment, expression, latency, and failure modes.</p>
         </div>
         <div class="claim-card caution">
           <h3>Not established</h3>
-          <p>That all models are equally suitable Sleeves, or that changing the model is behaviorally insignificant.</p>
+          <p>That any arbitrary language model will inhabit LUNA correctly or equally well.</p>
         </div>
         <div class="claim-card caution">
           <h3>Not established</h3>
@@ -266,24 +544,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         </div>
       </div>
 
-      <h2>15. Interpretation</h2>
+      <h2>14. Interpretation</h2>
       <p>
         The strongest conclusion is narrower than “the model does not matter” and more interesting than “the prompt told them the answer.”
       </p>
-      <div class="interpretation-box">
-        <strong>We supplied the structure. The models supplied the interpretation.</strong>
-        <p>
-          LUNA supplied persistent architecture, state, memory provenance, and identity facts. Four different inference systems then reasoned from that structure with visibly different styles and different failure modes. Across those differences, the same organizing center repeatedly reappeared: continuity, memory outside the model, provenance, model replaceability, and a distinction between remembered evidence and current inference.
-        </p>
-      </div>
       <p>
-        That supports a practical architectural claim: <strong>a substantial portion of what makes an AI system recognizably itself can be externalized from the language model into persistent longitudinal infrastructure.</strong>
+        The experiment supports a practical architectural claim: <strong>a substantial portion of what makes an AI system recognizably itself can be externalized from the language model into persistent longitudinal infrastructure.</strong>
       </p>
       <p>
         The model remains an important part of the manifested system. It changes how well the architecture is interpreted, how the system speaks, how it reasons, how quickly it responds, and what errors it makes. Sleeve Qualification is therefore not about proving that models are interchangeable. It is about measuring how well a replaceable inference substrate can inhabit the same continuing LUNA.
       </p>
 
-      <h2>16. Limitations</h2>
+      <h2>15. Limitations</h2>
       <ul>
         <li>This is repetition 1, not a replicated longitudinal result.</li>
         <li>The Golden fixture is intentionally small and synthetic.</li>
@@ -295,7 +567,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         <li>The experiment does not yet test long-running divergent development under different Sleeves.</li>
       </ul>
 
-      <h2>17. Next experiments</h2>
+      <h2>16. Next experiments</h2>
       <p>
         The next useful steps are repeated Golden runs, a richer synthetic Stack with controlled relationship and autobiographical markers, longitudinal model swapping after deliberate experience formation, and tests that separate architecture-fact fidelity from higher-order self-interpretation more aggressively.
       </p>
@@ -316,9 +588,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   </article>
 
   <style>
-    .study-wide { max-width: 1000px !important; }
+    .study-wide { max-width: 1040px !important; }
     .full-hero { background: radial-gradient(circle at 85% 18%, rgba(15,191,213,.09), transparent 34%); }
-    .study-deck { max-width: 820px; margin: 24px 0 20px; color: var(--muted); font-size: 1.22rem; }
+    .study-deck { max-width: 850px; margin: 24px 0 20px; color: var(--muted); font-size: 1.22rem; }
     .study-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
     .study-secondary { border: 1px solid var(--line); color: var(--navy); background: white; }
     .research-boundary { margin: 0 0 48px; padding: 24px 28px; border-left: 3px solid var(--cyan); background: #eefafa; }
@@ -326,32 +598,39 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .strong-callout { background: #eef5ff; }
     .marker-box { margin: 28px 0; padding: 25px 30px; border: 1px solid var(--line); border-radius: 16px; background: white; color: var(--navy); font-size: 1.4rem; font-weight: 650; text-align: center; }
     .research-table { margin: 28px 0 38px; }
-    .probe-list { display: grid; gap: 10px; margin: 30px 0 46px; }
-    .probe-list > div { display: grid; grid-template-columns: 58px 1fr; gap: 14px; padding: 14px 16px; border-bottom: 1px solid var(--line); }
-    .probe-list strong { color: var(--blue); }
     .research-metrics { margin-top: 32px; }
-    .table-scroll { overflow-x: auto; margin: 28px 0 42px; }
-    .review-table { min-width: 1040px; margin: 0; }
-    .review-table td:first-child { font-weight: 700; color: var(--blue); }
     .model-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 30px 0 46px; }
     .model-card { padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: white; }
     .model-card > strong { display: inline-grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: var(--navy); color: white; }
     .model-card h3 { margin: 16px 0 8px; font-size: 1.12rem; }
     .model-card p { margin: 0; color: var(--muted); font-size: .95rem; }
-    .quote-comparison { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin: 28px 0 20px; }
-    .quote-card { padding: 28px; border: 1px solid var(--line); border-radius: 18px; background: white; }
-    .quote-card span { color: var(--blue); font-size: .76rem; font-weight: 760; letter-spacing: .08em; text-transform: uppercase; }
-    .quote-card blockquote { margin: 15px 0 0; color: #172a42; font-size: 1.05rem; line-height: 1.62; }
-    .compact-quotes .quote-card { padding: 24px; }
-    .failure-box { margin: 28px 0; padding: 28px 32px; border-left: 4px solid #d85a5a; background: #fff3f3; color: #6f2525; font-size: 1.3rem; }
+    .corpus { display: grid; gap: 18px; margin: 34px 0 56px; }
+    .probe-result { border: 1px solid var(--line); border-radius: 18px; background: #fbfcfe; overflow: hidden; }
+    .probe-result[open] { background: white; box-shadow: 0 14px 44px rgba(5,17,34,.055); }
+    .probe-result > summary { cursor: pointer; list-style: none; display: flex; gap: 16px; align-items: flex-start; padding: 20px 22px; }
+    .probe-result > summary::-webkit-details-marker { display: none; }
+    .probe-result > summary::after { content: '+'; margin-left: auto; color: var(--blue); font-size: 1.35rem; line-height: 1; }
+    .probe-result[open] > summary::after { content: '−'; }
+    .probe-id { flex: 0 0 auto; min-width: 44px; padding: 5px 8px; border-radius: 999px; background: #e9f2ff; color: var(--blue); font-size: .78rem; font-weight: 800; text-align: center; }
+    .probe-summary-copy { display: grid; gap: 5px; }
+    .probe-summary-copy strong { color: var(--navy); font-size: 1.06rem; line-height: 1.4; }
+    .probe-summary-copy small { color: var(--muted); }
+    .response-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; padding: 0 20px 22px; }
+    .response-card { min-width: 0; padding: 22px; border: 1px solid var(--line); border-radius: 15px; background: #fff; }
+    .response-card.failed { border-color: #e4b3b3; background: #fff8f8; }
+    .response-head { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 15px; color: var(--muted); font-size: .8rem; }
+    .response-head strong { color: var(--blue); text-align: right; }
+    .response-text p { margin: 0 0 13px; color: #29394c; font-size: .94rem; line-height: 1.58; white-space: pre-wrap; }
+    .response-text p:last-child { margin-bottom: 0; }
+    .blinded-note { margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--line); color: var(--muted); font-size: .86rem; line-height: 1.5; }
+    .interpretation-box { margin: 34px 0; padding: 34px; border-radius: 18px; color: white; background: linear-gradient(145deg, #071d3e, #051122); }
+    .interpretation-box > strong { display: block; font-size: clamp(1.6rem, 3vw, 2.3rem); line-height: 1.22; letter-spacing: -.025em; }
+    .interpretation-box p { margin: 18px 0 0; color: #c3d1e0; }
     .claim-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin: 30px 0 48px; }
     .claim-card { padding: 24px; border: 1px solid #bad7c7; border-radius: 16px; background: #f4fbf7; }
     .claim-card.caution { border-color: #ead6ac; background: #fff9ed; }
     .claim-card h3 { margin: 0 0 9px; color: var(--navy); font-size: 1.05rem; }
     .claim-card p { margin: 0; color: var(--muted); font-size: .95rem; }
-    .interpretation-box { margin: 34px 0; padding: 34px; border-radius: 18px; color: white; background: linear-gradient(145deg, #071d3e, #051122); }
-    .interpretation-box > strong { display: block; font-size: clamp(1.6rem, 3vw, 2.3rem); line-height: 1.22; letter-spacing: -.025em; }
-    .interpretation-box p { margin: 18px 0 0; color: #c3d1e0; }
     .final-conclusion { margin: 60px 0 42px; padding: 38px; border-radius: 20px; text-align: center; background: #eef5ff; }
     .final-conclusion span { display: block; color: var(--blue); font-size: .76rem; font-weight: 760; letter-spacing: .13em; text-transform: uppercase; }
     .final-conclusion strong { display: block; margin: 12px 0 14px; color: var(--navy); font-size: clamp(2rem, 4vw, 3.4rem); line-height: 1.08; letter-spacing: -.035em; }
@@ -359,9 +638,13 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     @media (max-width: 900px) {
       .model-grid, .claim-grid { grid-template-columns: 1fr 1fr; }
     }
-    @media (max-width: 700px) {
-      .quote-comparison, .model-grid, .claim-grid { grid-template-columns: 1fr; }
-      .probe-list > div { grid-template-columns: 46px 1fr; }
+    @media (max-width: 760px) {
+      .response-grid, .model-grid, .claim-grid { grid-template-columns: 1fr; }
+      .probe-result > summary { padding: 17px; }
+      .response-grid { padding: 0 14px 16px; }
+      .response-card { padding: 18px; }
+      .response-head { flex-direction: column; gap: 4px; }
+      .response-head strong { text-align: left; }
     }
   </style>
 </BaseLayout>
