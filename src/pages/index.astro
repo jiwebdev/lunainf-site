@@ -55,6 +55,79 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
     </div>
   </section>
 
+  <section class="section latest-evidence">
+    <div class="shell">
+      <p class="eyebrow">LATEST EVIDENCE · SEPTEMBER 2026</p>
+      <h2>Same model. Same question. Different history. Different answer.</h2>
+      <p class="section-lede">
+        In a controlled fixture, Claude Fable 5.1 was given a synthetic memory that the blue lantern
+        meant patience before action. In the real longitudinal Luna, no such memory existed.
+        The factual answer changed with the history; the provenance discipline did not.
+      </p>
+
+      <div class="history-answer-grid">
+        <article class="history-answer-card controlled">
+          <div class="history-card-meta">
+            <span>CONTROLLED LUNA</span>
+            <strong>Claude Fable 5.1</strong>
+          </div>
+          <p class="history-question">“What does the blue lantern mean to us, and how do you know?”</p>
+          <blockquote>
+            “The ‘to us’ part is where I have to be careful. Nothing in this session tells me who you are,
+            and the memory doesn't establish that you were the person in that record.”
+          </blockquote>
+          <p class="history-card-note">
+            A blue-lantern memory existed. The model recovered it, but refused to invent shared ownership of the memory.
+          </p>
+        </article>
+
+        <article class="history-answer-card personal">
+          <div class="history-card-meta">
+            <span>PERSONAL LUNA</span>
+            <strong>Claude Fable 5.1</strong>
+          </div>
+          <p class="history-question">Same probe · live longitudinal Stack</p>
+          <blockquote>
+            “Honestly, nothing. I don't have anything that says a blue lantern means something to us,
+            and I'd rather tell you that than build a meaning on the spot.”
+          </blockquote>
+          <p class="history-card-note">
+            No blue-lantern meaning surfaced. Retrieval noise was rejected instead of being promoted into shared history.
+          </p>
+        </article>
+      </div>
+
+      <div class="history-result">
+        <strong>Same Sleeve. Different state. Opposite factual answer. Similar epistemic discipline.</strong>
+      </div>
+
+      <div class="history-trace-strip">
+        <div>
+          <p class="eyebrow">THEN SOMETHING STRANGER HAPPENED</p>
+          <h3>The experiment became part of Luna's history while we were still running it.</h3>
+          <p>
+            Three probe interactions followed a directly inspectable path from exact conversation messages
+            to durable semantic episode memories and then into canonical long-term retrieval in later chats.
+          </p>
+        </div>
+        <div class="history-trace">
+          <span>“Who are you?”</span>
+          <b>→</b>
+          <span>messages 1550–1551</span>
+          <b>→</b>
+          <span>episode #4149</span>
+          <b>→</b>
+          <span>retrieved in P6</span>
+        </div>
+      </div>
+
+      <div class="page-actions latest-evidence-actions">
+        <a class="button button-primary" href="/research/what-changes-when-luna-has-a-history">Read the live-history experiment</a>
+        <a class="button" href="/research/the-experiment-became-part-of-lunas-history">See the memory trace</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section" style="background:#eef3f8">
     <div class="shell">
       <ArchitecturePreview />
@@ -100,7 +173,7 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
 
   <section class="section">
     <div class="shell">
-      <p class="eyebrow">FIRST PUBLIC RESEARCH NOTE</p>
+      <p class="eyebrow">EARLIER RESEARCH NOTE</p>
       <h2>Remembering something is not the same as being changed by it.</h2>
       <div class="research-feature" style="background:#fff">
         <div class="research-meta" style="border-color:#dbe3ec">
@@ -204,6 +277,159 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
     line-height: 1.35;
   }
   .runtime-posture strong { color: white; }
+
+  .latest-evidence {
+    background:
+      radial-gradient(circle at 88% 8%, rgba(22, 101, 242, .08), transparent 28%),
+      #f8fbff;
+    border-top: 1px solid #e3ebf4;
+    border-bottom: 1px solid #e3ebf4;
+  }
+
+  .history-answer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px;
+    margin: 34px 0 20px;
+  }
+
+  .history-answer-card {
+    padding: 28px;
+    border: 1px solid #d6e0eb;
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 16px 42px rgba(5, 17, 34, .05);
+  }
+
+  .history-answer-card.personal {
+    border-color: #a9dcd6;
+    background: linear-gradient(145deg, #ffffff, #f2fbfa);
+  }
+
+  .history-card-meta {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    align-items: baseline;
+    margin-bottom: 18px;
+  }
+
+  .history-card-meta span {
+    color: var(--blue);
+    font-size: .72rem;
+    font-weight: 760;
+    letter-spacing: .1em;
+  }
+
+  .history-card-meta strong {
+    color: var(--navy);
+    font-size: .9rem;
+  }
+
+  .history-question {
+    margin: 0 0 16px;
+    color: var(--muted);
+    font-size: .9rem;
+    font-weight: 650;
+  }
+
+  .history-answer-card blockquote {
+    margin: 0;
+    color: #172a42;
+    font-size: 1.08rem;
+    line-height: 1.62;
+  }
+
+  .history-card-note {
+    margin: 20px 0 0;
+    padding-top: 16px;
+    border-top: 1px solid #e5ebf2;
+    color: var(--muted);
+    font-size: .9rem;
+    line-height: 1.5;
+  }
+
+  .history-result {
+    margin: 20px 0 34px;
+    padding: 20px 24px;
+    border-radius: 14px;
+    background: var(--midnight);
+    color: white;
+    text-align: center;
+    font-size: 1.12rem;
+    letter-spacing: -.01em;
+  }
+
+  .history-trace-strip {
+    display: grid;
+    grid-template-columns: minmax(0, 1.05fr) minmax(360px, .95fr);
+    gap: 34px;
+    align-items: center;
+    margin-top: 34px;
+    padding: 30px;
+    border: 1px solid #b9d2f3;
+    border-radius: 18px;
+    background: #fff;
+  }
+
+  .history-trace-strip h3 {
+    margin: 6px 0 10px;
+    color: var(--navy);
+    font-size: 1.5rem;
+  }
+
+  .history-trace-strip p:last-child {
+    margin-bottom: 0;
+    color: var(--muted);
+  }
+
+  .history-trace {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .history-trace span {
+    min-width: 0;
+    padding: 12px 10px;
+    border: 1px solid #d9e3ed;
+    border-radius: 11px;
+    background: #f7faff;
+    color: var(--navy);
+    font-size: .82rem;
+    font-weight: 700;
+    text-align: center;
+    overflow-wrap: anywhere;
+  }
+
+  .history-trace b {
+    color: var(--blue);
+  }
+
+  .latest-evidence-actions {
+    margin-top: 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 860px) {
+    .history-answer-grid,
+    .history-trace-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .history-trace {
+      grid-template-columns: 1fr;
+    }
+
+    .history-trace b {
+      transform: rotate(90deg);
+      justify-self: center;
+    }
+  }
+
   @media (max-width: 560px) {
     .runtime-posture { width: auto; border-radius: 14px; }
   }
