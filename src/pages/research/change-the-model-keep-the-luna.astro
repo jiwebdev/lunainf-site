@@ -354,7 +354,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
         Persistence did not mean sameness. The architecture did not erase each model's characteristic reasoning style. It gave those different models the same longitudinal structure to reason from.
       </p>
 
-      <div class="pull-line dark">Same history. Same architecture. Different mind at the inference boundary.</div>
+      <div class="pull-line dark">Same history. Same architecture. Different reasoning substrate at the inference boundary.</div>
 
       <h2>So what actually stayed the same?</h2>
       <p>
@@ -388,6 +388,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
       <p>
         Those are the more difficult experiments ahead.
       </p>
+
+      <div class="companion-study-cta">
+        <div>
+          <div class="control-label">The companion study is now live</div>
+          <h3>What changes when Luna actually has a history?</h3>
+          <p>We asked the same family of continuity questions of the real longitudinal Luna. The live run adds biography, Actor Attribution, ordinary memory formation, cross-chat context, and a traceable chain in which probe interactions became durable memories and were retrieved later in the same study.</p>
+        </div>
+        <a class="button button-primary" href="/research/what-changes-when-luna-has-a-history">Read the ecological companion</a>
+      </div>
 
       <div class="full-study-cta">
         <div>
@@ -445,12 +454,15 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
     .conclusion-card { margin: 44px 0 54px; padding: 36px; border-radius: 20px; background: linear-gradient(145deg, #071d3e, #051122); color: #dce8f5; }
     .conclusion-card p { color: #c3d1e0; }
     .big-conclusion { display: block; margin: 24px 0; color: white; font-size: clamp(1.6rem, 3.4vw, 2.45rem); line-height: 1.22; letter-spacing: -.025em; }
-    .full-study-cta { margin: 50px 0; padding: 32px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; border: 1px solid #b9d2f3; border-radius: 18px; background: #f2f7ff; }
+    .companion-study-cta { margin: 50px 0 20px; padding: 32px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; border: 1px solid #9edbd5; border-radius: 18px; background: #effbfa; }
+    .companion-study-cta h3 { margin: 6px 0 8px; font-size: 1.55rem; }
+    .companion-study-cta p { margin: 0; color: var(--muted); font-size: .98rem; }
+    .full-study-cta { margin: 20px 0 50px; padding: 32px; display: grid; grid-template-columns: 1fr auto; gap: 30px; align-items: center; border: 1px solid #b9d2f3; border-radius: 18px; background: #f2f7ff; }
     .full-study-cta h3 { margin: 6px 0 8px; font-size: 1.55rem; }
     .full-study-cta p { margin: 0; color: var(--muted); font-size: .98rem; }
     .closing-line { margin: 72px 0 8px; color: var(--navy); font-size: clamp(2rem, 5vw, 4rem); line-height: 1.05; letter-spacing: -.04em; text-align: center; }
     @media (max-width: 760px) {
-      .answer-grid, .full-answer-grid, .full-study-cta { grid-template-columns: 1fr; }
+      .answer-grid, .full-answer-grid, .full-study-cta, .companion-study-cta { grid-template-columns: 1fr; }
       .control-card, .conclusion-card { padding: 26px; }
       .thesis-card { padding: 28px; }
       .answer-card { padding: 24px; }
