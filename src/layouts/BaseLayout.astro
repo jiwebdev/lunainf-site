@@ -15,6 +15,11 @@ const {
 const path = Astro.url.pathname;
 const canonical = new URL(path, Astro.site ?? Astro.url).toString();
 const socialImage = new URL('/assets/luna-icon-reverse.webp', Astro.site ?? Astro.url).toString();
+const isSleeveResearch =
+  path === '/research/sleeve-qualification-full' ||
+  path === '/research/sleeve-qualification-full/' ||
+  path === '/research/change-the-model-keep-the-luna' ||
+  path === '/research/change-the-model-keep-the-luna/';
 const structuredData = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
@@ -50,6 +55,7 @@ const nav = [
     <meta name="twitter:image" content={socialImage} />
     <link rel="icon" type="image/webp" href="/assets/luna-icon-reverse.webp" />
     <link rel="canonical" href={canonical} />
+    {isSleeveResearch && <link rel="stylesheet" href="/assets/research/sleeve-audio-controls.css" />}
     <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)}></script>
     <title>{title}</title>
   </head>
@@ -139,5 +145,6 @@ const nav = [
         if (event.key === 'Escape') closeMenu();
       });
     </script>
+    {isSleeveResearch && <script is:inline src="/assets/research/sleeve-audio-controls.js"></script>}
   </body>
 </html>

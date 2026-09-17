@@ -26,6 +26,11 @@ jobs:
         with:
           node-version: 20
 
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
       - name: Install dependencies
         run: npm ci
 
@@ -34,6 +39,23 @@ jobs:
 
       - name: Check site
         run: npm run check
+
+      - name: Compute Sleeve audio cache key
+        id: sleeve-audio-key
+        run: echo "hash=$(python scripts/generate_sleeve_audio.py --hash-only)" >> "$GITHUB_OUTPUT"
+
+      - name: Restore Sleeve audio cache
+        id: sleeve-audio-cache
+        uses: actions/cache@v4
+        with:
+          path: public/assets/research/sleeve-audio
+          key: sleeve-audio-v1-${{ steps.sleeve-audio-key.outputs.hash }}
+
+      - name: Generate Sleeve response audio
+        if: steps.sleeve-audio-cache.outputs.cache-hit != 'true'
+        run: |
+          python -m pip install edge-tts
+          python scripts/generate_sleeve_audio.py
 
       - name: Build
         run: npm run build

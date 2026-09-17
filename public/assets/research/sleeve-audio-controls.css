@@ -1,0 +1,63 @@
+.luna-audio-control {
+  margin: 16px 0 2px;
+}
+
+.luna-audio-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+  min-height: 38px;
+  padding: 8px 13px;
+  border: 1px solid #b9d2f3;
+  border-radius: 999px;
+  background: #f2f7ff;
+  color: var(--blue, #1665f2);
+  font: inherit;
+  font-size: .86rem;
+  font-weight: 720;
+  line-height: 1;
+  cursor: pointer;
+  transition: background .15s ease, border-color .15s ease, transform .15s ease;
+}
+
+.luna-audio-button:hover {
+  background: #e8f2ff;
+  border-color: #8cb7ed;
+}
+
+.luna-audio-button:active {
+  transform: translateY(1px);
+}
+
+.luna-audio-button:focus-visible {
+  outline: 3px solid rgba(22, 101, 242, .22);
+  outline-offset: 2px;
+}
+
+.luna-audio-button[aria-pressed="true"] {
+  background: #e5f7f8;
+  border-color: #8bd0d6;
+  color: #075e6a;
+}
+
+.luna-audio-icon {
+  width: 1em;
+  text-align: center;
+  font-size: .8rem;
+}
+
+.luna-audio-disclosure {
+  margin: 14px 0 28px !important;
+  color: var(--muted, #5f6d7d);
+  font-size: .84rem;
+  line-height: 1.5;
+}
+
+.luna-audio-disclosure strong {
+  color: var(--navy, #071d3e);
+}
+
+.failure-quote + .luna-audio-control {
+  margin-top: -14px;
+  margin-bottom: 30px;
+}
