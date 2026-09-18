@@ -52,6 +52,37 @@ import ExplanationSwitch from '../components/ExplanationSwitch.astro';
         A persistent system can preserve autobiographical episodes, maintain continuity across interactions, carry unresolved intentions forward, form expectations, and accumulate slower state. LUNA explores how those mechanisms can interact so that two otherwise similar systems may eventually behave differently because they lived through different experiences and therefore accumulated different histories.
       </p>
 
+      <h2>A familiar target, without turning the analogy into a claim.</h2>
+      <p>
+        People do not experience every interaction as if it were the first. Prior encounters change what is easy to recognize,
+        what feels relevant, what can be inferred safely, and what still needs evidence. LUNA is interested in the systems
+        equivalent of that continuity: not human memory or human emotion, but a persistent architecture in which previous
+        interactions can alter the informational conditions of later cognition.
+      </p>
+
+      <div class="familiar-tech-grid">
+        <div>
+          <strong>Who is this?</strong>
+          <p>Actor Attribution can resolve the current person without requiring their name to appear as a lexical retrieval cue.</p>
+        </div>
+        <div>
+          <strong>Do I know this?</strong>
+          <p>A fact can exist in persistent memory without being retrieved or entering the current foreground.</p>
+        </div>
+        <div>
+          <strong>Was that an inference or a memory?</strong>
+          <p>Later evidence can change the epistemic status of an earlier interpretation without rewriting what happened before.</p>
+        </div>
+      </div>
+
+      <div class="callout">
+        The point is not that LUNA reproduces human remembering. The point is that distinctions familiar from ordinary life
+        can be stated as technical properties and then inspected in the running system.
+      </div>
+      <div class="page-actions">
+        <a class="button button-primary" href="/research/what-changes-when-luna-has-a-history">See those distinctions in the live-history study</a>
+      </div>
+
       <h2>Memory is not a dump. Recall is progressive.</h2>
       <p>
         LUNA does not treat every relevant memory as material that should immediately be pasted into the next model prompt. Progressive recall separates <strong>stored history</strong>, <strong>recent-life cueing</strong>, <strong>cognitive availability</strong>, <strong>foreground access</strong>, and <strong>deeper reconstruction</strong>.
@@ -142,4 +173,38 @@ import ExplanationSwitch from '../components/ExplanationSwitch.astro';
       </div>
     </div>
   </section>
+<style>
+  .familiar-tech-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 30px 0 34px;
+  }
+
+  .familiar-tech-grid > div {
+    padding: 24px;
+    border: 1px solid #dbe3ec;
+    border-radius: 16px;
+    background: #f8fafc;
+  }
+
+  .familiar-tech-grid strong {
+    display: block;
+    margin-bottom: 8px;
+    color: #17375f;
+    font-size: 1.08rem;
+  }
+
+  .familiar-tech-grid p {
+    margin: 0;
+    color: #6c7a8a;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 760px) {
+    .familiar-tech-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 </BaseLayout>
