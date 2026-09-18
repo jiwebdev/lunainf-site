@@ -55,6 +55,59 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
     </div>
   </section>
 
+  <section class="section familiar-evidence">
+    <div class="shell">
+      <p class="eyebrow">A FAMILIAR QUESTION</p>
+      <h2>What changes because you have met before?</h2>
+      <p class="section-lede">
+        LUNA's research target is technical, but some of the most useful observations have a familiar shape:
+        recognizing who a conversation is with, knowing that something is stored but failing to retrieve the detail,
+        and revising an interpretation when better evidence becomes available.
+      </p>
+
+      <div class="familiar-grid">
+        <article class="familiar-card">
+          <span class="familiar-kicker">IDENTITY WITHOUT A NAME CUE</span>
+          <h3>You do not need someone to say their name every time you see them.</h3>
+          <p>
+            In one live test, the user deliberately avoided giving his name and asked what Luna remembered about him.
+            The active identity binding already resolved who she was speaking with; the literal name was not the retrieval key.
+          </p>
+          <div class="familiar-tech"><strong>Observed mechanism:</strong> Actor Attribution + persistent identity state.</div>
+        </article>
+
+        <article class="familiar-card">
+          <span class="familiar-kicker">STORED, BUT NOT AVAILABLE</span>
+          <h3>Sometimes you know that you know something, but cannot get to the detail.</h3>
+          <p>
+            Luna retrieved facts saying that a child count existed and that duplicate records of it were stored,
+            while the actual number itself did not surface in that turn.
+          </p>
+          <div class="familiar-tech"><strong>What it exposes:</strong> stored ≠ retrieved ≠ foreground-available.</div>
+        </article>
+
+        <article class="familiar-card">
+          <span class="familiar-kicker">REVISION WHEN EVIDENCE RETURNS</span>
+          <h3>A later memory can change the status of an earlier conclusion.</h3>
+          <p>
+            Earlier in the run, Luna treated the user's authorship of LUNA as inference because the supporting fact
+            was not available. Later, that grounded project fact surfaced, and she corrected the earlier epistemic status.
+          </p>
+          <div class="familiar-tech"><strong>Observed behavior:</strong> inference was not silently upgraded into fact until evidence appeared.</div>
+        </article>
+      </div>
+
+      <div class="familiar-boundary">
+        These are not claims that LUNA remembers or recognizes people in a human biological sense.
+        They are observable cases where a persistent architecture creates distinctions that people already know how to reason about.
+      </div>
+
+      <div class="page-actions familiar-actions">
+        <a class="button button-primary" href="/research/what-changes-when-luna-has-a-history">See the live-history study</a>
+      </div>
+    </div>
+  </section>
+
   <section class="section latest-evidence">
     <div class="shell">
       <p class="eyebrow">LATEST EVIDENCE · SEPTEMBER 2026</p>
@@ -278,6 +331,73 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
   }
   .runtime-posture strong { color: white; }
 
+  .familiar-evidence {
+    background: white;
+  }
+
+  .familiar-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin-top: 34px;
+  }
+
+  .familiar-card {
+    padding: 28px;
+    border: 1px solid #dbe3ec;
+    border-radius: 18px;
+    background: #fbfcfe;
+  }
+
+  .familiar-kicker {
+    display: block;
+    margin-bottom: 20px;
+    color: var(--blue);
+    font-size: .7rem;
+    font-weight: 800;
+    letter-spacing: .12em;
+  }
+
+  .familiar-card h3 {
+    margin: 0 0 14px;
+    color: var(--navy);
+    font-size: 1.25rem;
+    line-height: 1.3;
+  }
+
+  .familiar-card p {
+    margin: 0;
+    color: var(--muted);
+    line-height: 1.58;
+  }
+
+  .familiar-tech {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #e3eaf1;
+    color: #4d5f73;
+    font-size: .88rem;
+    line-height: 1.45;
+  }
+
+  .familiar-tech strong {
+    color: var(--navy);
+  }
+
+  .familiar-boundary {
+    margin-top: 22px;
+    padding: 18px 22px;
+    border-left: 3px solid #9fb8d4;
+    background: #f3f6f9;
+    color: #607085;
+    font-size: .92rem;
+    line-height: 1.5;
+  }
+
+  .familiar-actions {
+    margin-top: 22px;
+  }
+
   .latest-evidence {
     background:
       radial-gradient(circle at 88% 8%, rgba(22, 101, 242, .08), transparent 28%),
@@ -415,6 +535,10 @@ import ArchitecturePreview from '../components/ArchitecturePreview.astro';
   }
 
   @media (max-width: 860px) {
+    .familiar-grid {
+      grid-template-columns: 1fr;
+    }
+
     .history-answer-grid,
     .history-trace-strip {
       grid-template-columns: 1fr;
